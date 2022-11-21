@@ -50,14 +50,31 @@ class Circumcenter:
     def a(self) -> Coordinate2D:
         """First vertex of the triangle.
 
+        Returns:
+            Coordinate2D: First vertex of the triangle.
+
         Note:
             If the value of the vertex is changed, the circumcenter and radius
-            of the triangle are recalculated."""
+            of the triangle are recalculated.
+        """
 
         return self._a
 
     @a.setter
     def a(self, value: Coordinate2D) -> None:
+        """First vertex of the triangle.
+
+        Args:
+            value (Coordinate2D): First vertex of the triangle.
+
+        Raises:
+            TypeError: If the value is not a Coordinate2D object.
+
+        Note:
+            If the value of the vertex is changed, the circumcenter and radius
+            of the triangle are recalculated.
+        """
+
         if not isinstance(value, Coordinate2D):
             raise TypeError("a must be a Coordinate2D instance")
 
@@ -68,14 +85,31 @@ class Circumcenter:
     def b(self) -> Coordinate2D:
         """Second vertex of the triangle.
 
+        Returns:
+            Coordinate2D: Second vertex of the triangle.
+
         Note:
             If the value of the vertex is changed, the circumcenter and radius
-            of the triangle are recalculated."""
+            of the triangle are recalculated.
+        """
 
         return self._b
 
     @b.setter
     def b(self, value: Coordinate2D) -> None:
+        """Second vertex of the triangle.
+
+        Args:
+            value (Coordinate2D): Second vertex of the triangle.
+
+        Raises:
+            TypeError: If the value is not a Coordinate2D object.
+
+        Note:
+            If the value of the vertex is changed, the circumcenter and radius
+            of the triangle are recalculated.
+        """
+
         if not isinstance(value, Coordinate2D):
             raise TypeError("b must be a Coordinate2D instance")
 
@@ -86,6 +120,9 @@ class Circumcenter:
     def c(self) -> Coordinate2D:
         """Third vertex of the triangle.
 
+        Returns:
+            Coordinate2D: Third vertex of the triangle.
+
         Note:
             If the value of the vertex is changed, the circumcenter and radius
             of the triangle are recalculated.
@@ -95,6 +132,19 @@ class Circumcenter:
 
     @c.setter
     def c(self, value: Coordinate2D) -> None:
+        """Third vertex of the triangle.
+
+        Args:
+            value (Coordinate2D): Third vertex of the triangle.
+
+        Raises:
+            TypeError: If the value is not a Coordinate2D object.
+
+        Note:
+            If the value of the vertex is changed, the circumcenter and radius
+            of the triangle are recalculated.
+        """
+
         if not isinstance(value, Coordinate2D):
             raise TypeError("c must be a Coordinate2D instance")
 
@@ -103,13 +153,21 @@ class Circumcenter:
 
     @property
     def circumcenter(self) -> Coordinate2D:
-        """Circumcenter of the triangle."""
+        """Circumcenter of the triangle.
+
+        Returns:
+            Coordinate2D: The circumcenter of the triangle.
+        """
 
         return self._circumcenter
 
     @property
     def radius(self) -> float:
-        """Radius of the circumcircle of the triangle."""
+        """Radius of the circumcircle of the triangle.
+
+        Returns:
+            float: The radius of the circumcircle of the triangle.
+        """
 
         return self._radius
 
@@ -193,6 +251,8 @@ class Circumcenter:
                 ab_vertical.x + ac_vertical.x
             )
         )
+
+        # Circumradius calculation:
 
         radius = sqrt(
             (self.a.x - circumcenter.x) ** 2
