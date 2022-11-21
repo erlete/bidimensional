@@ -10,7 +10,7 @@ Author:
 
 from numpy import sqrt
 
-from utils.coordinate import Coordinate2D
+from coordinate import Coordinate2D
 
 
 class Circumcenter:
