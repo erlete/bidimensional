@@ -8,7 +8,7 @@ Author:
 """
 
 
-from numpy import sqrt
+from math import sqrt
 
 from coordinate import Coordinate2D
 
