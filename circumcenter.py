@@ -41,17 +41,19 @@ class Circumcenter:
     def __init__(self, a: Coordinate2D,
                  b: Coordinate2D, c: Coordinate2D) -> None:
 
-        # Preliminary setting to ensure that all values are set:
+        # The initial setting variable allows value validation via attribute
+        #   setters but prevents automatic recalculation of the circumcenter
+        #   and circumradius.
+
+        self._initial_setting = False
 
         self._a = a
         self._b = b
         self._c = c
 
-        # Value checking before calculation:
+        self._initial_setting = True
 
-        self.a = a
-        self.b = b
-        self.c = c
+        self._calculate()  # Initial calculation:
 
     @property
     def a(self) -> Coordinate2D:
@@ -86,7 +88,9 @@ class Circumcenter:
             raise TypeError("a must be a Coordinate2D instance")
 
         self._a = value
-        self._calculate()
+
+        if not self._initial_setting:
+            self._calculate()
 
     @property
     def b(self) -> Coordinate2D:
@@ -121,7 +125,9 @@ class Circumcenter:
             raise TypeError("b must be a Coordinate2D instance")
 
         self._b = value
-        self._calculate()
+
+        if not self._initial_setting:
+            self._calculate()
 
     @property
     def c(self) -> Coordinate2D:
@@ -156,7 +162,9 @@ class Circumcenter:
             raise TypeError("c must be a Coordinate2D instance")
 
         self._c = value
-        self._calculate()
+
+        if not self._initial_setting:
+            self._calculate()
 
     @property
     def circumcenter(self) -> Coordinate2D:
