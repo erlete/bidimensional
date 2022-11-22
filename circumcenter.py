@@ -183,88 +183,98 @@ class Circumcenter:
 
         # Segment displacement:
 
-        ab_displacement = Coordinate2D(
-            self.b.x - self.a.x,
-            self.b.y - self.a.y
-        )
-
-        ac_displacement = Coordinate2D(
-            self.c.x - self.a.x,
-            self.c.y - self.a.y
-        )
+        displacement = {
+            "ab": Coordinate2D(
+                self.b.x - self.a.x,
+                self.b.y - self.a.y
+            ),
+            "ac": Coordinate2D(
+                self.c.x - self.a.x,
+                self.c.y - self.a.y
+            )
+        }
 
         # Unitary vectors:
 
-        ab_root = sqrt(ab_displacement.x ** 2 + ab_displacement.y ** 2)
-        ac_root = sqrt(ac_displacement.x ** 2 + ac_displacement.y ** 2)
-
-        ab_unitary = Coordinate2D(
-            ab_displacement.y / ab_root,
-            -ab_displacement.x / ab_root
-        )
-
-        ac_unitary = Coordinate2D(
-            ac_displacement.y / ac_root,
-            -ac_displacement.x / ac_root
-        )
+        unitary = {
+            "ab": Coordinate2D(
+                displacement["ab"].y / sqrt(
+                    displacement["ab"].x ** 2 + displacement["ab"].y ** 2
+                ),
+                -displacement["ab"].x / sqrt(
+                    displacement["ab"].x ** 2 + displacement["ab"].y ** 2
+                )
+            ),
+            "ac": Coordinate2D(
+                displacement["ac"].y / sqrt(
+                    displacement["ac"].x ** 2 + displacement["ac"].y ** 2
+                ),
+                -displacement["ac"].x / sqrt(
+                    displacement["ac"].x ** 2 + displacement["ac"].y ** 2
+                )
+            )
+        }
 
         # Mathematical trick that prevents vertical coordinate alignment:
 
-        ab_unitary.y = ab_unitary.y if ab_unitary.y else 1e-5
-        ac_unitary.y = ac_unitary.y if ac_unitary.y else 1e-5
+        print(f"{unitary['ab'] = }")
+        print(f"{unitary['ac'] = }")
+
+        unitary["ab"].y = unitary["ab"].y if unitary["ab"].y else 1e-5
+        unitary["ac"].y = unitary["ac"].y if unitary["ac"].y else 1e-5
 
         # V-vector for vertical intersection:
 
-        ab_vertical = Coordinate2D(
-            ab_unitary.x / ab_unitary.y,
-            1
-        )
-
-        ac_vertical = Coordinate2D(
-            -(ac_unitary.x / ac_unitary.y),
-            1
-        )
+        vertical = {
+            "ab": Coordinate2D(
+                unitary["ab"].x / unitary["ab"].y,
+                1
+            ),
+            "ac": Coordinate2D(
+                -(unitary["ac"].x / unitary["ac"].y),
+                1
+            )
+        }
 
         # Midpoint setting:
 
-        ab_midpoint = Coordinate2D(
-            ab_displacement.x / 2 + self.a.x,
-            ab_displacement.y / 2 + self.a.y
-        )
-
-        ac_midpoint = Coordinate2D(
-            ac_displacement.x / 2 + self.a.x,
-            ac_displacement.y / 2 + self.a.y
-        )
+        midpoint = {
+            "ab": Coordinate2D(
+                displacement["ab"].x / 2 + self.a.x,
+                displacement["ab"].y / 2 + self.a.y
+            ),
+            "ac": Coordinate2D(
+                displacement["ac"].x / 2 + self.a.x,
+                displacement["ac"].y / 2 + self.a.y
+            )
+        }
 
         # Midpoint height equivalence:
 
-        ab_equal = Coordinate2D(
-            ab_midpoint.x + (
-                (ac_midpoint[1] - ab_midpoint[1]) / ab_unitary[1]
-            ) * ab_unitary.x,
-            ac_midpoint.y
+        intersection = Coordinate2D(
+            midpoint["ab"].x + (
+                (midpoint["ac"].y - midpoint["ab"].y) / unitary["ab"].y
+            ) * unitary["ab"].x,
+            midpoint["ac"].y
         )
 
         # Circumcenter calculation:
 
-        circumcenter = Coordinate2D(
-            ab_equal.x + (
-                (ac_midpoint.x - ab_equal.x) / (ab_vertical.x + ac_vertical.x)
-            ) * ab_vertical.x,
-            ab_equal.y + (
-                ac_midpoint.x - ab_equal.x
+        self._circumcenter = Coordinate2D(
+            intersection.x + (
+                (midpoint["ac"].x - intersection.x)
+                / (vertical["ab"].x + vertical["ac"].x)
+            ) * vertical["ab"].x,
+            intersection.y + (
+                midpoint["ac"].x - intersection.x
             ) / (
-                ab_vertical.x + ac_vertical.x
+                vertical["ab"].x + vertical["ac"].x
             )
         )
 
         # Circumradius calculation:
 
-        radius = sqrt(
-            (self.a.x - circumcenter.x) ** 2
-            + (self.a.y - circumcenter.y) ** 2
+        self._circumradius = sqrt(
+            (self.a.x - self._circumcenter.x) ** 2
+            + (self.a.y - self._circumcenter.y) ** 2
         )
-
-        self._circumcenter = circumcenter
-        self._circumradius = radius
