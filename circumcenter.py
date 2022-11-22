@@ -14,7 +14,7 @@ from coordinate import Coordinate2D
 
 
 class Circumcenter:
-    """Class for calculating the circumcenter of a triangle.
+    """Class for triangle calculation.
 
     This class is used to calculate the circumcenter of a triangle, given its
     three vertices as 2D coordinates.
@@ -32,7 +32,8 @@ class Circumcenter:
         radius (float): The radius of the circumcircle of the triangle.
     """
 
-    def __init__(self, a, b, c) -> None:
+    def __init__(self, a: Coordinate2D,
+                 b: Coordinate2D, c: Coordinate2D) -> None:
 
         # Preliminary setting to ensure that all values are set:
 
