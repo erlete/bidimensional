@@ -215,14 +215,6 @@ class Circumcenter:
             )
         }
 
-        # Mathematical trick that prevents vertical coordinate alignment:
-
-        print(f"{unitary['ab'] = }")
-        print(f"{unitary['ac'] = }")
-
-        unitary["ab"].y = unitary["ab"].y if unitary["ab"].y else 1e-5
-        unitary["ac"].y = unitary["ac"].y if unitary["ac"].y else 1e-5
-
         # V-vector for vertical intersection:
 
         vertical = {
