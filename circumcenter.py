@@ -1,10 +1,16 @@
-"""Container module for the Circumcenter class.
+"""Circumcenter class container module.
 
 This module contains the Circumcenter class, which is used to calculate the
 circumcenter of a triangle, given its three vertices as 2D coordinates.
 
+Note:
+    By default, this module uses the Coordinate2D class from the `coordinate`
+    module. However, said class does not present great difference from the
+    builtin `tuple` class, so this change should not pose any major
+    inconvenience.
+
 Author:
-    Paulo Sánchez (@erlete)
+    Paulo Sanchez (@erlete)
 """
 
 
@@ -163,14 +169,14 @@ class Circumcenter:
         return self._circumcenter
 
     @property
-    def radius(self) -> float:
+    def circumradius(self) -> float:
         """Radius of the circumcircle of the triangle.
 
         Returns:
             float: The radius of the circumcircle of the triangle.
         """
 
-        return self._radius
+        return self._circumradius
 
     def _calculate(self) -> None:
         """Calculates the circumcenter and radius of the triangle."""
@@ -261,4 +267,4 @@ class Circumcenter:
         )
 
         self._circumcenter = circumcenter
-        self._radius = radius
+        self._circumradius = radius
