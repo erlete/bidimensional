@@ -30,6 +30,9 @@ class Coordinate2D:
         The y-coordinate.
     """
 
+    NUMERICAL = (int, float)
+    SEQUENTIAL = (tuple, list, set)
+
     def __init__(self, x_value: float, y_value: float) -> None:
         self.x: float = float(x_value)
         self.y: float = float(y_value)
@@ -69,10 +72,17 @@ class Coordinate2D:
         return Coordinate2D(self._x - value.x, self._y - value.y)
 
     def __mul__(self, value) -> Coordinate2D:
-        if not isinstance(value, Coordinate2D):
-            raise TypeError("value must be a Coordinate2D.")
+        if isinstance(value, Coordinate2D):
+            return Coordinate2D(self._x * value.x, self._y * value.y)
 
-        return Coordinate2D(self._x * value, self._y * value)
+        elif isinstance(value, self.NUMERICAL):
+            return Coordinate2D(self._x * value, self._y * value)
+
+        elif isinstance(value, self.SEQUENTIAL) and len(value) >= 2:
+            return Coordinate2D(self._x * value[0], self._y * value[1])
+
+        raise TypeError("value must be a Coordinate2D, a numerical type, or a"
+                        "sequential type with at least 2 elements.")
 
     def __truediv__(self, value) -> Coordinate2D:
         if not isinstance(value, Coordinate2D):
