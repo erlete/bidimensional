@@ -1,6 +1,8 @@
 # 2D Utils
 
-This is a collection of 2D utilities for coordinate representation and manipulation.
+[![PyPI release](https://github.com/erlete/2dutils/actions/workflows/python-publish.yml/badge.svg)](https://github.com/erlete/2dutils/actions/workflows/python-publish.yml)
+
+A collection of 2D utilities for coordinate representation and manipulation.
 
 ## Features
 
