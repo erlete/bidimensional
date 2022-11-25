@@ -14,6 +14,7 @@ Author:
 """
 
 
+from itertools import combinations
 from math import sqrt
 
 from coordinate import Coordinate2D
@@ -186,8 +187,39 @@ class Circumcenter:
 
         return self._circumradius
 
+    def _ensure_non_collinear(self) -> None:
+        """Ensures that the triangle is not collinear.
+
+        This method computes the determinant of the matrix formed by the
+        coordinates of the triangle's vertices. If the determinant is zero,
+        the triangle is collinear, and the circumcenter and circumradius
+        cannot be calculated.
+
+        Raises:
+            ValueError: If the triangle is collinear.
+        """
+
+        if not (self._a.x * (self._b.y - self._c.y)
+                + self._b.x * (self._c.y - self._a.y)
+                + self._c.x * (self._a.y - self._b.y)):
+
+            raise ValueError("The triangle is collinear")
+
     def _calculate(self) -> None:
         """Calculates the circumcenter and radius of the triangle."""
+
+        self._ensure_non_collinear()
+
+        if any(v[1] - v[0] for v in combinations(
+                (self._a, self._b, self._c), 2)):
+
+            # Vertical alignment prevention:
+
+            if not (self._b - self._a).x:
+                self._a, self._c = self._c, self._a
+
+            if not (self._c - self._a).x:
+                self._a, self._b = self._b, self._a
 
         # Segment displacement:
 
