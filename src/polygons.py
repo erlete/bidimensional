@@ -1,5 +1,6 @@
 from coordinate import Coordinate2D
 from circumcircle import Circumcircle
+from matplotlib import pyplot as plt
 
 
 class Triangle:
@@ -121,3 +122,15 @@ class Triangle:
 
         return self._circumcircle.radius
 
+    def plot(self, **kwargs) -> None:
+        """Plots the triangle.
+
+        Args:
+            **kwargs: Keyword arguments for matplotlib.pyplot.plot.
+        """
+
+        plt.plot(
+            [self.a.x, self.b.x, self.c.x, self.a.x],
+            [self.a.y, self.b.y, self.c.y, self.a.y],
+            **kwargs
+        )
