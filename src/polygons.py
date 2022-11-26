@@ -7,6 +7,8 @@ class Triangle:
     def __init__(self, a: Coordinate2D, b: Coordinate2D,
                  c: Coordinate2D) -> None:
 
+        self._circumcircle = None
+
         self._initial_setting = False
 
         self.a = a
@@ -104,7 +106,7 @@ class Triangle:
         if self._circumcircle is None:
             self._circumcircle = Circumcircle(self.a, self.b, self.c)
 
-        return self._circumcircle.circumcenter
+        return self._circumcircle.center
 
     @property
     def circumradius(self) -> float:
@@ -117,4 +119,5 @@ class Triangle:
         if self._circumcircle is None:
             self._circumcircle = Circumcircle(self.a, self.b, self.c)
 
-        return self._circumcircle.circumradius
+        return self._circumcircle.radius
+
