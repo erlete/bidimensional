@@ -1,5 +1,5 @@
 from coordinate import Coordinate2D
-from circumcenter import Circumcenter
+from circumcircle import Circumcircle
 
 
 class Triangle:
@@ -102,7 +102,7 @@ class Triangle:
         """
 
         if self._circumcircle is None:
-            self._circumcircle = Circumcenter(self.a, self.b, self.c)
+            self._circumcircle = Circumcircle(self.a, self.b, self.c)
 
         return self._circumcircle.circumcenter
 
@@ -115,6 +115,6 @@ class Triangle:
         """
 
         if self._circumcircle is None:
-            self._circumcircle = Circumcenter(self.a, self.b, self.c)
+            self._circumcircle = Circumcircle(self.a, self.b, self.c)
 
         return self._circumcircle.circumradius
