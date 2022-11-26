@@ -1,4 +1,5 @@
 from coordinate import Coordinate2D
+from circumcenter import Circumcenter
 
 
 class Triangle:
@@ -91,3 +92,29 @@ class Triangle:
             raise TypeError("c must be a Coordinate2D instance")
 
         self._c = value
+
+    @property
+    def circumcenter(self) -> Coordinate2D:
+        """Circumcenter of the triangle.
+
+        Returns:
+            Coordinate2D: Circumcenter of the triangle.
+        """
+
+        if self._circumcircle is None:
+            self._circumcircle = Circumcenter(self.a, self.b, self.c)
+
+        return self._circumcircle.circumcenter
+
+    @property
+    def circumradius(self) -> float:
+        """Circumradius of the triangle.
+
+        Returns:
+            float: Circumradius of the triangle.
+        """
+
+        if self._circumcircle is None:
+            self._circumcircle = Circumcenter(self.a, self.b, self.c)
+
+        return self._circumcircle.circumradius
