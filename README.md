@@ -1,6 +1,6 @@
-# 2D Utils
+# Bidimensional
 
-[![PyPI release](https://github.com/erlete/2dutils/actions/workflows/python-publish.yml/badge.svg)](https://github.com/erlete/2dutils/actions/workflows/python-publish.yml)
+[![PyPI release](https://github.com/erlete/bidimensional/actions/workflows/python-publish.yml/badge.svg)](https://github.com/erlete/bidimensional/actions/workflows/python-publish.yml)
 
 A collection of 2D utilities for coordinate representation and manipulation.
 
@@ -16,10 +16,8 @@ The following features are currently implemented:
 ### macOS/UNIX
 
 ```bash
-git clone https://github.com/erlete/2d-utils
+python3 -m pip install --upgrade bidimensional
 ```
-
-**Note: this package is not yet available on PyPI, but it will be really soon.**
 
 ## Usage
 
