@@ -1,5 +1,16 @@
-from coordinate import Coordinate2D
+"""2D operations module.
+
+This module contains methods used to perform operations on 2D coordinates, such
+as calculating distances and angles between them.
+
+Author:
+    Paulo Sanchez (@erlete)
+"""
+
+
 import math
+
+from coordinate import Coordinate2D
 
 
 def distance(a: Coordinate2D, b: Coordinate2D) -> float:
