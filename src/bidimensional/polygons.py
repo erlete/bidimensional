@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 
-import operations as op
-from circumcircle import Circumcircle
+import bidimensional.operations as op
+from bidimensional.circumcircle import Circumcircle
 from coordinate import Coordinate2D
 
 
