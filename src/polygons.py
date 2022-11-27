@@ -126,7 +126,7 @@ class Triangle:
 
         return self._circumcircle.radius
 
-    def is_rectangle(self) -> bool:
+    def is_right(self) -> bool:
         """Checks if the triangle has a right angle.
 
         Returns:
@@ -135,6 +135,30 @@ class Triangle:
 
         return any([
             round(angle_, self.TOL_DIGITS) == 90
+            for angle_ in self._angles.values()
+        ])
+
+    def is_obtuse(self) -> bool:
+        """Checks if the triangle has an obtuse angle.
+
+        Returns:
+            bool: True if the triangle has an obtuse angle, False otherwise.
+        """
+
+        return any([
+            angle_ > 90
+            for angle_ in self._angles.values()
+        ])
+
+    def is_acute(self) -> bool:
+        """Checks if the triangle has an acute angle.
+
+        Returns:
+            bool: True if the triangle has an acute angle, False otherwise.
+        """
+
+        return all([
+            angle_ < 90
             for angle_ in self._angles.values()
         ])
 
