@@ -1,7 +1,8 @@
-from coordinate import Coordinate2D
-from circumcircle import Circumcircle
 from matplotlib import pyplot as plt
+
 import operations as op
+from circumcircle import Circumcircle
+from coordinate import Coordinate2D
 
 
 class Triangle:
