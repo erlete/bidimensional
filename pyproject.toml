@@ -5,14 +5,14 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "2dutils"
-version = "1.2.0"
+name = "bidimensional"
+version = "1.3.0"
 authors = [
     {name = "Paulo Sanchez", email = "dev.szblzpaulo@gmail.com"}
 ]
 description = "A collection of 2D utilities for coordinate representation and manipulation."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 classifiers = [
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
@@ -21,5 +21,5 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/erlete/2dutils"
-"Bug Tracker" = "https://github.com/erlete/2dutils/issues"
+"Homepage" = "https://github.com/erlete/bidimensional"
+"Bug Tracker" = "https://github.com/erlete/bidimensional/issues"
