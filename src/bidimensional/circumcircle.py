@@ -1,13 +1,8 @@
-"""Circumcenter class container module.
+"""Circumcircle class container module.
 
-This module contains the Circumcenter class, which is used to calculate the
-circumcenter of a triangle, given its three vertices as 2D coordinates.
-
-Note:
-    By default, this module uses the Coordinate2D class from the `coordinate`
-    module. However, said class does not present great difference from the
-    builtin `tuple` class, so this change should not pose any major
-    inconvenience.
+This module contains the Circumcircle class, which is used to calculate the
+circumcenter and circumradius of a triangle, given its three vertices as 2D
+coordinates.
 
 Author:
     Paulo Sanchez (@erlete)
@@ -20,11 +15,11 @@ from math import sqrt
 from coordinate import Coordinate2D
 
 
-class Circumcenter:
-    """Class for triangle calculation.
+class Circumcircle:
+    """Circumcirle calculation utility.
 
-    This class is used to calculate the circumcenter of a triangle, given its
-    three vertices as 2D coordinates.
+    This class is used to calculate the circumcenter and circumradius of a
+    triangle, given its three vertices as 2D coordinates.
 
     Args:
         a (Coordinate2D): First vertex of the triangle.
@@ -35,12 +30,12 @@ class Circumcenter:
         a (Coordinate2D): First vertex of the triangle.
         b (Coordinate2D): Second vertex of the triangle.
         c (Coordinate2D): Third vertex of the triangle.
-        circumcenter (Coordinate2D): The circumcenter of the triangle.
-        radius (float): The radius of the circumcircle of the triangle.
+        center (Coordinate2D): The center of the circumcircle.
+        radius (float): The radius of the circumcircle.
     """
 
-    def __init__(self, a: Coordinate2D,
-                 b: Coordinate2D, c: Coordinate2D) -> None:
+    def __init__(self, a: Coordinate2D, b: Coordinate2D,
+                 c: Coordinate2D) -> None:
 
         # The initial setting variable allows value validation via attribute
         #   setters but prevents automatic recalculation of the circumcenter
@@ -64,8 +59,8 @@ class Circumcenter:
             Coordinate2D: First vertex of the triangle.
 
         Note:
-            If the value of the vertex is changed, the circumcenter and radius
-            of the triangle are recalculated.
+            If the value of the vertex is changed, the circumcenter and
+            circumradius are recalculated.
         """
 
         return self._a
@@ -81,8 +76,8 @@ class Circumcenter:
             TypeError: If the value is not a Coordinate2D object.
 
         Note:
-            If the value of the vertex is changed, the circumcenter and radius
-            of the triangle are recalculated.
+            If the value of the vertex is changed, the circumcenter and
+            circumradius are recalculated.
         """
 
         if not isinstance(value, Coordinate2D):
@@ -101,8 +96,8 @@ class Circumcenter:
             Coordinate2D: Second vertex of the triangle.
 
         Note:
-            If the value of the vertex is changed, the circumcenter and radius
-            of the triangle are recalculated.
+            If the value of the vertex is changed, the circumcenter and
+            circumradius are recalculated.
         """
 
         return self._b
@@ -118,8 +113,8 @@ class Circumcenter:
             TypeError: If the value is not a Coordinate2D object.
 
         Note:
-            If the value of the vertex is changed, the circumcenter and radius
-            of the triangle are recalculated.
+            If the value of the vertex is changed, the circumcenter and
+            circumradius are recalculated.
         """
 
         if not isinstance(value, Coordinate2D):
@@ -138,8 +133,8 @@ class Circumcenter:
             Coordinate2D: Third vertex of the triangle.
 
         Note:
-            If the value of the vertex is changed, the circumcenter and radius
-            of the triangle are recalculated.
+            If the value of the vertex is changed, the circumcenter and
+            circumradius are recalculated.
         """
 
         return self._c
@@ -155,8 +150,8 @@ class Circumcenter:
             TypeError: If the value is not a Coordinate2D object.
 
         Note:
-            If the value of the vertex is changed, the circumcenter and radius
-            of the triangle are recalculated.
+            If the value of the vertex is changed, the circumcenter and
+            circumradius are recalculated.
         """
 
         if not isinstance(value, Coordinate2D):
@@ -168,32 +163,27 @@ class Circumcenter:
             self._calculate()
 
     @property
-    def circumcenter(self) -> Coordinate2D:
-        """Circumcenter of the triangle.
+    def center(self) -> Coordinate2D:
+        """Center of the circumcircle.
 
         Returns:
-            Coordinate2D: The circumcenter of the triangle.
+            Coordinate2D: Center of the circumcircle.
         """
 
-        return self._circumcenter
+        return self._center
 
     @property
-    def circumradius(self) -> float:
-        """Radius of the circumcircle of the triangle.
+    def radius(self) -> float:
+        """Radius of the circumcircle.
 
         Returns:
-            float: The radius of the circumcircle of the triangle.
+            float: Radius of the circumcircle.
         """
 
-        return self._circumradius
+        return self._radius
 
     def _ensure_non_collinear(self) -> None:
         """Ensures that the triangle is not collinear.
-
-        This method computes the determinant of the matrix formed by the
-        coordinates of the triangle's vertices. If the determinant is zero,
-        the triangle is collinear, and the circumcenter and circumradius
-        cannot be calculated.
 
         Raises:
             ValueError: If the triangle is collinear.
@@ -206,7 +196,7 @@ class Circumcenter:
             raise ValueError("The triangle is collinear")
 
     def _calculate(self) -> None:
-        """Calculates the circumcenter and radius of the triangle."""
+        """Calculates the center and radius of the circumcircle."""
 
         self._ensure_non_collinear()
 
@@ -292,7 +282,7 @@ class Circumcenter:
 
         # Circumcenter calculation:
 
-        self._circumcenter = Coordinate2D(
+        self._center = Coordinate2D(
             intersection.x + (
                 (midpoint["ac"].x - intersection.x)
                 / (vertical["ab"].x + vertical["ac"].x)
@@ -306,7 +296,7 @@ class Circumcenter:
 
         # Circumradius calculation:
 
-        self._circumradius = sqrt(
-            (self.a.x - self._circumcenter.x) ** 2
-            + (self.a.y - self._circumcenter.y) ** 2
+        self._radius = sqrt(
+            (self.a.x - self._center.x) ** 2
+            + (self.a.y - self._center.y) ** 2
         )
