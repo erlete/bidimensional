@@ -1,9 +1,12 @@
 from coordinate import Coordinate2D
 from circumcircle import Circumcircle
 from matplotlib import pyplot as plt
+import operations as op
 
 
 class Triangle:
+
+    TOL_DIGITS = 10
 
     def __init__(self, a: Coordinate2D, b: Coordinate2D,
                  c: Coordinate2D) -> None:
@@ -17,6 +20,7 @@ class Triangle:
         self.c = c
 
         self._initial_setting = True
+        self._compute_angles()
 
     @property
     def a(self) -> Coordinate2D:
@@ -121,6 +125,56 @@ class Triangle:
             self._circumcircle = Circumcircle(self.a, self.b, self.c)
 
         return self._circumcircle.radius
+
+    def is_rectangle(self) -> bool:
+        """Checks if the triangle has a right angle.
+
+        Returns:
+            bool: True if the triangle has a right angle, False otherwise.
+        """
+
+        return any([
+            round(angle_, self.TOL_DIGITS) == 90
+            for angle_ in self._angles.values()
+        ])
+
+    def is_equilateral(self) -> bool:
+        """Checks if the triangle is equilateral.
+
+        Returns:
+            bool: True if the triangle is equilateral, False otherwise.
+        """
+
+        return len(set(self._angles.values())) == 1
+
+    def is_isosceles(self) -> bool:
+        """Checks if the triangle is isosceles.
+
+        Returns:
+            bool: True if the triangle is isosceles, False otherwise.
+        """
+
+        return len(set(self._angles.values())) == 2
+
+    def is_scalene(self) -> bool:
+        """Checks if the triangle is scalene.
+
+        Returns:
+            bool: True if the triangle is scalene, False otherwise.
+        """
+
+        return len(set(self._angles.values())) == 3
+
+    def _compute_angles(self) -> None:
+        """Computes the angles of the triangle.
+        """
+
+        if self._initial_setting:
+            self._angles = {
+                'a': round(op.angle(self.b, self.c, self.a), self.TOL_DIGITS),
+                'b': round(op.angle(self.c, self.a, self.b), self.TOL_DIGITS),
+                'c': round(op.angle(self.a, self.b, self.c), self.TOL_DIGITS)
+            }
 
     def plot(self, **kwargs) -> None:
         """Plots the triangle.
