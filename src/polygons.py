@@ -12,8 +12,8 @@ class Triangle:
     vertices, a, b and c (Coordinate2D objects). The class provides methods to
     compute the angles of the triangle, the circumcenter and the circumradius.
     It also provides methods used to determine special properties of the
-    triangle, such as if it is equilateral, isosceles, scalene, right, obtuse or
-    acute.
+    triangle, such as if it is equilateral, isosceles, scalene, right, obtuse
+    or acute.
 
     Args:
         a (Coordinate2D): First vertex of the triangle.
