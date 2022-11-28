@@ -1,0 +1,58 @@
+---
+
+##############################################################################
+#                 On-issue branch creation configuration file                #
+##############################################################################
+
+# Branch naming configuration:
+
+gitSafeReplacementChar: '-'
+branchName: "${issue.user.login}-${issue.number}-${issue.title,}"
+
+# Branch specifications based on issue tags:
+
+branches:
+
+  - label: bug
+    name: devel
+    prTarget: devel
+    prefix: bug-
+
+  - label: feature
+    name: devel
+    prTarget: devel
+    prefix: feature-
+
+  - label: documentation
+    name: devel
+    prTarget: devel
+    prefix: documentation-
+
+  # If the label does not match any standard, skip branch creation:
+
+  - label: '*'
+    skip: true
+
+# Issue message:
+
+commentMessage: >
+  A new branch named _"**${branchName,}**"_ was created for issue
+  _"**${issue.title}**"_ by @${issue.user.login} at `${issue.created_at}`.
+  More information about the repository that contains the issue can be found
+  [here](${repository.html_url}).
+
+
+  Congratulations, @${assignee.login}, you get to do all the hard work!
+
+# PR type (do not set both to `true` simultaneously):
+
+openPR: true
+openDraftPr: false
+
+# PR settings:
+
+copyIssueDescriptionToPR: true
+copyIssueLabelsToPR: true
+copyIssueAssigneeToPR: true
+copyIssueProjectsToPR: true
+copyIssueMilestoneToPR: true
