@@ -14,18 +14,18 @@ branchName: "${issue.user.login}-${issue.number}-${issue.title,}"
 branches:
 
   - label: bug
-    name: devel
-    prTarget: devel
+    name: dev
+    prTarget: dev
     prefix: bug-
 
-  - label: feature
-    name: devel
-    prTarget: devel
-    prefix: feature-
+  - label: enhancement
+    name: dev
+    prTarget: dev
+    prefix: enhancement-
 
   - label: documentation
-    name: devel
-    prTarget: devel
+    name: dev
+    prTarget: dev
     prefix: documentation-
 
   # If the label does not match any standard, skip branch creation:
