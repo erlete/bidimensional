@@ -12,7 +12,7 @@ Author:
 from itertools import combinations
 from math import sqrt
 
-from bidimensional.coordinate import Coordinate2D
+from bidimensional.coordinates import Coordinate
 
 
 class Circumcircle:
@@ -34,8 +34,8 @@ class Circumcircle:
         radius (float): The radius of the circumcircle.
     """
 
-    def __init__(self, a: Coordinate2D, b: Coordinate2D,
-                 c: Coordinate2D) -> None:
+    def __init__(self, a: Coordinate, b: Coordinate,
+                 c: Coordinate) -> None:
 
         # The initial setting variable allows value validation via attribute
         #   setters but prevents automatic recalculation of the circumcenter
@@ -52,7 +52,7 @@ class Circumcircle:
         self._calculate()  # Initial calculation:
 
     @property
-    def a(self) -> Coordinate2D:
+    def a(self) -> Coordinate:
         """First vertex of the triangle.
 
         Returns:
@@ -66,7 +66,7 @@ class Circumcircle:
         return self._a
 
     @a.setter
-    def a(self, value: Coordinate2D) -> None:
+    def a(self, value: Coordinate) -> None:
         """First vertex of the triangle.
 
         Args:
@@ -80,7 +80,7 @@ class Circumcircle:
             circumradius are recalculated.
         """
 
-        if not isinstance(value, Coordinate2D):
+        if not isinstance(value, Coordinate):
             raise TypeError("a must be a Coordinate2D instance")
 
         self._a = value
@@ -89,7 +89,7 @@ class Circumcircle:
             self._calculate()
 
     @property
-    def b(self) -> Coordinate2D:
+    def b(self) -> Coordinate:
         """Second vertex of the triangle.
 
         Returns:
@@ -103,7 +103,7 @@ class Circumcircle:
         return self._b
 
     @b.setter
-    def b(self, value: Coordinate2D) -> None:
+    def b(self, value: Coordinate) -> None:
         """Second vertex of the triangle.
 
         Args:
@@ -117,7 +117,7 @@ class Circumcircle:
             circumradius are recalculated.
         """
 
-        if not isinstance(value, Coordinate2D):
+        if not isinstance(value, Coordinate):
             raise TypeError("b must be a Coordinate2D instance")
 
         self._b = value
@@ -126,7 +126,7 @@ class Circumcircle:
             self._calculate()
 
     @property
-    def c(self) -> Coordinate2D:
+    def c(self) -> Coordinate:
         """Third vertex of the triangle.
 
         Returns:
@@ -140,7 +140,7 @@ class Circumcircle:
         return self._c
 
     @c.setter
-    def c(self, value: Coordinate2D) -> None:
+    def c(self, value: Coordinate) -> None:
         """Third vertex of the triangle.
 
         Args:
@@ -154,7 +154,7 @@ class Circumcircle:
             circumradius are recalculated.
         """
 
-        if not isinstance(value, Coordinate2D):
+        if not isinstance(value, Coordinate):
             raise TypeError("c must be a Coordinate2D instance")
 
         self._c = value
@@ -163,7 +163,7 @@ class Circumcircle:
             self._calculate()
 
     @property
-    def center(self) -> Coordinate2D:
+    def center(self) -> Coordinate:
         """Center of the circumcircle.
 
         Returns:
@@ -214,11 +214,11 @@ class Circumcircle:
         # Segment displacement:
 
         displacement = {
-            "ab": Coordinate2D(
+            "ab": Coordinate(
                 self.b.x - self.a.x,
                 self.b.y - self.a.y
             ),
-            "ac": Coordinate2D(
+            "ac": Coordinate(
                 self.c.x - self.a.x,
                 self.c.y - self.a.y
             )
@@ -227,7 +227,7 @@ class Circumcircle:
         # Unitary vectors:
 
         unitary = {
-            "ab": Coordinate2D(
+            "ab": Coordinate(
                 displacement["ab"].y / sqrt(
                     displacement["ab"].x ** 2 + displacement["ab"].y ** 2
                 ),
@@ -235,7 +235,7 @@ class Circumcircle:
                     displacement["ab"].x ** 2 + displacement["ab"].y ** 2
                 )
             ),
-            "ac": Coordinate2D(
+            "ac": Coordinate(
                 displacement["ac"].y / sqrt(
                     displacement["ac"].x ** 2 + displacement["ac"].y ** 2
                 ),
@@ -248,11 +248,11 @@ class Circumcircle:
         # V-vector for vertical intersection:
 
         vertical = {
-            "ab": Coordinate2D(
+            "ab": Coordinate(
                 unitary["ab"].x / unitary["ab"].y,
                 1
             ),
-            "ac": Coordinate2D(
+            "ac": Coordinate(
                 -(unitary["ac"].x / unitary["ac"].y),
                 1
             )
@@ -261,11 +261,11 @@ class Circumcircle:
         # Midpoint setting:
 
         midpoint = {
-            "ab": Coordinate2D(
+            "ab": Coordinate(
                 displacement["ab"].x / 2 + self.a.x,
                 displacement["ab"].y / 2 + self.a.y
             ),
-            "ac": Coordinate2D(
+            "ac": Coordinate(
                 displacement["ac"].x / 2 + self.a.x,
                 displacement["ac"].y / 2 + self.a.y
             )
@@ -273,7 +273,7 @@ class Circumcircle:
 
         # Midpoint height equivalence:
 
-        intersection = Coordinate2D(
+        intersection = Coordinate(
             midpoint["ab"].x + (
                 (midpoint["ac"].y - midpoint["ab"].y) / unitary["ab"].y
             ) * unitary["ab"].x,
@@ -282,7 +282,7 @@ class Circumcircle:
 
         # Circumcenter calculation:
 
-        self._center = Coordinate2D(
+        self._center = Coordinate(
             intersection.x + (
                 (midpoint["ac"].x - intersection.x)
                 / (vertical["ab"].x + vertical["ac"].x)
