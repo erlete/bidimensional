@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 
 import bidimensional.operations as op
 from bidimensional.circumcircle import Circumcircle
-from bidimensional.coordinate import Coordinate2D
+from bidimensional.coordinates import Coordinate
 
 
 class Triangle:
@@ -30,8 +30,8 @@ class Triangle:
 
     TOL_DIGITS = 10
 
-    def __init__(self, a: Coordinate2D, b: Coordinate2D,
-                 c: Coordinate2D) -> None:
+    def __init__(self, a: Coordinate, b: Coordinate,
+                 c: Coordinate) -> None:
 
         self._circumcircle = None
 
@@ -45,7 +45,7 @@ class Triangle:
         self._compute_angles()
 
     @property
-    def a(self) -> Coordinate2D:
+    def a(self) -> Coordinate:
         """First vertex of the triangle.
 
         Returns:
@@ -55,7 +55,7 @@ class Triangle:
         return self._a
 
     @a.setter
-    def a(self, value: Coordinate2D) -> None:
+    def a(self, value: Coordinate) -> None:
         """First vertex of the triangle.
 
         Args:
@@ -65,13 +65,13 @@ class Triangle:
             TypeError: If the value is not a Coordinate2D object.
         """
 
-        if not isinstance(value, Coordinate2D):
+        if not isinstance(value, Coordinate):
             raise TypeError("a must be a Coordinate2D instance")
 
         self._a = value
 
     @property
-    def b(self) -> Coordinate2D:
+    def b(self) -> Coordinate:
         """Second vertex of the triangle.
 
         Returns:
@@ -81,7 +81,7 @@ class Triangle:
         return self._b
 
     @b.setter
-    def b(self, value: Coordinate2D) -> None:
+    def b(self, value: Coordinate) -> None:
         """Second vertex of the triangle.
 
         Args:
@@ -91,13 +91,13 @@ class Triangle:
             TypeError: If the value is not a Coordinate2D object.
         """
 
-        if not isinstance(value, Coordinate2D):
+        if not isinstance(value, Coordinate):
             raise TypeError("b must be a Coordinate2D instance")
 
         self._b = value
 
     @property
-    def c(self) -> Coordinate2D:
+    def c(self) -> Coordinate:
         """Third vertex of the triangle.
 
         Returns:
@@ -107,7 +107,7 @@ class Triangle:
         return self._c
 
     @c.setter
-    def c(self, value: Coordinate2D) -> None:
+    def c(self, value: Coordinate) -> None:
         """Third vertex of the triangle.
 
         Args:
@@ -117,13 +117,13 @@ class Triangle:
             TypeError: If the value is not a Coordinate2D object.
         """
 
-        if not isinstance(value, Coordinate2D):
+        if not isinstance(value, Coordinate):
             raise TypeError("c must be a Coordinate2D instance")
 
         self._c = value
 
     @property
-    def circumcenter(self) -> Coordinate2D:
+    def circumcenter(self) -> Coordinate:
         """Circumcenter of the triangle.
 
         Returns:
@@ -210,6 +210,19 @@ class Triangle:
         """
 
         return len(set(self._angles.values())) == 3
+
+    def is_collinear(self) -> bool:
+        """Checks if the triangle is collinear.
+
+        Returns:
+            bool: True if the triangle is collinear, False otherwise.
+        """
+
+        return not (
+            self._a.x * (self._b.y - self._c.y)
+            + self._b.x * (self._c.y - self._a.y)
+            + self._c.x * (self._a.y - self._b.y)
+        )
 
     def _compute_angles(self) -> None:
         """Computes the angles of the triangle.

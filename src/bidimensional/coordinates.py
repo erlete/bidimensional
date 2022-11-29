@@ -15,7 +15,7 @@ from math import ceil, floor, trunc
 from typing import Generator
 
 
-class Coordinate2D:
+class Coordinate:
     """Represents a pair of real-value, two dimensional coordinates.
 
     This class represents a two-dimensional coordinate. Its main purpose is to
@@ -59,114 +59,114 @@ class Coordinate2D:
 
         self._y = value
 
-    def __add__(self, value) -> Coordinate2D:
-        if not isinstance(value, Coordinate2D):
+    def __add__(self, value) -> Coordinate:
+        if not isinstance(value, Coordinate):
             raise TypeError("value must be a Coordinate2D.")
 
-        return Coordinate2D(self._x + value.x, self._y + value.y)
+        return Coordinate(self._x + value.x, self._y + value.y)
 
-    def __sub__(self, value) -> Coordinate2D:
-        if not isinstance(value, Coordinate2D):
+    def __sub__(self, value) -> Coordinate:
+        if not isinstance(value, Coordinate):
             raise TypeError("value must be a Coordinate2D.")
 
-        return Coordinate2D(self._x - value.x, self._y - value.y)
+        return Coordinate(self._x - value.x, self._y - value.y)
 
-    def __mul__(self, value) -> Coordinate2D:
-        if isinstance(value, Coordinate2D):
-            return Coordinate2D(self._x * value.x, self._y * value.y)
+    def __mul__(self, value) -> Coordinate:
+        if isinstance(value, Coordinate):
+            return Coordinate(self._x * value.x, self._y * value.y)
 
         elif isinstance(value, self.NUMERICAL):
-            return Coordinate2D(self._x * value, self._y * value)
+            return Coordinate(self._x * value, self._y * value)
 
         elif isinstance(value, self.SEQUENTIAL) and len(value) >= 2:
-            return Coordinate2D(self._x * value[0], self._y * value[1])
+            return Coordinate(self._x * value[0], self._y * value[1])
 
         raise TypeError("value must be a Coordinate2D, a numerical type, or a"
                         "sequential type with at least 2 elements.")
 
-    def __truediv__(self, value) -> Coordinate2D:
-        if not isinstance(value, Coordinate2D):
+    def __truediv__(self, value) -> Coordinate:
+        if not isinstance(value, Coordinate):
             raise TypeError("value must be a Coordinate2D.")
 
-        return Coordinate2D(self._x / value, self._y / value)
+        return Coordinate(self._x / value, self._y / value)
 
-    def __floordiv__(self, value) -> Coordinate2D:
-        if not isinstance(value, Coordinate2D):
+    def __floordiv__(self, value) -> Coordinate:
+        if not isinstance(value, Coordinate):
             raise TypeError("value must be a Coordinate2D.")
 
-        return Coordinate2D(self._x // value, self._y // value)
+        return Coordinate(self._x // value, self._y // value)
 
-    def __mod__(self, value) -> Coordinate2D:
-        if not isinstance(value, Coordinate2D):
+    def __mod__(self, value) -> Coordinate:
+        if not isinstance(value, Coordinate):
             raise TypeError("value must be a Coordinate2D.")
 
-        return Coordinate2D(self._x % value, self._y % value)
+        return Coordinate(self._x % value, self._y % value)
 
-    def __pow__(self, value) -> Coordinate2D:
-        if not isinstance(value, Coordinate2D):
+    def __pow__(self, value) -> Coordinate:
+        if not isinstance(value, Coordinate):
             raise TypeError("value must be a Coordinate2D.")
 
-        return Coordinate2D(self._x ** value, self._y ** value)
+        return Coordinate(self._x ** value, self._y ** value)
 
-    def __neg__(self) -> Coordinate2D:
-        return Coordinate2D(-self._x, -self._y)
+    def __neg__(self) -> Coordinate:
+        return Coordinate(-self._x, -self._y)
 
-    def __pos__(self) -> Coordinate2D:
-        return Coordinate2D(+self._x, +self._y)
+    def __pos__(self) -> Coordinate:
+        return Coordinate(+self._x, +self._y)
 
-    def __abs__(self) -> Coordinate2D:
-        return Coordinate2D(abs(self._x), abs(self._y))
+    def __abs__(self) -> Coordinate:
+        return Coordinate(abs(self._x), abs(self._y))
 
-    def __invert__(self) -> Coordinate2D:
-        return Coordinate2D(~self._x, ~self._y)
+    def __invert__(self) -> Coordinate:
+        return Coordinate(~self._x, ~self._y)
 
-    def __round__(self, n: int = 0) -> Coordinate2D:
+    def __round__(self, n: int = 0) -> Coordinate:
         if not isinstance(n, int):
             raise TypeError("n must be an int.")
 
-        return Coordinate2D(round(self._x, n), round(self._y, n))
+        return Coordinate(round(self._x, n), round(self._y, n))
 
-    def __floor__(self) -> Coordinate2D:
-        return Coordinate2D(floor(self._x), floor(self._y))
+    def __floor__(self) -> Coordinate:
+        return Coordinate(floor(self._x), floor(self._y))
 
-    def __ceil__(self) -> Coordinate2D:
-        return Coordinate2D(ceil(self._x), ceil(self._y))
+    def __ceil__(self) -> Coordinate:
+        return Coordinate(ceil(self._x), ceil(self._y))
 
-    def __trunc__(self) -> Coordinate2D:
-        return Coordinate2D(trunc(self._x), trunc(self._y))
+    def __trunc__(self) -> Coordinate:
+        return Coordinate(trunc(self._x), trunc(self._y))
 
     def __lt__(self, value) -> bool:
-        if not isinstance(value, Coordinate2D):
+        if not isinstance(value, Coordinate):
             raise TypeError("value must be a Coordinate.")
 
         return self._x < value.x and self._y < value.y
 
     def __le__(self, value) -> bool:
-        if not isinstance(value, Coordinate2D):
+        if not isinstance(value, Coordinate):
             raise TypeError("value must be a Coordinate.")
 
         return self._x <= value.x and self._y <= value.y
 
     def __gt__(self, value) -> bool:
-        if not isinstance(value, Coordinate2D):
+        if not isinstance(value, Coordinate):
             raise TypeError("value must be a Coordinate.")
 
         return self._x > value.x and self._y > value.y
 
     def __ge__(self, value) -> bool:
-        if not isinstance(value, Coordinate2D):
+        if not isinstance(value, Coordinate):
             raise TypeError("value must be a Coordinate.")
 
         return self._x >= value.x and self._y >= value.y
 
     def __eq__(self, value) -> bool:
-        if not isinstance(value, Coordinate2D):
+        if not isinstance(value, Coordinate):
             raise TypeError("value must be a Coordinate.")
 
         return self._x == value.x and self._y == value.y
 
     def __ne__(self, value) -> bool:
-        if not isinstance(value, Coordinate2D):
+        if not isinstance(value, Coordinate):
             raise TypeError("value must be a Coordinate.")
 
         return self._x != value.x or self._y != value.y
@@ -232,10 +232,10 @@ class Coordinate2D:
     def __setstate__(self, state) -> None:
         self._x, self._y = state
 
-    def __reduce__(self) -> tuple[Coordinate2D, tuple[float, float]]:
+    def __reduce__(self) -> tuple[Coordinate, tuple[float, float]]:
         return self.__class__, (self._x, self._y)
 
-    def __copy__(self) -> Coordinate2D:
+    def __copy__(self) -> Coordinate:
         return self.__class__(self._x, self._y)
 
     def __bytes__(self) -> bytes:
@@ -260,7 +260,7 @@ class Coordinate2D:
         return self._x + self._y
 
     def __coerce__(self, value) -> tuple[float, float]:
-        if not isinstance(value, Coordinate2D):
+        if not isinstance(value, Coordinate):
             raise TypeError("value must be a Coordinate.")
 
         return self._x, value.x
