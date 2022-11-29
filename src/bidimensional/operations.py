@@ -64,3 +64,25 @@ def angle(a: Coordinate2D, b: Coordinate2D, c: Coordinate2D) -> float:
     return math.degrees(math.acos(
         (math.pow(e2, 2) + math.pow(e3, 2) - math.pow(e1, 2)) / (2 * e2 * e3)
     ))
+
+
+def midpoint(a: Coordinate2D, b: Coordinate2D) -> Coordinate2D:
+    """Calculates the midpoint between two coordinates.
+
+    Args:
+        a (Coordinate2D): First coordinate.
+        b (Coordinate2D): Second coordinate.
+
+    Raises:
+        TypeError: If a or b are not Coordinate2D objects.
+
+    Returns:
+        Coordinate2D: Midpoint between the two coordinates.
+    """
+
+    if not isinstance(a, Coordinate2D):
+        raise TypeError("a must be a Coordinate2D instance")
+    elif not isinstance(b, Coordinate2D):
+        raise TypeError("b must be a Coordinate2D instance")
+
+    return Coordinate2D((a.x + b.x) / 2, (a.y + b.y) / 2)
