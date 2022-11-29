@@ -10,7 +10,7 @@ Author:
 
 import math
 
-from bidimensional.coordinate import Coordinate2D
+from bidimensional.coordinates import Coordinate2D
 
 
 def distance(a: Coordinate2D, b: Coordinate2D) -> float:

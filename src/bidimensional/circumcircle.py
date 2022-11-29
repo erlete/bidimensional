@@ -12,7 +12,7 @@ Author:
 from itertools import combinations
 from math import sqrt
 
-from bidimensional.coordinate import Coordinate2D
+from bidimensional.coordinates import Coordinate2D
 
 
 class Circumcircle:
