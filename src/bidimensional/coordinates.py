@@ -60,16 +60,30 @@ class Coordinate:
         self._y = value
 
     def __add__(self, value) -> Coordinate:
-        if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate2D.")
+        if isinstance(value, Coordinate):
+            return Coordinate(self._x + value.x, self._y + value.y)
 
-        return Coordinate(self._x + value.x, self._y + value.y)
+        elif isinstance(value, self.NUMERICAL):
+            return Coordinate(self._x + value, self._y + value)
+
+        elif isinstance(value, self.SEQUENTIAL) and len(value) >= 2:
+            return Coordinate(self._x + value[0], self._y + value[1])
+
+        raise TypeError("value must be a Coordinate2D, a numerical type, or a"
+                        "sequential type with at least 2 elements.")
 
     def __sub__(self, value) -> Coordinate:
-        if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate2D.")
+        if isinstance(value, Coordinate):
+            return Coordinate(self._x - value.x, self._y - value.y)
 
-        return Coordinate(self._x - value.x, self._y - value.y)
+        elif isinstance(value, self.NUMERICAL):
+            return Coordinate(self._x - value, self._y - value)
+
+        elif isinstance(value, self.SEQUENTIAL) and len(value) >= 2:
+            return Coordinate(self._x - value[0], self._y - value[1])
+
+        raise TypeError("value must be a Coordinate2D, a numerical type, or a"
+                        "sequential type with at least 2 elements.")
 
     def __mul__(self, value) -> Coordinate:
         if isinstance(value, Coordinate):
