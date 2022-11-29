@@ -211,6 +211,19 @@ class Triangle:
 
         return len(set(self._angles.values())) == 3
 
+    def is_collinear(self) -> bool:
+        """Checks if the triangle is collinear.
+
+        Returns:
+            bool: True if the triangle is collinear, False otherwise.
+        """
+
+        return not (
+            self._a.x * (self._b.y - self._c.y)
+            + self._b.x * (self._c.y - self._a.y)
+            + self._c.x * (self._a.y - self._b.y)
+        )
+
     def _compute_angles(self) -> None:
         """Computes the angles of the triangle.
         """
