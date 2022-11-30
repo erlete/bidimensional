@@ -1,6 +1,6 @@
-"""Coordinate2D class container module.
+"""Coordinate class container module.
 
-This module contains the Coordinate2D class, which is used to represent a 2D
+This module contains the Coordinate class, which is used to represent a 2D
 coordinate. It is used by all classes in the `bidimensional` package and
 presents many similarities to the builtin `tuple` class.
 
@@ -30,8 +30,12 @@ class Coordinate:
         The y-coordinate.
     """
 
-    NUMERICAL = (int, float)
     SEQUENTIAL = (tuple, list, set)
+
+    SETTER_TYPE_ERROR_MSG = (
+        "value must be a Coordinate type or one of the supported sequential"
+        f" types: {SEQUENTIAL}."
+    )
 
     def __init__(self, x_value: float, y_value: float) -> None:
         self.x: float = float(x_value)
@@ -60,53 +64,63 @@ class Coordinate:
         self._y = value
 
     def __add__(self, value) -> Coordinate:
-        if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate2D.")
+        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
+            value = Coordinate(*value)
 
-        return Coordinate(self._x + value.x, self._y + value.y)
+        if isinstance(value, Coordinate):
+            return Coordinate(self._x + value.x, self._y + value.y)
+
+        raise TypeError(self.SETTER_TYPE_ERROR_MSG)
 
     def __sub__(self, value) -> Coordinate:
-        if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate2D.")
+        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
+            value = Coordinate(*value)
 
-        return Coordinate(self._x - value.x, self._y - value.y)
+        if isinstance(value, Coordinate):
+            return Coordinate(self._x - value.x, self._y - value.y)
+
+        raise TypeError(self.SETTER_TYPE_ERROR_MSG)
 
     def __mul__(self, value) -> Coordinate:
+        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
+            value = Coordinate(*value)
+
         if isinstance(value, Coordinate):
             return Coordinate(self._x * value.x, self._y * value.y)
 
-        elif isinstance(value, self.NUMERICAL):
-            return Coordinate(self._x * value, self._y * value)
-
-        elif isinstance(value, self.SEQUENTIAL) and len(value) >= 2:
-            return Coordinate(self._x * value[0], self._y * value[1])
-
-        raise TypeError("value must be a Coordinate2D, a numerical type, or a"
-                        "sequential type with at least 2 elements.")
+        raise TypeError(self.SETTER_TYPE_ERROR_MSG)
 
     def __truediv__(self, value) -> Coordinate:
-        if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate2D.")
+        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
+            value = Coordinate(*value)
 
-        return Coordinate(self._x / value, self._y / value)
+        if isinstance(value, Coordinate):
+            return Coordinate(self._x * value.x, self._y * -value.y)
+
+        raise TypeError(self.SETTER_TYPE_ERROR_MSG)
 
     def __floordiv__(self, value) -> Coordinate:
-        if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate2D.")
+        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
+            value = Coordinate(*value)
 
-        return Coordinate(self._x // value, self._y // value)
+        if isinstance(value, Coordinate):
+            temp = floor(self / value)
+            return Coordinate(temp.x, temp.y)
+
+        raise TypeError(self.SETTER_TYPE_ERROR_MSG)
 
     def __mod__(self, value) -> Coordinate:
-        if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate2D.")
+        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
+            value = Coordinate(*value)
 
-        return Coordinate(self._x % value, self._y % value)
+        if isinstance(value, Coordinate):
+            temp = (self / value - self // value) * value
+            return Coordinate(temp.x, temp.y)
+
+        raise TypeError(self.SETTER_TYPE_ERROR_MSG)
 
     def __pow__(self, value) -> Coordinate:
-        if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate2D.")
-
-        return Coordinate(self._x ** value, self._y ** value)
+        return NotImplemented
 
     def __neg__(self) -> Coordinate:
         return Coordinate(-self._x, -self._y)
@@ -172,10 +186,10 @@ class Coordinate:
         return self._x != value.x or self._y != value.y
 
     def __str__(self) -> str:
-        return f"Coordinate2D({self._x}, {self._y})"
+        return f"Coordinate({self._x}, {self._y})"
 
     def __repr__(self) -> str:
-        return f"Coordinate2D({self._x}, {self._y})"
+        return f"Coordinate({self._x}, {self._y})"
 
     def __hash__(self) -> int:
         return hash((self._x, self._y))
