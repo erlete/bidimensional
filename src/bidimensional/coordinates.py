@@ -30,8 +30,12 @@ class Coordinate:
         The y-coordinate.
     """
 
-    NUMERICAL = (int, float)
     SEQUENTIAL = (tuple, list, set)
+
+    SETTER_TYPE_ERROR_MSG = (
+        "value must be a Coordinate type or one of the supported sequential"
+        f" types: {SEQUENTIAL}."
+    )
 
     def __init__(self, x_value: float, y_value: float) -> None:
         self.x: float = float(x_value)
@@ -60,61 +64,60 @@ class Coordinate:
         self._y = value
 
     def __add__(self, value) -> Coordinate:
+        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
+            value = Coordinate(*value)
+
         if isinstance(value, Coordinate):
             return Coordinate(self._x + value.x, self._y + value.y)
 
-        elif isinstance(value, self.NUMERICAL):
-            return Coordinate(self._x + value, self._y + value)
-
-        elif isinstance(value, self.SEQUENTIAL) and len(value) >= 2:
-            return Coordinate(self._x + value[0], self._y + value[1])
-
-        raise TypeError("value must be a Coordinate2D, a numerical type, or a"
-                        "sequential type with at least 2 elements.")
+        raise TypeError(self.SETTER_TYPE_ERROR_MSG)
 
     def __sub__(self, value) -> Coordinate:
+        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
+            value = Coordinate(*value)
+
         if isinstance(value, Coordinate):
             return Coordinate(self._x - value.x, self._y - value.y)
 
-        elif isinstance(value, self.NUMERICAL):
-            return Coordinate(self._x - value, self._y - value)
-
-        elif isinstance(value, self.SEQUENTIAL) and len(value) >= 2:
-            return Coordinate(self._x - value[0], self._y - value[1])
-
-        raise TypeError("value must be a Coordinate2D, a numerical type, or a"
-                        "sequential type with at least 2 elements.")
+        raise TypeError(self.SETTER_TYPE_ERROR_MSG)
 
     def __mul__(self, value) -> Coordinate:
+        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
+            value = Coordinate(*value)
+
         if isinstance(value, Coordinate):
             return Coordinate(self._x * value.x, self._y * value.y)
 
-        elif isinstance(value, self.NUMERICAL):
-            return Coordinate(self._x * value, self._y * value)
-
-        elif isinstance(value, self.SEQUENTIAL) and len(value) >= 2:
-            return Coordinate(self._x * value[0], self._y * value[1])
-
-        raise TypeError("value must be a Coordinate2D, a numerical type, or a"
-                        "sequential type with at least 2 elements.")
+        raise TypeError(self.SETTER_TYPE_ERROR_MSG)
 
     def __truediv__(self, value) -> Coordinate:
-        if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate2D.")
+        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
+            value = Coordinate(*value)
 
-        return Coordinate(self._x / value, self._y / value)
+        if isinstance(value, Coordinate):
+            return Coordinate(self._x * value.x, self._y * -value.y)
+
+        raise TypeError(self.SETTER_TYPE_ERROR_MSG)
 
     def __floordiv__(self, value) -> Coordinate:
-        if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate2D.")
+        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
+            value = Coordinate(*value)
 
-        return Coordinate(self._x // value, self._y // value)
+        if isinstance(value, Coordinate):
+            temp = floor(self / value)
+            return Coordinate(temp.x, temp.y)
+
+        raise TypeError(self.SETTER_TYPE_ERROR_MSG)
 
     def __mod__(self, value) -> Coordinate:
-        if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate2D.")
+        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
+            value = Coordinate(*value)
 
-        return Coordinate(self._x % value, self._y % value)
+        if isinstance(value, Coordinate):
+            temp = (self / value - self // value) * value
+            return Coordinate(temp.x, temp.y)
+
+        raise TypeError(self.SETTER_TYPE_ERROR_MSG)
 
     def __pow__(self, value) -> Coordinate:
         if not isinstance(value, Coordinate):
