@@ -9,22 +9,22 @@ class Triangle:
     """Triangle class.
 
     This class represents a triangle in the 2D plane. It is defined by three
-    vertices, a, b and c (Coordinate2D objects). The class provides methods to
+    vertices, a, b and c (Coordinate objects). The class provides methods to
     compute the angles of the triangle, the circumcenter and the circumradius.
     It also provides methods used to determine special properties of the
     triangle, such as if it is equilateral, isosceles, scalene, right, obtuse
     or acute.
 
     Args:
-        a (Coordinate2D): First vertex of the triangle.
-        b (Coordinate2D): Second vertex of the triangle.
-        c (Coordinate2D): Third vertex of the triangle.
+        a (Coordinate): First vertex of the triangle.
+        b (Coordinate): Second vertex of the triangle.
+        c (Coordinate): Third vertex of the triangle.
 
     Attributes:
-        a (Coordinate2D): First vertex of the triangle.
-        b (Coordinate2D): Second vertex of the triangle.
-        c (Coordinate2D): Third vertex of the triangle.
-        circumcenter (Coordinate2D): Circumcenter of the triangle.
+        a (Coordinate): First vertex of the triangle.
+        b (Coordinate): Second vertex of the triangle.
+        c (Coordinate): Third vertex of the triangle.
+        circumcenter (Coordinate): Circumcenter of the triangle.
         circumradius (float): Circumradius of the triangle.
     """
 
@@ -49,7 +49,7 @@ class Triangle:
         """First vertex of the triangle.
 
         Returns:
-            Coordinate2D: First vertex of the triangle.
+            Coordinate: First vertex of the triangle.
         """
 
         return self._a
@@ -59,14 +59,14 @@ class Triangle:
         """First vertex of the triangle.
 
         Args:
-            value (Coordinate2D): First vertex of the triangle.
+            value (Coordinate): First vertex of the triangle.
 
         Raises:
-            TypeError: If the value is not a Coordinate2D object.
+            TypeError: If the value is not a Coordinate object.
         """
 
         if not isinstance(value, Coordinate):
-            raise TypeError("a must be a Coordinate2D instance")
+            raise TypeError("a must be a Coordinate instance")
 
         self._a = value
 
@@ -75,7 +75,7 @@ class Triangle:
         """Second vertex of the triangle.
 
         Returns:
-            Coordinate2D: Second vertex of the triangle.
+            Coordinate: Second vertex of the triangle.
         """
 
         return self._b
@@ -85,14 +85,14 @@ class Triangle:
         """Second vertex of the triangle.
 
         Args:
-            value (Coordinate2D): Second vertex of the triangle.
+            value (Coordinate): Second vertex of the triangle.
 
         Raises:
-            TypeError: If the value is not a Coordinate2D object.
+            TypeError: If the value is not a Coordinate object.
         """
 
         if not isinstance(value, Coordinate):
-            raise TypeError("b must be a Coordinate2D instance")
+            raise TypeError("b must be a Coordinate instance")
 
         self._b = value
 
@@ -101,7 +101,7 @@ class Triangle:
         """Third vertex of the triangle.
 
         Returns:
-            Coordinate2D: Third vertex of the triangle.
+            Coordinate: Third vertex of the triangle.
         """
 
         return self._c
@@ -111,14 +111,14 @@ class Triangle:
         """Third vertex of the triangle.
 
         Args:
-            value (Coordinate2D): Third vertex of the triangle.
+            value (Coordinate): Third vertex of the triangle.
 
         Raises:
-            TypeError: If the value is not a Coordinate2D object.
+            TypeError: If the value is not a Coordinate object.
         """
 
         if not isinstance(value, Coordinate):
-            raise TypeError("c must be a Coordinate2D instance")
+            raise TypeError("c must be a Coordinate instance")
 
         self._c = value
 
@@ -127,7 +127,7 @@ class Triangle:
         """Circumcenter of the triangle.
 
         Returns:
-            Coordinate2D: Circumcenter of the triangle.
+            Coordinate: Circumcenter of the triangle.
         """
 
         if self._circumcircle is None:

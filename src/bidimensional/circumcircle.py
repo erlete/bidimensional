@@ -22,15 +22,15 @@ class Circumcircle:
     triangle, given its three vertices as 2D coordinates.
 
     Args:
-        a (Coordinate2D): First vertex of the triangle.
-        b (Coordinate2D): Second vertex of the triangle.
-        c (Coordinate2D): Third vertex of the triangle.
+        a (Coordinate): First vertex of the triangle.
+        b (Coordinate): Second vertex of the triangle.
+        c (Coordinate): Third vertex of the triangle.
 
     Attributes:
-        a (Coordinate2D): First vertex of the triangle.
-        b (Coordinate2D): Second vertex of the triangle.
-        c (Coordinate2D): Third vertex of the triangle.
-        center (Coordinate2D): The center of the circumcircle.
+        a (Coordinate): First vertex of the triangle.
+        b (Coordinate): Second vertex of the triangle.
+        c (Coordinate): Third vertex of the triangle.
+        center (Coordinate): The center of the circumcircle.
         radius (float): The radius of the circumcircle.
     """
 
@@ -56,7 +56,7 @@ class Circumcircle:
         """First vertex of the triangle.
 
         Returns:
-            Coordinate2D: First vertex of the triangle.
+            Coordinate: First vertex of the triangle.
 
         Note:
             If the value of the vertex is changed, the circumcenter and
@@ -70,10 +70,10 @@ class Circumcircle:
         """First vertex of the triangle.
 
         Args:
-            value (Coordinate2D): First vertex of the triangle.
+            value (Coordinate): First vertex of the triangle.
 
         Raises:
-            TypeError: If the value is not a Coordinate2D object.
+            TypeError: If the value is not a Coordinate object.
 
         Note:
             If the value of the vertex is changed, the circumcenter and
@@ -81,7 +81,7 @@ class Circumcircle:
         """
 
         if not isinstance(value, Coordinate):
-            raise TypeError("a must be a Coordinate2D instance")
+            raise TypeError("a must be a Coordinate instance")
 
         self._a = value
 
@@ -93,7 +93,7 @@ class Circumcircle:
         """Second vertex of the triangle.
 
         Returns:
-            Coordinate2D: Second vertex of the triangle.
+            Coordinate: Second vertex of the triangle.
 
         Note:
             If the value of the vertex is changed, the circumcenter and
@@ -107,10 +107,10 @@ class Circumcircle:
         """Second vertex of the triangle.
 
         Args:
-            value (Coordinate2D): Second vertex of the triangle.
+            value (Coordinate): Second vertex of the triangle.
 
         Raises:
-            TypeError: If the value is not a Coordinate2D object.
+            TypeError: If the value is not a Coordinate object.
 
         Note:
             If the value of the vertex is changed, the circumcenter and
@@ -118,7 +118,7 @@ class Circumcircle:
         """
 
         if not isinstance(value, Coordinate):
-            raise TypeError("b must be a Coordinate2D instance")
+            raise TypeError("b must be a Coordinate instance")
 
         self._b = value
 
@@ -130,7 +130,7 @@ class Circumcircle:
         """Third vertex of the triangle.
 
         Returns:
-            Coordinate2D: Third vertex of the triangle.
+            Coordinate: Third vertex of the triangle.
 
         Note:
             If the value of the vertex is changed, the circumcenter and
@@ -144,10 +144,10 @@ class Circumcircle:
         """Third vertex of the triangle.
 
         Args:
-            value (Coordinate2D): Third vertex of the triangle.
+            value (Coordinate): Third vertex of the triangle.
 
         Raises:
-            TypeError: If the value is not a Coordinate2D object.
+            TypeError: If the value is not a Coordinate object.
 
         Note:
             If the value of the vertex is changed, the circumcenter and
@@ -155,7 +155,7 @@ class Circumcircle:
         """
 
         if not isinstance(value, Coordinate):
-            raise TypeError("c must be a Coordinate2D instance")
+            raise TypeError("c must be a Coordinate instance")
 
         self._c = value
 
@@ -167,7 +167,7 @@ class Circumcircle:
         """Center of the circumcircle.
 
         Returns:
-            Coordinate2D: Center of the circumcircle.
+            Coordinate: Center of the circumcircle.
         """
 
         return self._center

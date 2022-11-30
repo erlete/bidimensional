@@ -1,6 +1,6 @@
-"""Coordinate2D class container module.
+"""Coordinate class container module.
 
-This module contains the Coordinate2D class, which is used to represent a 2D
+This module contains the Coordinate class, which is used to represent a 2D
 coordinate. It is used by all classes in the `bidimensional` package and
 presents many similarities to the builtin `tuple` class.
 
@@ -189,7 +189,7 @@ class Coordinate:
         return f"Coordinate({self._x}, {self._y})"
 
     def __repr__(self) -> str:
-        return f"Coordinate2D({self._x}, {self._y})"
+        return f"Coordinate({self._x}, {self._y})"
 
     def __hash__(self) -> int:
         return hash((self._x, self._y))

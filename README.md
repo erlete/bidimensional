@@ -8,7 +8,7 @@ A collection of 2D utilities for coordinate representation and manipulation.
 
 The following features are currently implemented:
 
-* `Coordinate2D` - A custom 2D coordinate representation based on the built-in `tuple` class, but with extended functionality.
+* `Coordinate` - A custom 2D coordinate representation based on the built-in `tuple` class, but with extended functionality.
 * `Circumcenter` - A class for calculating the circumcenter and circumradius of three coordinates.
 
 ## Installation
@@ -24,6 +24,6 @@ python3 -m pip install --upgrade bidimensional
 Once the package has been installed, its modules can be easily imported into custom programs via the `import` statement.
 
 ```python
-from coordinate import Coordinate2D
+from coordinate import Coordinate
 from circumcenter import Circumcenter
 ```
