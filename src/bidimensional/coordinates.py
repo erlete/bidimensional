@@ -34,7 +34,7 @@ class Coordinate:
 
     SETTER_TYPE_ERROR_MSG = (
         "value must be a Coordinate type or one of the supported sequential"
-        f" types: {SEQUENTIAL}."
+        f" types: {SEQUENTIAL}. Sequential types must have only 2 items."
     )
 
     def __init__(self, x_value: float, y_value: float) -> None:
