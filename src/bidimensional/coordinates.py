@@ -120,10 +120,7 @@ class Coordinate:
         raise TypeError(self.SETTER_TYPE_ERROR_MSG)
 
     def __pow__(self, value) -> Coordinate:
-        if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate2D.")
-
-        return Coordinate(self._x ** value, self._y ** value)
+        return NotImplemented
 
     def __neg__(self) -> Coordinate:
         return Coordinate(-self._x, -self._y)
@@ -189,7 +186,7 @@ class Coordinate:
         return self._x != value.x or self._y != value.y
 
     def __str__(self) -> str:
-        return f"Coordinate2D({self._x}, {self._y})"
+        return f"Coordinate({self._x}, {self._y})"
 
     def __repr__(self) -> str:
         return f"Coordinate2D({self._x}, {self._y})"
