@@ -326,6 +326,9 @@ class Triangle:
             at the edge of the triangle, it will be considered outside the
             figure, but if it is located 1e-14 units towards the baricenter of
             the triangle, it will be considered inside the figure.
+            
+        Reference:
+            http://totologic.blogspot.com/2014/01/accurate-point-in-triangle-test.html
         """
 
         a = (
