@@ -86,3 +86,28 @@ def midpoint(a: Coordinate, b: Coordinate) -> Coordinate:
         raise TypeError("b must be a Coordinate instance")
 
     return Coordinate((a.x + b.x) / 2, (a.y + b.y) / 2)
+
+
+def area(a: Coordinate, b: Coordinate, c: Coordinate) -> float:
+    """Calculates the area between three coordinates.
+
+    Args:
+        a (Coordinate): First coordinate.
+        b (Coordinate): Second coordinate.
+        c (Coordinate): Third coordinate.
+
+    Raises:
+        TypeError: If a, b or c are not Coordinate objects.
+
+    Returns:
+        float: Area between the three coordinates.
+    """
+
+    if not isinstance(a, Coordinate):
+        raise TypeError("a must be a Coordinate instance")
+    elif not isinstance(b, Coordinate):
+        raise TypeError("b must be a Coordinate instance")
+    elif not isinstance(c, Coordinate):
+        raise TypeError("c must be a Coordinate instance")
+
+    return abs((a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y)) / 2)
