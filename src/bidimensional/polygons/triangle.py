@@ -247,3 +247,82 @@ class Triangle:
             [self.a.y, self.b.y, self.c.y, self.a.y],
             **kwargs
         )
+
+    def __repr__(self) -> str:
+        """String representation of the triangle.
+
+        Returns:
+            str: String representation of the triangle.
+        """
+
+        return f"Triangle({self.a}, {self.b}, {self.c})"
+
+    def __str__(self) -> str:
+        """String representation of the triangle.
+
+        Returns:
+            str: String representation of the triangle.
+        """
+
+        return f"Triangle({self.a}, {self.b}, {self.c})"
+
+    def __eq__(self, other: object) -> bool:
+        """Checks if two triangles are equal.
+
+        Args:
+            other (object): Other object.
+
+        Returns:
+            bool: True if the triangles are equal, False otherwise.
+        """
+
+        if not isinstance(other, Triangle):
+            return False
+
+        return (
+            self.a == other.a
+            and self.b == other.b
+            and self.c == other.c
+        )
+
+    def __neq__(self, other: object) -> bool:
+        """Checks if two triangles are not equal.
+
+        Args:
+            other (object): Other object.
+
+        Returns:
+            bool: True if the triangles are not equal, False otherwise.
+        """
+
+        return not self.__eq__(other)
+
+    def __contains__(self, value: Coordinate) -> bool:
+        """Checks if a point is inside the triangle.
+
+        Args:
+            point (Coordinate): Point to check.
+
+        Returns:
+            bool: True if the point is inside the triangle, False otherwise.
+        """
+
+        a = (
+            (self._b.y - self._c.y) * (value.x - self._c.x)
+            + (self._c.x - self._b.x) * (value.y - self._c.y)
+        ) / (
+            (self._b.y - self._c.y) * (self._a.x - self._c.x)
+            + (self._c.x - self._b.x) * (self._a.y - self._c.y)
+        )
+
+        b = (
+            (self._c.y - self._a.y) * (value.x - self._c.x)
+            + (self._a.x - self._c.x) * (value.y - self._c.y)
+        ) / (
+            (self._b.y - self._c.y) * (self._a.x - self._c.x)
+            + (self._c.x - self._b.x) * (self._a.y - self._c.y)
+        )
+
+        c = 1 - a - b
+
+        return 0 <= a <= 1 and 0 <= b <= 1 and 0 <= c <= 1
