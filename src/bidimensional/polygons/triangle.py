@@ -28,6 +28,10 @@ class Triangle:
         circumradius (float): Circumradius of the triangle.
     """
 
+    _ERROR_MSGS = {
+        "TypeError1": "value must be a Triangle instance"
+    }
+
     TOL_DIGITS = 10
 
     def __init__(self, a: Coordinate, b: Coordinate,
@@ -291,7 +295,7 @@ class Triangle:
         """
 
         if not isinstance(value, Triangle):
-            raise TypeError("value must be a Triangle instance")
+            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
 
         return (
             self.a == value.a
@@ -323,7 +327,7 @@ class Triangle:
         """
 
         if not isinstance(value, Triangle):
-            raise TypeError("value must be a Triangle instance")
+            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
 
         return self.area > value.area
 
@@ -351,7 +355,7 @@ class Triangle:
         """
 
         if not isinstance(value, Triangle):
-            raise TypeError("value must be a Triangle instance")
+            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
 
         return self.area < value.area
 
