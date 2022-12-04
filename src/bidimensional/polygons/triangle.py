@@ -311,6 +311,70 @@ class Triangle:
 
         return not self.__eq__(other)
 
+    def __gt__(self, other: object) -> bool:
+        """Checks if a triangle is greater than another.
+
+        Args:
+            other (object): Other object.
+
+        Returns:
+            bool: True if the triangle is greater than the other, False
+                otherwise.
+        """
+
+        if not isinstance(other, Triangle):
+            return False
+
+        return self.area > other.area
+
+    def __ge__(self, other: object) -> bool:
+        """Checks if a triangle is greater or equal than another.
+
+        Args:
+            other (object): Other object.
+
+        Returns:
+            bool: True if the triangle is greater or equal than the other,
+                False otherwise.
+        """
+
+        if not isinstance(other, Triangle):
+            return False
+
+        return self.area >= other.area
+
+    def __lt__(self, other: object) -> bool:
+        """Checks if a triangle is less than another.
+
+        Args:
+            other (object): Other object.
+
+        Returns:
+            bool: True if the triangle is less than the other, False
+                otherwise.
+        """
+
+        if not isinstance(other, Triangle):
+            return False
+
+        return self.area < other.area
+
+    def __le__(self, other: object) -> bool:
+        """Checks if a triangle is less or equal than another.
+
+        Args:
+            other (object): Other object.
+
+        Returns:
+            bool: True if the triangle is less or equal than the other,
+                False otherwise.
+        """
+
+        if not isinstance(other, Triangle):
+            return False
+
+        return self.area <= other.area
+
     def __contains__(self, value: Coordinate) -> bool:
         """Checks if a point is inside the triangle.
 
