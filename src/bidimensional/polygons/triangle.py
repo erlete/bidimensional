@@ -305,6 +305,13 @@ class Triangle:
 
         Returns:
             bool: True if the point is inside the triangle, False otherwise.
+            
+        Note:
+            This method excludes points on the edges of the triangle up to a
+            tolerance of 1e-14. This means that if the point is located exacly
+            at the edge of the triangle, it will be considered outside the
+            figure, but if it is located 1e-14 units towards the baricenter of
+            the triangle, it will be considered inside the figure.
         """
 
         a = (
