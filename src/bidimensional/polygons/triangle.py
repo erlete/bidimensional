@@ -280,100 +280,93 @@ class Triangle:
 
         return f"Triangle({self.a}, {self.b}, {self.c})"
 
-    def __eq__(self, other: object) -> bool:
+    def __eq__(self, value: Triangle) -> bool:
         """Checks if two triangles are equal.
 
         Args:
-            other (object): Other object.
+            value (Triangle): Triangle to compare.
 
         Returns:
             bool: True if the triangles are equal, False otherwise.
         """
 
-        if not isinstance(other, Triangle):
-            return False
+        if not isinstance(value, Triangle):
+            raise TypeError("value must be a Triangle instance")
 
         return (
-            self.a == other.a
-            and self.b == other.b
-            and self.c == other.c
+            self.a == value.a
+            and self.b == value.b
+            and self.c == value.c
         )
 
-    def __neq__(self, other: object) -> bool:
+    def __ne__(self, value: Triangle) -> bool:
         """Checks if two triangles are not equal.
 
         Args:
-            other (object): Other object.
+            value (Triangle): Triangle to compare.
 
         Returns:
             bool: True if the triangles are not equal, False otherwise.
         """
 
-        return not self.__eq__(other)
+        return not self.__eq__(value)
 
-    def __gt__(self, other: object) -> bool:
+    def __gt__(self, value: Triangle) -> bool:
         """Checks if a triangle is greater than another.
 
         Args:
-            other (object): Other object.
+            value (Triangle): Triangle to compare.
 
         Returns:
             bool: True if the triangle is greater than the other, False
                 otherwise.
         """
 
-        if not isinstance(other, Triangle):
-            return False
+        if not isinstance(value, Triangle):
+            raise TypeError("value must be a Triangle instance")
 
-        return self.area > other.area
+        return self.area > value.area
 
-    def __ge__(self, other: object) -> bool:
-        """Checks if a triangle is greater or equal than another.
+    def __ge__(self, value: Triangle) -> bool:
+        """Checks if a triangle is greater than or equal to another.
 
         Args:
-            other (object): Other object.
+            value (Triangle): Triangle to compare.
 
         Returns:
-            bool: True if the triangle is greater or equal than the other,
+            bool: True if the triangle is greater than or equal to the other,
                 False otherwise.
         """
 
-        if not isinstance(other, Triangle):
-            return False
+        return self.__gt__(value) or self.__eq__(value)
 
-        return self.area >= other.area
-
-    def __lt__(self, other: object) -> bool:
+    def __lt__(self, value: Triangle) -> bool:
         """Checks if a triangle is less than another.
 
         Args:
-            other (object): Other object.
+            value (Triangle): Triangle to compare.
 
         Returns:
-            bool: True if the triangle is less than the other, False
-                otherwise.
+            bool: True if the triangle is less than the other, False otherwise.
         """
 
-        if not isinstance(other, Triangle):
-            return False
+        if not isinstance(value, Triangle):
+            raise TypeError("value must be a Triangle instance")
 
-        return self.area < other.area
+        return self.area < value.area
 
-    def __le__(self, other: object) -> bool:
-        """Checks if a triangle is less or equal than another.
+    def __le__(self, value: Triangle) -> bool:
+        """Checks if a triangle is less than or equal to another.
 
         Args:
-            other (object): Other object.
+            value (Triangle): Triangle to compare.
 
         Returns:
-            bool: True if the triangle is less or equal than the other,
+            bool: True if the triangle is less than or equal to the other,
                 False otherwise.
         """
 
-        if not isinstance(other, Triangle):
-            return False
-
-        return self.area <= other.area
+        return self.__lt__(value) or self.__eq__(value)
 
     def __contains__(self, value: Coordinate) -> bool:
         """Checks if a point is inside the triangle.
@@ -383,14 +376,14 @@ class Triangle:
 
         Returns:
             bool: True if the point is inside the triangle, False otherwise.
-            
+
         Note:
             This method excludes points on the edges of the triangle up to a
             tolerance of 1e-14. This means that if the point is located exacly
             at the edge of the triangle, it will be considered outside the
             figure, but if it is located 1e-14 units towards the baricenter of
             the triangle, it will be considered inside the figure.
-            
+
         Reference:
             http://totologic.blogspot.com/2014/01/accurate-point-in-triangle-test.html
         """
