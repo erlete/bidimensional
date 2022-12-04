@@ -34,6 +34,7 @@ class Triangle:
                  c: Coordinate) -> None:
 
         self._circumcircle = None
+        self._area = None
 
         self._initial_setting = False
 
@@ -121,6 +122,19 @@ class Triangle:
             raise TypeError("c must be a Coordinate instance")
 
         self._c = value
+
+    @property
+    def area(self) -> float:
+        """Area of the triangle.
+
+        Returns:
+            float: Area of the triangle.
+        """
+
+        if self._area is None:
+            self._area = op.area(self.a, self.b, self.c)
+
+        return self._area
 
     @property
     def circumcenter(self) -> Coordinate:
