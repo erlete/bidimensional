@@ -27,10 +27,8 @@ def distance(a: Coordinate, b: Coordinate) -> float:
         float: Distance between the two coordinates.
     """
 
-    if not isinstance(a, Coordinate):
-        raise TypeError("a must be a Coordinate instance")
-    elif not isinstance(b, Coordinate):
-        raise TypeError("b must be a Coordinate instance")
+    if not all(isinstance(x, Coordinate) for x in (a, b)):
+        raise TypeError("a and b must be Coordinate instances")
 
     return math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2)
 
@@ -50,12 +48,8 @@ def angle(a: Coordinate, b: Coordinate, c: Coordinate) -> float:
         float: Angle between the three coordinates.
     """
 
-    if not isinstance(a, Coordinate):
-        raise TypeError("a must be a Coordinate instance")
-    elif not isinstance(b, Coordinate):
-        raise TypeError("b must be a Coordinate instance")
-    elif not isinstance(c, Coordinate):
-        raise TypeError("c must be a Coordinate instance")
+    if not all(isinstance(x, Coordinate) for x in (a, b, c)):
+        raise TypeError("a, b and c must be Coordinate instances")
 
     e1 = distance(b, c)
     e2 = distance(a, c)
@@ -80,9 +74,28 @@ def midpoint(a: Coordinate, b: Coordinate) -> Coordinate:
         Coordinate: Midpoint between the two coordinates.
     """
 
-    if not isinstance(a, Coordinate):
-        raise TypeError("a must be a Coordinate instance")
-    elif not isinstance(b, Coordinate):
-        raise TypeError("b must be a Coordinate instance")
+    if not all(isinstance(x, Coordinate) for x in (a, b)):
+        raise TypeError("a and b must be Coordinate instances")
 
     return Coordinate((a.x + b.x) / 2, (a.y + b.y) / 2)
+
+
+def area(a: Coordinate, b: Coordinate, c: Coordinate) -> float:
+    """Calculates the area between three coordinates.
+
+    Args:
+        a (Coordinate): First coordinate.
+        b (Coordinate): Second coordinate.
+        c (Coordinate): Third coordinate.
+
+    Raises:
+        TypeError: If a, b or c are not Coordinate objects.
+
+    Returns:
+        float: Area between the three coordinates.
+    """
+
+    if not all(isinstance(x, Coordinate) for x in (a, b, c)):
+        raise TypeError("a, b and c must be Coordinate instances")
+
+    return abs((a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y)) / 2)

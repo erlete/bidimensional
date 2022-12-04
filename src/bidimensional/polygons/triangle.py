@@ -28,12 +28,17 @@ class Triangle:
         circumradius (float): Circumradius of the triangle.
     """
 
+    _ERROR_MSGS = {
+        "TypeError1": "value must be a Triangle instance"
+    }
+
     TOL_DIGITS = 10
 
     def __init__(self, a: Coordinate, b: Coordinate,
                  c: Coordinate) -> None:
 
         self._circumcircle = None
+        self._area = None
 
         self._initial_setting = False
 
@@ -121,6 +126,19 @@ class Triangle:
             raise TypeError("c must be a Coordinate instance")
 
         self._c = value
+
+    @property
+    def area(self) -> float:
+        """Area of the triangle.
+
+        Returns:
+            float: Area of the triangle.
+        """
+
+        if self._area is None:
+            self._area = op.area(self.a, self.b, self.c)
+
+        return self._area
 
     @property
     def circumcenter(self) -> Coordinate:
@@ -247,3 +265,149 @@ class Triangle:
             [self.a.y, self.b.y, self.c.y, self.a.y],
             **kwargs
         )
+
+    def __repr__(self) -> str:
+        """String representation of the triangle.
+
+        Returns:
+            str: String representation of the triangle.
+        """
+
+        return f"Triangle({self.a}, {self.b}, {self.c})"
+
+    def __str__(self) -> str:
+        """String representation of the triangle.
+
+        Returns:
+            str: String representation of the triangle.
+        """
+
+        return f"Triangle({self.a}, {self.b}, {self.c})"
+
+    def __eq__(self, value: Triangle) -> bool:
+        """Checks if two triangles are equal.
+
+        Args:
+            value (Triangle): Triangle to compare.
+
+        Returns:
+            bool: True if the triangles are equal, False otherwise.
+        """
+
+        if not isinstance(value, Triangle):
+            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
+
+        return (
+            self.a == value.a
+            and self.b == value.b
+            and self.c == value.c
+        )
+
+    def __ne__(self, value: Triangle) -> bool:
+        """Checks if two triangles are not equal.
+
+        Args:
+            value (Triangle): Triangle to compare.
+
+        Returns:
+            bool: True if the triangles are not equal, False otherwise.
+        """
+
+        return not self.__eq__(value)
+
+    def __gt__(self, value: Triangle) -> bool:
+        """Checks if a triangle is greater than another.
+
+        Args:
+            value (Triangle): Triangle to compare.
+
+        Returns:
+            bool: True if the triangle is greater than the other, False
+                otherwise.
+        """
+
+        if not isinstance(value, Triangle):
+            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
+
+        return self.area > value.area
+
+    def __ge__(self, value: Triangle) -> bool:
+        """Checks if a triangle is greater than or equal to another.
+
+        Args:
+            value (Triangle): Triangle to compare.
+
+        Returns:
+            bool: True if the triangle is greater than or equal to the other,
+                False otherwise.
+        """
+
+        return self.__gt__(value) or self.__eq__(value)
+
+    def __lt__(self, value: Triangle) -> bool:
+        """Checks if a triangle is less than another.
+
+        Args:
+            value (Triangle): Triangle to compare.
+
+        Returns:
+            bool: True if the triangle is less than the other, False otherwise.
+        """
+
+        if not isinstance(value, Triangle):
+            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
+
+        return self.area < value.area
+
+    def __le__(self, value: Triangle) -> bool:
+        """Checks if a triangle is less than or equal to another.
+
+        Args:
+            value (Triangle): Triangle to compare.
+
+        Returns:
+            bool: True if the triangle is less than or equal to the other,
+                False otherwise.
+        """
+
+        return self.__lt__(value) or self.__eq__(value)
+
+    def __contains__(self, value: Coordinate) -> bool:
+        """Checks if a point is inside the triangle.
+
+        Args:
+            point (Coordinate): Point to check.
+
+        Returns:
+            bool: True if the point is inside the triangle, False otherwise.
+
+        Note:
+            This method excludes points on the edges of the triangle up to a
+            tolerance of 1e-14. This means that if the point is located exacly
+            at the edge of the triangle, it will be considered outside the
+            figure, but if it is located 1e-14 units towards the baricenter of
+            the triangle, it will be considered inside the figure.
+
+        Reference:
+            http://totologic.blogspot.com/2014/01/accurate-point-in-triangle-test.html
+        """
+
+        a = (
+            (self._b.y - self._c.y) * (value.x - self._c.x)
+            + (self._c.x - self._b.x) * (value.y - self._c.y)
+        ) / (
+            (self._b.y - self._c.y) * (self._a.x - self._c.x)
+            + (self._c.x - self._b.x) * (self._a.y - self._c.y)
+        )
+
+        b = (
+            (self._c.y - self._a.y) * (value.x - self._c.x)
+            + (self._a.x - self._c.x) * (value.y - self._c.y)
+        ) / (
+            (self._b.y - self._c.y) * (self._a.x - self._c.x)
+            + (self._c.x - self._b.x) * (self._a.y - self._c.y)
+        )
+
+        c = 1 - a - b
+
+        return 0 <= a <= 1 and 0 <= b <= 1 and 0 <= c <= 1
