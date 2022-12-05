@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 from matplotlib import pyplot as plt
 
-import bidimensional.operations as op
-from bidimensional.circumcircle import Circumcircle
-from bidimensional.coordinates import Coordinate
+from .. import operations as op
+from ..circumcircle import Circumcircle
+from ..coordinates import Coordinate
 
 
 class Triangle:
