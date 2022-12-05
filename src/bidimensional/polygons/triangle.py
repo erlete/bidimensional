@@ -39,17 +39,11 @@ class Triangle:
     def __init__(self, a: Coordinate, b: Coordinate,
                  c: Coordinate) -> None:
 
-        self._circumcircle = None
-        self._area = None
-
-        self._initial_setting = False
+        self._properties = {}
 
         self.a = a
         self.b = b
         self.c = c
-
-        self._initial_setting = True
-        self._compute_angles()
 
     @property
     def a(self) -> Coordinate:
@@ -137,10 +131,42 @@ class Triangle:
             float: Area of the triangle.
         """
 
-        if self._area is None:
-            self._area = op.area(self.a, self.b, self.c)
+        if self._properties.get("area") is None:
+            self._properties["area"] = op.area(self.a, self.b, self.c)
 
-        return self._area
+        return self._properties["area"]
+
+    @property
+    def perimeter(self) -> float:
+        """Perimeter of the triangle.
+
+        Returns:
+            float: Perimeter of the triangle.
+        """
+
+        if self._properties.get("perimeter") is None:
+            self._properties["perimeter"] = op.perimeter(
+                self.a, self.b, self.c
+            )
+
+        return self._properties["perimeter"]
+
+    @property
+    def angles(self) -> dict[str, float]:
+        """Inner angles of the triangle.
+
+        Returns:
+            dict[str, float]: Angles of the triangle.
+        """
+
+        if self._properties.get("angles") is None:
+            self._properties["angles"] = {
+                'a': round(op.angle(self.b, self.c, self.a), self.TOL_DIGITS),
+                'b': round(op.angle(self.c, self.a, self.b), self.TOL_DIGITS),
+                'c': round(op.angle(self.a, self.b, self.c), self.TOL_DIGITS)
+            }
+
+        return self._properties["angles"]
 
     @property
     def circumcenter(self) -> Coordinate:
@@ -150,10 +176,12 @@ class Triangle:
             Coordinate: Circumcenter of the triangle.
         """
 
-        if self._circumcircle is None:
-            self._circumcircle = Circumcircle(self.a, self.b, self.c)
+        if self._properties.get("circumcircle") is None:
+            self._properties["circumcircle"] = Circumcircle(
+                self.a, self.b, self.c
+            )
 
-        return self._circumcircle.center
+        return self._properties["circumcircle"].center
 
     @property
     def circumradius(self) -> float:
@@ -163,10 +191,12 @@ class Triangle:
             float: Circumradius of the triangle.
         """
 
-        if self._circumcircle is None:
-            self._circumcircle = Circumcircle(self.a, self.b, self.c)
+        if self._properties.get("circumcircle") is None:
+            self._properties["circumcircle"] = Circumcircle(
+                self.a, self.b, self.c
+            )
 
-        return self._circumcircle.radius
+        return self._properties["circumcircle"].radius
 
     def is_right(self) -> bool:
         """Checks if the triangle has a right angle.
@@ -177,7 +207,7 @@ class Triangle:
 
         return any([
             round(angle_, self.TOL_DIGITS) == 90
-            for angle_ in self._angles.values()
+            for angle_ in self.angles.values()
         ])
 
     def is_obtuse(self) -> bool:
@@ -189,7 +219,7 @@ class Triangle:
 
         return any([
             angle_ > 90
-            for angle_ in self._angles.values()
+            for angle_ in self.angles.values()
         ])
 
     def is_acute(self) -> bool:
@@ -201,7 +231,7 @@ class Triangle:
 
         return all([
             angle_ < 90
-            for angle_ in self._angles.values()
+            for angle_ in self.angles.values()
         ])
 
     def is_equilateral(self) -> bool:
@@ -211,7 +241,7 @@ class Triangle:
             bool: True if the triangle is equilateral, False otherwise.
         """
 
-        return len(set(self._angles.values())) == 1
+        return len(set(self.angles.values())) == 1
 
     def is_isosceles(self) -> bool:
         """Checks if the triangle is isosceles.
@@ -220,7 +250,7 @@ class Triangle:
             bool: True if the triangle is isosceles, False otherwise.
         """
 
-        return len(set(self._angles.values())) == 2
+        return len(set(self.angles.values())) == 2
 
     def is_scalene(self) -> bool:
         """Checks if the triangle is scalene.
@@ -229,7 +259,7 @@ class Triangle:
             bool: True if the triangle is scalene, False otherwise.
         """
 
-        return len(set(self._angles.values())) == 3
+        return len(set(self.angles.values())) == 3
 
     def is_collinear(self) -> bool:
         """Checks if the triangle is collinear.
@@ -243,17 +273,6 @@ class Triangle:
             + self._b.x * (self._c.y - self._a.y)
             + self._c.x * (self._a.y - self._b.y)
         )
-
-    def _compute_angles(self) -> None:
-        """Computes the angles of the triangle.
-        """
-
-        if self._initial_setting:
-            self._angles = {
-                'a': round(op.angle(self.b, self.c, self.a), self.TOL_DIGITS),
-                'b': round(op.angle(self.c, self.a, self.b), self.TOL_DIGITS),
-                'c': round(op.angle(self.a, self.b, self.c), self.TOL_DIGITS)
-            }
 
     def plot(self, **kwargs) -> None:
         """Plots the triangle.
