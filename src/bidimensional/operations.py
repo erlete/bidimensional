@@ -9,8 +9,9 @@ Author:
 
 
 import math
+from itertools import combinations
 
-from bidimensional.coordinates import Coordinate
+from .coordinates import Coordinate
 
 
 def distance(a: Coordinate, b: Coordinate) -> float:
@@ -98,4 +99,25 @@ def area(a: Coordinate, b: Coordinate, c: Coordinate) -> float:
     if not all(isinstance(x, Coordinate) for x in (a, b, c)):
         raise TypeError("a, b and c must be Coordinate instances")
 
-    return abs((a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y)) / 2)
+    return abs(
+        (a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y)) / 2
+    )
+
+
+def perimeter(*coordinates: Coordinate) -> float:
+    """Calculates the perimeter of a polygon.
+
+    Args:
+        *coordinates (Coordinate): Coordinates of the polygon.
+
+    Raises:
+        TypeError: If any of the coordinates are not Coordinate objects.
+
+    Returns:
+        float: Perimeter of the polygon.
+    """
+
+    if not all(isinstance(x, Coordinate) for x in coordinates):
+        raise TypeError("All coordinates must be Coordinate instances")
+
+    return sum(distance(*pair) for pair in combinations(coordinates, 2))
