@@ -70,6 +70,7 @@ class Triangle:
             raise TypeError("a must be a Coordinate instance")
 
         self._a = value
+        self._properties.clear()
 
     @property
     def b(self) -> Coordinate:
@@ -96,6 +97,7 @@ class Triangle:
             raise TypeError("b must be a Coordinate instance")
 
         self._b = value
+        self._properties.clear()
 
     @property
     def c(self) -> Coordinate:
@@ -122,6 +124,7 @@ class Triangle:
             raise TypeError("c must be a Coordinate instance")
 
         self._c = value
+        self._properties.clear()
 
     @property
     def area(self) -> float:
