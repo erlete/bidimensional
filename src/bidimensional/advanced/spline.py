@@ -456,7 +456,14 @@ class Spline:
         return positions, curvature, yaw
 
     def plot_input(self, *args, ax=None, **kwargs) -> None:
-        """Plots the input of the spline."""
+        """Plots the input of the spline.
+
+        Args:
+            *args: Arguments to pass to the plot function.
+            ax (matplotlib.axes.Axes, optional): The axes to plot on. Defaults
+                to None.
+            **kwargs: Keyword arguments to pass to the plot
+        """
 
         styles = self.STYLES.copy()
         styles.update({"label": "Input"})
@@ -500,7 +507,14 @@ class Spline:
         ax.plot(*zip(*self._positions), shape, **styles)
 
     def plot_curvature(self, *args, ax=None, **kwargs) -> None:
-        """Plots the curvature function of the spline."""
+        """Plots the curvature function of the spline.
+
+        Args:
+            *args: Arguments to pass to the plot function.
+            ax (matplotlib.axes.Axes, optional): The axes to plot on. Defaults
+                to None.
+            **kwargs: Keyword arguments to pass to the plot
+        """
 
         styles = self.STYLES.copy()
         styles.update({"label": "Curvature"})
@@ -528,7 +542,14 @@ class Spline:
         )
 
     def plot_yaw(self, *args, ax=None, **kwargs) -> None:
-        """Plots the YAW function of the spline."""
+        """Plots the YAW function of the spline.
+
+        Args:
+            *args: Arguments to pass to the plot function.
+            ax (matplotlib.axes.Axes, optional): The axes to plot on. Defaults
+                to None.
+            **kwargs: Keyword arguments to pass to the plot
+        """
 
         styles = self.STYLES.copy()
         styles.update({"label": "YAW"})
