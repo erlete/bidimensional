@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 
 from .. import operations as op
 from ..circumcircle import Circumcircle
