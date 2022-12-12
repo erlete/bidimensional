@@ -211,7 +211,7 @@ class Spline2D:
         "lw": 1.5
     }
 
-    def __init__(self, x, y, generation_step=.1):
+    def __init__(self, x, y, generation_step=.1) -> None:
         self._x, self._y = x, y
         assert len(self._x) == len(self._y), "x and y must have the same length."
 
@@ -223,10 +223,22 @@ class Spline2D:
 
     @property
     def x(self) -> list[float]:
+        """Returns the x coordinates of the spline.
+
+        Returns:
+            list: List of x coordinates.
+        """
+
         return self._x
 
     @x.setter
-    def x(self, value: list[float]):
+    def x(self, value: list[float]) -> None:
+        """Sets the x coordinates of the spline.
+
+        Args:
+            value (list): List of x coordinates.
+        """
+
         if not isinstance(value, (list, tuple, np.array)):
             raise TypeError("x must be a list, tuple or numpy array.")
 
@@ -237,10 +249,22 @@ class Spline2D:
 
     @property
     def y(self) -> list[float]:
+        """Returns the y coordinates of the spline.
+
+        Returns:
+            list: List of y coordinates.
+        """
+
         return self._y
 
     @y.setter
-    def y(self, value: list[float]):
+    def y(self, value: list[float]) -> None:
+        """Sets the y coordinates of the spline.
+
+        Args:
+            value (list): List of y coordinates.
+        """
+
         if not isinstance(value, (list, tuple, np.array)):
             raise TypeError("y must be a list, tuple or numpy array.")
 
@@ -251,45 +275,94 @@ class Spline2D:
 
     @property
     def generation_step(self) -> float:
+        """Returns the generation step of the spline.
+
+        Returns:
+            float: The generation step of the spline.
+        """
+
         return self._generation_step
 
     @generation_step.setter
-    def generation_step(self, value: float):
+    def generation_step(self, value: float) -> None:
+        """Sets the generation step of the spline.
+
+        Args:
+            value (float): The generation step of the spline.
+        """
+
         if not isinstance(value, (int, float)):
             raise TypeError("generation_step must be a number.")
 
         elif value <= 0:
-            raise ValueError("generation_step must be greater than 0.")
+            raise ValueError("generation_step must be positive.")
 
         self._generation_step = value
 
     @property
     def knots(self) -> list[float]:
+        """Returns the knots of the spline.
+
+        Returns:
+            list: List of knots.
+        """
+
         return self._knots
 
     @property
     def positions(self) -> list[tuple[float, float]]:
+        """Returns the positions of the spline.
+
+        Returns:
+            list: List of positions.
+        """
+
         return self._positions
 
     @property
     def curvature(self) -> list[float]:
+        """Returns the curvature of the spline.
+
+        Returns:
+            list: List of curvature.
+        """
+
         return self._curvature
 
     @property
     def yaw(self) -> list[float]:
-        return self._yaw
+        """Returns the yaw of the spline.
+
+        Returns:
+            list: List of yaw.
+        """
+
+        return self.plot_yaw
 
     def _compute_knots(self, x, y):
-        """Computes the knots of the spline."""
+        """Computes the knots of the spline.
+
+        Args:
+            x (list): List of x coordinates.
+            y (list): List of y coordinates.
+
+        Returns:
+            list: List of knots.
+        """
 
         return [0] + list(np.cumsum(np.hypot(np.diff(x), np.diff(y))))
 
     def _compute_position(self, i):
         """Computes the image of a given x-value in a spline section.
 
+        Args:
+            i (int): The index of the spline section.
+
+        Returns:
+            tuple: The image of the x-value in the spline section.
+
         Notes:
-        ------
-        - If x is outside of the X-range, the output is None.
+            If x is outside of the X-range, the output is None.
         """
 
         return self._spline_x.position(i), self._spline_y.position(i)
@@ -297,9 +370,14 @@ class Spline2D:
     def _compute_curvature(self, i):
         """Computes the curvature of a given spline section.
 
+        Args:
+            i (int): The index of the spline section.
+
+        Returns:
+            float: The curvature of the spline section.
+
         Notes:
-        ------
-        - If x is outside of the X-range, the output is None.
+            If x is outside of the X-range, the output is None.
         """
 
         # This dictionary allows fast value checking:
@@ -318,9 +396,14 @@ class Spline2D:
     def _compute_yaw(self, i):
         """Computes the yaw of a given spline section.
 
+        Args:
+            i (int): The index of the spline section.
+
+        Returns:
+            float: The yaw of the spline section.
+
         Notes:
-        ------
-        - If x is outside of the X-range, the output is None.
+            If x is outside of the X-range, the output is None.
         """
 
         return math.atan2(
@@ -329,7 +412,11 @@ class Spline2D:
         )
 
     def _compute_results(self):
-        """Computes the coordinates, curvature and yaw of the spline."""
+        """Computes the coordinates, curvature and yaw of the spline.
+
+        Returns:
+            tuple: The coordinates, curvature and yaw of the spline.
+        """
 
         positions, curvature, yaw = [], [], []
 
@@ -340,7 +427,7 @@ class Spline2D:
 
         return positions, curvature, yaw
 
-    def plot_input(self, *args, ax=None, **kwargs):
+    def plot_input(self, *args, ax=None, **kwargs) -> None:
         """Plots the input of the spline."""
 
         styles = self.STYLES.copy()
@@ -362,7 +449,7 @@ class Spline2D:
 
         ax.plot(self._x, self._y, shape, **styles)
 
-    def plot_positions(self, *args, ax=None, **kwargs):
+    def plot_positions(self, *args, ax=None, **kwargs) -> None:
         """Plots the spline."""
 
         styles = self.STYLES.copy()
@@ -384,7 +471,7 @@ class Spline2D:
 
         ax.plot(*zip(*self._positions), shape, **styles)
 
-    def plot_curvature(self, *args, ax=None, **kwargs):
+    def plot_curvature(self, *args, ax=None, **kwargs) -> None:
         """Plots the curvature function of the spline."""
 
         styles = self.STYLES.copy()
@@ -412,7 +499,7 @@ class Spline2D:
             self._curvature, shape, **styles
         )
 
-    def plot_yaw(self, *args, ax=None, **kwargs):
+    def plot_yaw(self, *args, ax=None, **kwargs) -> None:
         """Plots the YAW function of the spline."""
 
         styles = self.STYLES.copy()
