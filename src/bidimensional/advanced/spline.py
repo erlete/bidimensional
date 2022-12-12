@@ -446,14 +446,27 @@ class Spline:
             tuple: The coordinates, curvature and yaw of the spline.
         """
 
-        positions, curvature, yaw = [], [], []
+        knots_ext = np.arange(
+            self._knots[0],
+            self._knots[-1],
+            self._generation_step
+        )
 
-        for i in np.arange(self._knots[0], self._knots[-1], self._generation_step):
-            positions.append(Coordinate(*self._compute_position(i)))
-            curvature.append(self._compute_curvature(i))
-            yaw.append(self._compute_yaw(i))
+        from time import perf_counter
+        pc = perf_counter()
 
-        return positions, curvature, yaw
+        data = np.array(
+            [(
+                Coordinate(*self._compute_position(i)),
+                self._compute_curvature(i),
+                self._compute_yaw(i)
+            ) for i in knots_ext],
+            dtype=object
+        )
+
+        print(perf_counter() - pc)
+
+        return data[:, 0], data[:, 1], data[:, 2]
 
     def plot_input(self, *args, ax=None, **kwargs) -> None:
         """Plots the input of the spline.
