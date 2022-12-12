@@ -1,9 +1,8 @@
 """Container module for the new cubic spline classes.
 
 Authors:
---------
-- Atsushi Sakai (@Atsushi_twi) (author of the original code)
-- Paulo Sanchez (@erlete) (author of the modified code)
+    Atsushi Sakai (@Atsushi_twi) (author of the original code)
+    Paulo Sanchez (@erlete) (author of the modified code)
 """
 
 
@@ -38,11 +37,10 @@ class SplineBase:
     def __init__(self, x, y):
         self.x, self.y = x, y
 
-        # Determine the dimension of the X-axis.
+        # Determine the dimension of the X-axis:
         self.x_dim = len(x)
 
         # Compute the differences between the x-coordinates:
-        #   https://www.pythonpool.com/numpy-diff/
         x_diff = np.diff(x)
 
         # Compute coefficient d:
@@ -53,25 +51,24 @@ class SplineBase:
 
         # Compute coefficient b:
         self.b = np.linalg.solve(
-            self.__calc_matrix_a(x_diff), self.__calc_matrix_b(x_diff)
+            self.__calc_matrix_a(x_diff),
+            self.__calc_matrix_b(x_diff)
         )
 
         # Compute the difference between b coefficients:
         b_diff = np.diff(self.b)
 
         # Compute coefficient c:
-        self.c = np.array(
-            [
-                (d_diff[i]) / x_diff[i]
-                - x_diff[i] * (self.b[i + 1] + 2.0 * self.b[i]) / 3.0
-                for i in range(self.x_dim - 1)
-            ]
-        )
+        self.c = np.array([
+            (d_diff[i]) / x_diff[i]
+            - x_diff[i] * (self.b[i + 1] + 2.0 * self.b[i]) / 3.0
+            for i in range(self.x_dim - 1)
+        ])
 
         # Compute coefficient a:
         self.a = [b_diff[i] / (3.0 * x_diff[i]) for i in range(self.x_dim - 1)]
 
-    def position(self, x):
+    def position(self, x) -> float | None:
         """Computes the image of a given x-value in a spline section.
 
         Args:
@@ -86,6 +83,7 @@ class SplineBase:
         """
 
         # Out of bounds handling:
+
         if not self.x[0] <= x <= self.x[-1]:
             return None
 
@@ -99,7 +97,7 @@ class SplineBase:
             + self.d[i]
         )
 
-    def first_derivative(self, x):
+    def first_derivative(self, x) -> float | None:
         """Computes the first derivative image
 
         Args:
@@ -114,6 +112,7 @@ class SplineBase:
         """
 
         # Out of bounds handling:
+
         if not self.x[0] <= x <= self.x[-1]:
             return None
 
@@ -126,7 +125,7 @@ class SplineBase:
             + self.c[i]
         )
 
-    def second_derivative(self, x):
+    def second_derivative(self, x) -> float | None:
         """Computes the first derivative of a given spline section.
 
         Args:
@@ -141,6 +140,7 @@ class SplineBase:
         """
 
         # Out of bounds handling:
+
         if not self.x[0] <= x <= self.x[-1]:
             return None
 
@@ -395,7 +395,7 @@ class Spline:
 
         return self._spline_x.position(i), self._spline_y.position(i)
 
-    def _compute_curvature(self, i):
+    def _compute_curvature(self, i: int) -> float:
         """Computes the curvature of a given spline section.
 
         Args:
@@ -421,7 +421,7 @@ class Spline:
             - derivatives["x2"] * derivatives["y1"]
         ) / ((derivatives["x1"]**2 + derivatives["y1"]**2) ** (3 / 2))
 
-    def _compute_yaw(self, i):
+    def _compute_yaw(self, i: int) -> float:
         """Computes the yaw of a given spline section.
 
         Args:
