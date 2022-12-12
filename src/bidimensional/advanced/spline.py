@@ -25,11 +25,12 @@ class SplineBase:
     Notes:
         The number of x and y values must be the same.
         Since the spline is a cubic function composite, each segment is defined
-            by a polynomial function of the form f(x) = a*x^3 + b*x^2 + c*x + d.
+            by a polynomial function of the form
+            f(x) = a*x^3 + b*x^2 + c*x + d.
         A property of said polynomial function is that, at x = x_n, f(x) = y_n
-            and at x = x_(n + 1), f(x) = y_(n + 1), g(x) = y_(n + 1). This means
-            that the images of each pair of segments, given a boundary point,
-            are the same.
+            and at x = x_(n + 1), f(x) = y_(n + 1), g(x) = y_(n + 1). This
+            means that the images of each pair of segments, given a boundary
+            point, are the same.
         Another property is that the second and third derivatives of a given
             spline segment have the same images at the boundary points as well.
     """
@@ -241,7 +242,9 @@ class Spline:
 
     def __init__(self, x, y, generation_step=.1) -> None:
         self._x, self._y = x, y
-        assert len(self._x) == len(self._y), "x and y must have the same length."
+
+        if len(x) != len(y):
+            raise ValueError("The number of x and y values must be the same.")
 
         self._knots = self._compute_knots(x, y)
         self._spline_x = SplineBase(self._knots, x)
