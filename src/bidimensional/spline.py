@@ -184,28 +184,7 @@ class Spline:
         return bisect.bisect(self.x, x) - 1
 
 
-class Spline2DBase:
-    """Container class for Spline2D class base structure.
-
-    Provides a base structure for the Spline2D class, allowing separate
-    definition of its class constants and getter and setter methods, as well
-    as double underscore or magic methods.
-    """
-
-    # Class-wide constants:
-
-    STD_SHAPES = {
-        "point": 'x',
-        "line": '-'
-    }
-
-    STD_STYLES = {
-        "color": "black",
-        "lw": 1.5
-    }
-
-
-class Spline2D(Spline2DBase):
+class Spline2D:
     """Represents a two-dimensional cubic spline.
 
     Parameters:
@@ -222,6 +201,16 @@ class Spline2D(Spline2DBase):
     - The number of x and y values must be the same.
     - The value used for the generation step must not be negative not zero.
     """
+
+    STD_SHAPES = {
+        "point": 'x',
+        "line": '-'
+    }
+
+    STD_STYLES = {
+        "color": "black",
+        "lw": 1.5
+    }
 
     def __init__(self, x, y, generation_step=.1):
         self._x, self._y = x, y
