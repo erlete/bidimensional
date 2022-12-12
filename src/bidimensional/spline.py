@@ -185,29 +185,28 @@ class Spline:
 
 
 class Spline2D:
-    """Represents a two-dimensional cubic spline.
+    """2D cubic spline class.
 
-    Parameters:
-    -----------
-    - x: 1D array
-        The x-coordinates of the spline.
-    - y: 1D array
-        The y-coordinates of the spline.
-    - generation_step: float
-        The step size used to generate the spline.
+    This class generates a 2D spline from two lists of x and y coordinates.
+    Intermediary points are generated with a separation determined by the
+    generation step parameter.
+
+    Args:
+        x (list): List of x coordinates.
+        y (list): List of y coordinates.
+        generation_step (float): The step used to generate the spline.
 
     Notes:
-    ------
-    - The number of x and y values must be the same.
-    - The value used for the generation step must not be negative not zero.
+        The number of x and y values must be the same.
+        The value used for the generation step must not be negative not zero.
     """
 
-    STD_SHAPES = {
+    SHAPES = {
         "point": 'x',
         "line": '-'
     }
 
-    STD_STYLES = {
+    STYLES = {
         "color": "black",
         "lw": 1.5
     }
@@ -344,10 +343,10 @@ class Spline2D:
     def plot_input(self, *args, ax=None, **kwargs):
         """Plots the input of the spline."""
 
-        styles = self.STD_STYLES.copy()
+        styles = self.STYLES.copy()
         styles.update({"label": "Input"})
         styles.update(kwargs)
-        shape = args[0] if args else self.STD_SHAPES["point"]
+        shape = args[0] if args else self.SHAPES["point"]
 
         ax = plt.gca() if ax is None else ax
 
@@ -366,10 +365,10 @@ class Spline2D:
     def plot_positions(self, *args, ax=None, **kwargs):
         """Plots the spline."""
 
-        styles = self.STD_STYLES.copy()
+        styles = self.STYLES.copy()
         styles.update({"label": "Spline"})
         styles.update(kwargs)
-        shape = args[0] if args else self.STD_SHAPES["line"]
+        shape = args[0] if args else self.SHAPES["line"]
 
         ax = plt.gca() if ax is None else ax
 
@@ -388,10 +387,10 @@ class Spline2D:
     def plot_curvature(self, *args, ax=None, **kwargs):
         """Plots the curvature function of the spline."""
 
-        styles = self.STD_STYLES.copy()
+        styles = self.STYLES.copy()
         styles.update({"label": "Curvature"})
         styles.update(kwargs)
-        shape = args[0] if args else self.STD_SHAPES["line"]
+        shape = args[0] if args else self.SHAPES["line"]
 
         ax = plt.gca() if ax is None else ax
 
@@ -416,10 +415,10 @@ class Spline2D:
     def plot_yaw(self, *args, ax=None, **kwargs):
         """Plots the YAW function of the spline."""
 
-        styles = self.STD_STYLES.copy()
+        styles = self.STYLES.copy()
         styles.update({"label": "YAW"})
         styles.update(kwargs)
-        shape = args[0] if args else self.STD_SHAPES["line"]
+        shape = args[0] if args else self.SHAPES["line"]
 
         ax = plt.gca() if ax is None else ax
 
