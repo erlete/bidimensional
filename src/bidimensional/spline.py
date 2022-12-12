@@ -204,77 +204,6 @@ class Spline2DBase:
         "lw": 1.5
     }
 
-    # Getter and setter methods:
-
-    @property
-    def x(self):
-        return self._x
-
-    @x.setter
-    def x(self, value):
-        if not isinstance(value, (list, tuple, np.array)):
-            raise TypeError("x must be a list, tuple or numpy array.")
-        elif not all(isinstance(val, (int, float)) for val in value):
-            raise TypeError("x must contain only numbers.")
-        else:
-            self._x = value
-
-    @property
-    def y(self):
-        return self._y
-
-    @y.setter
-    def y(self, value):
-        if not isinstance(value, (list, tuple, np.array)):
-            raise TypeError("y must be a list, tuple or numpy array.")
-        elif not all(isinstance(val, (int, float)) for val in value):
-            raise TypeError("y must contain only numbers.")
-        else:
-            self._y = value
-
-    @property
-    def generation_step(self):
-        return self._generation_step
-
-    @generation_step.setter
-    def generation_step(self, value):
-        if not isinstance(value, (int, float)):
-            raise TypeError("generation_step must be a number.")
-        elif value <= 0:
-            raise ValueError("generation_step must be greater than 0.")
-        else:
-            self._generation_step = value
-
-    @property
-    def knots(self):
-        return self._knots
-
-    @property
-    def positions(self):
-        return self._positions
-
-    @property
-    def curvature(self):
-        return self._curvature
-
-    @property
-    def yaw(self):
-        return self._yaw
-
-    # Double underscore (magic) methods:
-
-    def __str__(self):
-        return f"""
-Spline2D(
-    x = {self.x},
-    y = {self.y},
-    generation_step = {self.generation_step},
-)
-"""
-
-    def __len__(self):
-        return len(self.positions)
-
 
 class Spline2D(Spline2DBase):
     """Represents a two-dimensional cubic spline.
@@ -296,11 +225,71 @@ class Spline2D(Spline2DBase):
 
     def __init__(self, x, y, generation_step=.1):
         self._x, self._y = x, y
+        assert len(self._x) == len(self._y), "x and y must have the same length."
+
         self._knots = self._compute_knots(x, y)
         self._spline_x = Spline(self._knots, x)
         self._spline_y = Spline(self._knots, y)
         self._generation_step = generation_step
         self._positions, self._curvature, self._yaw = self._compute_results()
+
+    @property
+    def x(self) -> list[float]:
+        return self._x
+
+    @x.setter
+    def x(self, value: list[float]):
+        if not isinstance(value, (list, tuple, np.array)):
+            raise TypeError("x must be a list, tuple or numpy array.")
+
+        elif not all(isinstance(val, (int, float)) for val in value):
+            raise TypeError("x must contain only numbers.")
+
+        self._x = value
+
+    @property
+    def y(self) -> list[float]:
+        return self._y
+
+    @y.setter
+    def y(self, value: list[float]):
+        if not isinstance(value, (list, tuple, np.array)):
+            raise TypeError("y must be a list, tuple or numpy array.")
+
+        elif not all(isinstance(val, (int, float)) for val in value):
+            raise TypeError("y must contain only numbers.")
+
+        self._y = value
+
+    @property
+    def generation_step(self) -> float:
+        return self._generation_step
+
+    @generation_step.setter
+    def generation_step(self, value: float):
+        if not isinstance(value, (int, float)):
+            raise TypeError("generation_step must be a number.")
+
+        elif value <= 0:
+            raise ValueError("generation_step must be greater than 0.")
+
+        self._generation_step = value
+
+    @property
+    def knots(self) -> list[float]:
+        return self._knots
+
+    @property
+    def positions(self) -> list[tuple[float, float]]:
+        return self._positions
+
+    @property
+    def curvature(self) -> list[float]:
+        return self._curvature
+
+    @property
+    def yaw(self) -> list[float]:
+        return self._yaw
 
     def _compute_knots(self, x, y):
         """Computes the knots of the spline."""
@@ -462,3 +451,12 @@ class Spline2D(Spline2DBase):
                       ),
             self._yaw, shape, **styles
         )
+
+    def __str__(self) -> str:
+        return f"Spline2D of {len(self._x)} points"
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+    def __len__(self) -> int:
+        return len(self._x)
