@@ -16,7 +16,7 @@ from matplotlib import pyplot as plt
 from bidimensional.coordinates import Coordinate
 
 
-class Spline:
+class SplineBase:
     """Main class. Represents a cubic spline.
 
     Parameters:
@@ -184,7 +184,7 @@ class Spline:
         return bisect.bisect(self.x, x) - 1
 
 
-class Spline2D:
+class Spline:
     """2D cubic spline class.
 
     This class generates a 2D spline from two lists of x and y coordinates.
@@ -216,8 +216,8 @@ class Spline2D:
         assert len(self._x) == len(self._y), "x and y must have the same length."
 
         self._knots = self._compute_knots(x, y)
-        self._spline_x = Spline(self._knots, x)
-        self._spline_y = Spline(self._knots, y)
+        self._spline_x = SplineBase(self._knots, x)
+        self._spline_y = SplineBase(self._knots, y)
         self._generation_step = generation_step
         self._positions, self._curvature, self._yaw = self._compute_results()
 
