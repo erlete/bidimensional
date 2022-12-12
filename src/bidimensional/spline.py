@@ -17,27 +17,22 @@ from bidimensional.coordinates import Coordinate
 
 
 class SplineBase:
-    """Main class. Represents a cubic spline.
+    """Internal spline computation class.
 
-    Parameters:
-    -----------
-    - x: 1d array of x values.
-    - y: 1d array of y values.
+    Args:
+        x (list): List of x-coordinates.
+        y (list): List of y-coordinates.
 
     Notes:
-    ------
-    - The number of x and y values must be the same.
-
-    Notes about mathematical implementations:
-    -----------------------------------------
-    - Since the spline is a cubic function composite, each segment is defined
-        by a polynomial function of the form f(x) = a*x^3 + b*x^2 + c*x + d.
-    - A property of said polynomial function is that, at x = x_n, f(x) = y_n
-        and at x = x_(n + 1), f(x) = y_(n + 1), g(x) = y_(n + 1). This means
-        that the images of each pair of segments, given a boundary point, are
-        the same.
-    - Another property is that the second and third derivatives of a given
-        spline segment have the same images at the boundary points as well.
+        The number of x and y values must be the same.
+        Since the spline is a cubic function composite, each segment is defined
+            by a polynomial function of the form f(x) = a*x^3 + b*x^2 + c*x + d.
+        A property of said polynomial function is that, at x = x_n, f(x) = y_n
+            and at x = x_(n + 1), f(x) = y_(n + 1), g(x) = y_(n + 1). This means
+            that the images of each pair of segments, given a boundary point,
+            are the same.
+        Another property is that the second and third derivatives of a given
+            spline segment have the same images at the boundary points as well.
     """
 
     def __init__(self, x, y):
@@ -79,10 +74,15 @@ class SplineBase:
     def position(self, x):
         """Computes the image of a given x-value in a spline section.
 
+        Args:
+            x (float): The x-value to compute the image of.
+
+        Returns:
+            float: The image of the spline section.
+
         Notes:
-        ------
-        - The form of the function is: f(x) = a*x^3 + b*x^2 + c*x + d.
-        - If x is outside of the X-range, the output is None.
+            The form of the function is: f(x) = a*x^3 + b*x^2 + c*x + d.
+            If x is outside of the X-range, the output is None.
         """
 
         # Out of bounds handling:
@@ -102,11 +102,15 @@ class SplineBase:
     def first_derivative(self, x):
         """Computes the first derivative image
 
+        Args:
+            x (float): The x-value to compute the image of.
+
+        Returns:
+            float: The image of the first derivative of the spline section.
+
         Notes:
-        ------
-        - The first derivative is a polynomial function of the form
-            f'(x) = 3*a*x^2 + 2*b*x + c.
-        - If x is outside of the X-range, the output is None.
+            The form of the function is: f'(x) = 3*a*x^2 + 2*b*x + c.
+            If x is outside of the X-range, the output is None.
         """
 
         # Out of bounds handling:
@@ -125,11 +129,15 @@ class SplineBase:
     def second_derivative(self, x):
         """Computes the first derivative of a given spline section.
 
+        Args:
+            x (float): The x-value to compute the image of.
+
+        Returns:
+            float: The image of the second derivative of the spline section.
+
         Notes:
-        ------
-        - The second derivative is a polynomial function of the form
-            f''(x) = 6*a*x + 2*b.
-        - If x is outside of the X-range, the output is None.
+            The form of the function is: f''(x) = 6*a*x + 2*b.
+            If x is outside of the X-range, the output is None.
         """
 
         # Out of bounds handling:
@@ -145,7 +153,14 @@ class SplineBase:
         )
 
     def __calc_matrix_a(self, diff):
-        """Computes the A matrix for the spline coefficient b."""
+        """Computes the A matrix for the spline coefficient b.
+
+        Args:
+            diff (list): List of differences between x-coordinates.
+
+        Returns:
+            np.array: The A matrix for the spline coefficient b.
+        """
 
         matrix = np.zeros((self.x_dim, self.x_dim))
         matrix[0, 0] = 1.0
@@ -164,7 +179,14 @@ class SplineBase:
         return matrix
 
     def __calc_matrix_b(self, diff):
-        """Computes the B matrix for the spline coefficient b."""
+        """Computes the B matrix for the spline coefficient b.
+
+        Args:
+            diff (list): List of differences between x-coordinates.
+
+        Returns:
+            np.array: The B matrix for the spline coefficient b.
+        """
 
         matrix = np.zeros(self.x_dim)
 
@@ -179,6 +201,12 @@ class SplineBase:
     def __search_index(self, x):
         """Searches the index of the spline section that contains the given
         x-value.
+
+        Args:
+            x (float): The x-value to search for.
+
+        Returns:
+            int: The index of the spline section that contains the given
         """
 
         return bisect.bisect(self.x, x) - 1
