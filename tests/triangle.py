@@ -1,7 +1,7 @@
 from ..src.bidimensional.polygons.triangle import Triangle
 from ..src.bidimensional.coordinates import Coordinate
 from math import sqrt
-from itertools import combinations
+from itertools import combinations, permutations
 
 
 class TestTriangle:
@@ -15,14 +15,9 @@ class TestTriangle:
             Coordinate(1, 0)
         )
 
-        assert triangle.a.x == 0
-        assert triangle.a.y == 0
-
-        assert triangle.b.x == 1
-        assert triangle.b.y == 1
-
-        assert triangle.c.x == 1
-        assert triangle.c.y == 0
+        assert triangle.a.x == 0 and triangle.a.y == 0
+        assert triangle.b.x == 1 and triangle.b.y == 1
+        assert triangle.c.x == 1 and triangle.c.y == 0
 
     def test_definition_order(self):
         coordinates = (
@@ -33,7 +28,7 @@ class TestTriangle:
 
         triangles = [
             Triangle(*triplet)
-            for triplet in combinations(coordinates, 3)
+            for triplet in permutations(coordinates, 3)
         ]
 
         assert all(
@@ -195,3 +190,39 @@ class TestTriangle:
 
         assert triangle_1 <= triangle_2
         assert triangle_1 <= triangle_1
+
+    def test_is_right(self):
+        coordinates = (
+            Coordinate(0, 0),
+            Coordinate(1, 0),
+            Coordinate(0, 1)
+        )
+
+        assert all(
+            Triangle(*triplet).is_right() is True
+            for triplet in permutations(coordinates, 3)
+        )
+
+    def test_is_obtuse(self):
+        coordinates = (
+            Coordinate(0, 0),
+            Coordinate(1, 0),
+            Coordinate(2, 2)
+        )
+
+        assert all(
+            Triangle(*triplet).is_obtuse() is True
+            for triplet in permutations(coordinates, 3)
+        )
+
+    def test_is_acute(self):
+        coordinates = (
+            Coordinate(0, 0),
+            Coordinate(1, 0),
+            Coordinate(0.5, sqrt(1))
+        )
+
+        assert all(
+            Triangle(*triplet).is_acute() is True
+            for triplet in permutations(coordinates, 3)
+        )
