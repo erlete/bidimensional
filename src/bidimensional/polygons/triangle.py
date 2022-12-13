@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import matplotlib.pyplot as plt
 
+from itertools import combinations
 from .. import operations as op
 from ..circumcircle import Circumcircle
 from ..coordinates import Coordinate
@@ -271,20 +272,54 @@ class Triangle:
             bool: True if the triangle is collinear, False otherwise.
         """
 
-        return not (
-            self._a.x * (self._b.y - self._c.y)
-            + self._b.x * (self._c.y - self._a.y)
-            + self._c.x * (self._a.y - self._b.y)
-        )
+        x_displacements = {
+            "ab": self.b.x - self.a.x,
+            "bc": self.c.x - self.b.x,
+            "ac": self.c.x - self.a.x
+        }
 
-    def plot(self, **kwargs) -> None:
+        y_displacements = {
+            "ab": self.b.y - self.a.y,
+            "bc": self.c.y - self.b.y,
+            "ac": self.c.y - self.a.y
+        }
+
+        if (sum(x_displacements.values()) == 0
+                or sum(y_displacements.values()) == 0):
+
+            return True
+
+        slopes = []
+
+        if x_displacements["ab"] != 0:
+            slopes.append(y_displacements["ab"] / x_displacements["ab"])
+
+        if x_displacements["bc"] != 0:
+            slopes.append(y_displacements["bc"] / x_displacements["bc"])
+
+        if x_displacements["ac"] != 0:
+            slopes.append(y_displacements["ac"] / x_displacements["ac"])
+
+        if any(slope[0] == slope[1]
+               for slope in combinations(slopes, 2)):
+
+            return True
+
+        return False
+
+    def plot(self, ax=None, **kwargs) -> None:
         """Plots the triangle.
 
         Args:
+            ax (matplotlib.axes.Axes, optional): Axes to plot on. Defaults to
+                None.
             **kwargs: Keyword arguments for matplotlib.pyplot.plot.
         """
 
-        plt.plot(
+        if ax is None:
+            ax = plt.gca()
+
+        ax.plot(
             [self.a.x, self.b.x, self.c.x, self.a.x],
             [self.a.y, self.b.y, self.c.y, self.a.y],
             **kwargs
