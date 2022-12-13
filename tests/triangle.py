@@ -93,8 +93,8 @@ class TestTriangle:
 
         assert triangle.perimeter == sqrt(2) + 2
 
-    def test_collinear_1(self) -> None:
-        """Vertex collinearity test 1.
+    def test_collinear(self) -> None:
+        """Vertex collinearity test.
 
         This test case checks if the `is_collinear` method correctly detects
         vertex alignments on three scenarios:
@@ -126,8 +126,8 @@ class TestTriangle:
                 triangle = Triangle(*triplet)
                 assert triangle.is_collinear()
 
-    def test_collinear_2(self) -> None:
-        """Vertex collinearity test 2.
+    def test_non_collinear(self) -> None:
+        """Vertex non-collinearity test.
 
         This test case checks if the `is_collinear` method behaves correctly
         when the vertices of a given set of triangles are not collinear.
