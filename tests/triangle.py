@@ -6,6 +6,8 @@ from itertools import combinations
 
 class TestTriangle:
 
+    DEFINITION_TOL = 1e-14
+
     def test_generation(self):
         triangle = Triangle(
             Coordinate(0, 0),
@@ -136,13 +138,13 @@ class TestTriangle:
         triangle_1 = Triangle(
             Coordinate(0, 0),
             Coordinate(1, 1),
-            Coordinate(1, 0)
+            Coordinate(1 + self.DEFINITION_TOL, 0)
         )
 
         triangle_2 = Triangle(
             Coordinate(0, 0),
             Coordinate(1, 1),
-            Coordinate(1.1, 0)
+            Coordinate(1, 0)
         )
 
         assert triangle_1 > triangle_2
@@ -151,13 +153,13 @@ class TestTriangle:
         triangle_1 = Triangle(
             Coordinate(0, 0),
             Coordinate(1, 1),
-            Coordinate(1.1, 0)
+            Coordinate(1, 0)
         )
 
         triangle_2 = Triangle(
             Coordinate(0, 0),
             Coordinate(1, 1),
-            Coordinate(1, 0)
+            Coordinate(1 + self.DEFINITION_TOL, 0)
         )
 
         assert triangle_1 < triangle_2
@@ -166,28 +168,30 @@ class TestTriangle:
         triangle_1 = Triangle(
             Coordinate(0, 0),
             Coordinate(1, 1),
-            Coordinate(1, 0)
+            Coordinate(1 + self.DEFINITION_TOL, 0)
         )
 
         triangle_2 = Triangle(
             Coordinate(0, 0),
             Coordinate(1, 1),
-            Coordinate(1.1, 0)
+            Coordinate(1, 0)
         )
 
         assert triangle_1 >= triangle_2
+        assert triangle_1 >= triangle_1
 
     def test_le(self):
         triangle_1 = Triangle(
             Coordinate(0, 0),
             Coordinate(1, 1),
-            Coordinate(1.1, 0)
+            Coordinate(1, 0)
         )
 
         triangle_2 = Triangle(
             Coordinate(0, 0),
             Coordinate(1, 1),
-            Coordinate(1, 0)
+            Coordinate(1 + self.DEFINITION_TOL, 0)
         )
 
         assert triangle_1 <= triangle_2
+        assert triangle_1 <= triangle_1
