@@ -209,10 +209,10 @@ class Triangle:
             bool: True if the triangle has a right angle, False otherwise.
         """
 
-        return any([
+        return any(
             round(angle_, self.TOL_DIGITS) == 90
             for angle_ in self.angles.values()
-        ])
+        )
 
     def is_obtuse(self) -> bool:
         """Checks if the triangle has an obtuse angle.
@@ -221,10 +221,10 @@ class Triangle:
             bool: True if the triangle has an obtuse angle, False otherwise.
         """
 
-        return any([
+        return any(
             angle_ > 90
             for angle_ in self.angles.values()
-        ])
+        )
 
     def is_acute(self) -> bool:
         """Checks if the triangle has an acute angle.
@@ -233,10 +233,10 @@ class Triangle:
             bool: True if the triangle has an acute angle, False otherwise.
         """
 
-        return all([
+        return all(
             angle_ < 90
             for angle_ in self.angles.values()
-        ])
+        )
 
     def is_equilateral(self) -> bool:
         """Checks if the triangle is equilateral.
