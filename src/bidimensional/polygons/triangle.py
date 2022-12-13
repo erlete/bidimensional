@@ -356,11 +356,7 @@ class Triangle:
         if not isinstance(value, Triangle):
             raise TypeError(self._ERROR_MSGS.get("TypeError1"))
 
-        return (
-            self.a == value.a
-            and self.b == value.b
-            and self.c == value.c
-        )
+        return {self.a, self.b, self.c} == {value.a, value.b, value.c}
 
     def __ne__(self, value: Triangle) -> bool:
         """Checks if two triangles are not equal.
