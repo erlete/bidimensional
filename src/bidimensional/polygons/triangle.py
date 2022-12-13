@@ -227,7 +227,7 @@ class Triangle:
         )
 
     def is_acute(self) -> bool:
-        """Checks if the triangle has an acute angle.
+        """Checks if every angle in the triangle is an acute angle.
 
         Returns:
             bool: True if the triangle has an acute angle, False otherwise.
