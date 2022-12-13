@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import matplotlib.pyplot as plt
 
+from itertools import combinations
 from .. import operations as op
 from ..circumcircle import Circumcircle
 from ..coordinates import Coordinate
@@ -208,10 +209,10 @@ class Triangle:
             bool: True if the triangle has a right angle, False otherwise.
         """
 
-        return any([
+        return any(
             round(angle_, self.TOL_DIGITS) == 90
             for angle_ in self.angles.values()
-        ])
+        )
 
     def is_obtuse(self) -> bool:
         """Checks if the triangle has an obtuse angle.
@@ -220,22 +221,22 @@ class Triangle:
             bool: True if the triangle has an obtuse angle, False otherwise.
         """
 
-        return any([
+        return any(
             angle_ > 90
             for angle_ in self.angles.values()
-        ])
+        )
 
     def is_acute(self) -> bool:
-        """Checks if the triangle has an acute angle.
+        """Checks if every angle in the triangle is an acute angle.
 
         Returns:
             bool: True if the triangle has an acute angle, False otherwise.
         """
 
-        return all([
+        return all(
             angle_ < 90
             for angle_ in self.angles.values()
-        ])
+        )
 
     def is_equilateral(self) -> bool:
         """Checks if the triangle is equilateral.
@@ -271,20 +272,54 @@ class Triangle:
             bool: True if the triangle is collinear, False otherwise.
         """
 
-        return not (
-            self._a.x * (self._b.y - self._c.y)
-            + self._b.x * (self._c.y - self._a.y)
-            + self._c.x * (self._a.y - self._b.y)
-        )
+        x_displacements = {
+            "ab": self.b.x - self.a.x,
+            "bc": self.c.x - self.b.x,
+            "ac": self.c.x - self.a.x
+        }
 
-    def plot(self, **kwargs) -> None:
+        y_displacements = {
+            "ab": self.b.y - self.a.y,
+            "bc": self.c.y - self.b.y,
+            "ac": self.c.y - self.a.y
+        }
+
+        if (sum(x_displacements.values()) == 0
+                or sum(y_displacements.values()) == 0):
+
+            return True
+
+        slopes = []
+
+        if x_displacements["ab"] != 0:
+            slopes.append(y_displacements["ab"] / x_displacements["ab"])
+
+        if x_displacements["bc"] != 0:
+            slopes.append(y_displacements["bc"] / x_displacements["bc"])
+
+        if x_displacements["ac"] != 0:
+            slopes.append(y_displacements["ac"] / x_displacements["ac"])
+
+        if any(slope[0] == slope[1]
+               for slope in combinations(slopes, 2)):
+
+            return True
+
+        return False
+
+    def plot(self, ax=None, **kwargs) -> None:
         """Plots the triangle.
 
         Args:
+            ax (matplotlib.axes.Axes, optional): Axes to plot on. Defaults to
+                None.
             **kwargs: Keyword arguments for matplotlib.pyplot.plot.
         """
 
-        plt.plot(
+        if ax is None:
+            ax = plt.gca()
+
+        ax.plot(
             [self.a.x, self.b.x, self.c.x, self.a.x],
             [self.a.y, self.b.y, self.c.y, self.a.y],
             **kwargs
@@ -321,11 +356,7 @@ class Triangle:
         if not isinstance(value, Triangle):
             raise TypeError(self._ERROR_MSGS.get("TypeError1"))
 
-        return (
-            self.a == value.a
-            and self.b == value.b
-            and self.c == value.c
-        )
+        return {self.a, self.b, self.c} == {value.a, value.b, value.c}
 
     def __ne__(self, value: Triangle) -> bool:
         """Checks if two triangles are not equal.

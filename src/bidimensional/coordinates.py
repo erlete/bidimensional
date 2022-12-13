@@ -280,6 +280,3 @@ class Coordinate:
             raise TypeError(self._ERROR_MSGS.get("TypeError1"))
 
         return self._x, value.x
-
-    def __format__(self, format_spec) -> str:
-        return format(self._x, format_spec) + format(self._y, format_spec)
