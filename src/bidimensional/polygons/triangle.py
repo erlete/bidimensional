@@ -284,7 +284,9 @@ class Triangle:
             "ac": self.c.y - self.a.y
         }
 
-        if self.a.x == self.b.x == self.c.x or self.a.y == self.b.y == self.c.y:
+        if (self.a.x == self.b.x == self.c.x
+                or self.a.y == self.b.y == self.c.y):
+
             return True
 
         slopes = []

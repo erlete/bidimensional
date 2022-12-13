@@ -189,7 +189,6 @@ class Circumcircle:
             ValueError: If the triangle is collinear.
         """
 
-
         x_displacements = {
             "ab": self.b.x - self.a.x,
             "bc": self.c.x - self.b.x,
@@ -202,7 +201,9 @@ class Circumcircle:
             "ac": self.c.y - self.a.y
         }
 
-        if self.a.x == self.b.x == self.c.x or self.a.y == self.b.y == self.c.y:
+        if (self.a.x == self.b.x == self.c.x
+                or self.a.y == self.b.y == self.c.y):
+
             raise ValueError("The triangle is collinear")
 
         slopes = []
