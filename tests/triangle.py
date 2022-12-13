@@ -126,6 +126,24 @@ class TestTriangle:
                 triangle = Triangle(*triplet)
                 assert triangle.is_collinear()
 
+    def test_collinear_2(self) -> None:
+        """Vertex collinearity test 2.
+
+        This test case checks if the `is_collinear` method behaves correctly
+        when the vertices of a given set of triangles are not collinear.
+        """
+
+        coordinates = (
+            Coordinate(0, 0),
+            Coordinate(1, 0),
+            Coordinate(0, 1),
+            Coordinate(1, 1)
+        )
+
+        for triplet in permutations(coordinates, 3):
+            triangle = Triangle(*triplet)
+            assert not triangle.is_collinear()
+
     def test_eq(self) -> None:
         """Triangle equality test.
 
