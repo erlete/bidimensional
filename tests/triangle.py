@@ -226,3 +226,39 @@ class TestTriangle:
             Triangle(*triplet).is_acute() is True
             for triplet in permutations(coordinates, 3)
         )
+
+    def test_is_equilateral(self):
+        coordinates = (
+            Coordinate(0, 0),
+            Coordinate(1, 0),
+            Coordinate(0.5, sqrt(3) / 2)
+        )
+
+        assert all(
+            Triangle(*triplet).is_equilateral() is True
+            for triplet in permutations(coordinates, 3)
+        )
+
+    def test_is_isosceles(self):
+        coordinates = (
+            Coordinate(0, 0),
+            Coordinate(1, 0),
+            Coordinate(0.5, 3)
+        )
+
+        assert all(
+            Triangle(*triplet).is_isosceles() is True
+            for triplet in permutations(coordinates, 3)
+        )
+
+    def test_is_scalene(self):
+        coordinates = (
+            Coordinate(0, 0),
+            Coordinate(1, 0),
+            Coordinate(2, 2.543)
+        )
+
+        assert all(
+            Triangle(*triplet).is_scalene() is True
+            for triplet in permutations(coordinates, 3)
+        )
