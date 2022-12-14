@@ -1,6 +1,6 @@
 # Bidimensional
 
-[![PyPI release](https://github.com/erlete/bidimensional/actions/workflows/python-publish.yml/badge.svg)](https://github.com/erlete/bidimensional/actions/workflows/python-publish.yml)
+[![PyPI release](https://github.com/erlete/bidimensional/actions/workflows/python-publish.yml/badge.svg)](https://github.com/erlete/bidimensional/actions/workflows/python-publish.yml) [![Python Test Execution](https://github.com/erlete/bidimensional/actions/workflows/python-tests.yml/badge.svg)](https://github.com/erlete/bidimensional/actions/workflows/python-tests.yml)
 
 A collection of 2D utilities for coordinate representation and manipulation.
 
