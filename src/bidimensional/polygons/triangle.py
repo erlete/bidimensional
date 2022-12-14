@@ -1,11 +1,318 @@
+"""Triangle polygon utilities module.
+
+This module contains all utilities related to the triangle polygon, such as
+calculating the area, perimeter, circumcenter and circumradius, etc.
+
+Author:
+    Paulo Sanchez (@erlete)
+"""
+
+
 from __future__ import annotations
+
+from itertools import combinations
+from math import sqrt
 
 import matplotlib.pyplot as plt
 
-from itertools import combinations
 from .. import operations as op
-from ..circumcircle import Circumcircle
 from ..coordinates import Coordinate
+
+
+class Circumcircle:
+    """Circumcirle calculation utility.
+
+    This class is used to calculate the circumcenter and circumradius of a
+    triangle, given its three vertices as 2D coordinates.
+
+    Args:
+        a (Coordinate): First vertex of the triangle.
+        b (Coordinate): Second vertex of the triangle.
+        c (Coordinate): Third vertex of the triangle.
+
+    Attributes:
+        a (Coordinate): First vertex of the triangle.
+        b (Coordinate): Second vertex of the triangle.
+        c (Coordinate): Third vertex of the triangle.
+        center (Coordinate): The center of the circumcircle.
+        radius (float): The radius of the circumcircle.
+    """
+
+    def __init__(self, a: Coordinate, b: Coordinate, c: Coordinate) -> None:
+        self._a = a
+        self._b = b
+        self.c = c  # Automatically calls `Circumcircle._calculate` method.
+
+    @property
+    def a(self) -> Coordinate:
+        """First vertex of the triangle.
+
+        Returns:
+            Coordinate: First vertex of the triangle.
+
+        Note:
+            If the value of the vertex is changed, the circumcenter and
+            circumradius are recalculated.
+        """
+
+        return self._a
+
+    @a.setter
+    def a(self, value: Coordinate) -> None:
+        """First vertex of the triangle.
+
+        Args:
+            value (Coordinate): First vertex of the triangle.
+
+        Raises:
+            TypeError: If the value is not a Coordinate object.
+
+        Note:
+            If the value of the vertex is changed, the circumcenter and
+            circumradius are recalculated.
+        """
+
+        if not isinstance(value, Coordinate):
+            raise TypeError("a must be a Coordinate instance")
+
+        self._a = value
+        self._calculate()
+
+    @property
+    def b(self) -> Coordinate:
+        """Second vertex of the triangle.
+
+        Returns:
+            Coordinate: Second vertex of the triangle.
+
+        Note:
+            If the value of the vertex is changed, the circumcenter and
+            circumradius are recalculated.
+        """
+
+        return self._b
+
+    @b.setter
+    def b(self, value: Coordinate) -> None:
+        """Second vertex of the triangle.
+
+        Args:
+            value (Coordinate): Second vertex of the triangle.
+
+        Raises:
+            TypeError: If the value is not a Coordinate object.
+
+        Note:
+            If the value of the vertex is changed, the circumcenter and
+            circumradius are recalculated.
+        """
+
+        if not isinstance(value, Coordinate):
+            raise TypeError("b must be a Coordinate instance")
+
+        self._b = value
+        self._calculate()
+
+    @property
+    def c(self) -> Coordinate:
+        """Third vertex of the triangle.
+
+        Returns:
+            Coordinate: Third vertex of the triangle.
+
+        Note:
+            If the value of the vertex is changed, the circumcenter and
+            circumradius are recalculated.
+        """
+
+        return self._c
+
+    @c.setter
+    def c(self, value: Coordinate) -> None:
+        """Third vertex of the triangle.
+
+        Args:
+            value (Coordinate): Third vertex of the triangle.
+
+        Raises:
+            TypeError: If the value is not a Coordinate object.
+
+        Note:
+            If the value of the vertex is changed, the circumcenter and
+            circumradius are recalculated.
+        """
+
+        if not isinstance(value, Coordinate):
+            raise TypeError("c must be a Coordinate instance")
+
+        self._c = value
+        self._calculate()
+
+    @property
+    def center(self) -> Coordinate:
+        """Center of the circumcircle.
+
+        Returns:
+            Coordinate: Center of the circumcircle.
+        """
+
+        return self._center
+
+    @property
+    def radius(self) -> float:
+        """Radius of the circumcircle.
+
+        Returns:
+            float: Radius of the circumcircle.
+        """
+
+        return self._radius
+
+    def _ensure_non_collinear(self) -> None:
+        """Ensures that the triangle is not collinear.
+
+        Raises:
+            ValueError: If the triangle is collinear.
+        """
+
+        x_displacements = {
+            "ab": self.b.x - self.a.x,
+            "bc": self.c.x - self.b.x,
+            "ac": self.c.x - self.a.x
+        }
+
+        y_displacements = {
+            "ab": self.b.y - self.a.y,
+            "bc": self.c.y - self.b.y,
+            "ac": self.c.y - self.a.y
+        }
+
+        if (self.a.x == self.b.x == self.c.x
+                or self.a.y == self.b.y == self.c.y):
+
+            raise ValueError("The triangle is collinear")
+
+        slopes = []
+
+        if x_displacements["ab"] != 0:
+            slopes.append(y_displacements["ab"] / x_displacements["ab"])
+
+        if x_displacements["bc"] != 0:
+            slopes.append(y_displacements["bc"] / x_displacements["bc"])
+
+        if x_displacements["ac"] != 0:
+            slopes.append(y_displacements["ac"] / x_displacements["ac"])
+
+        if any(slope[0] == slope[1]
+               for slope in combinations(slopes, 2)):
+
+            raise ValueError("The triangle is collinear")
+
+    def _calculate(self) -> None:
+        """Calculates the center and radius of the circumcircle."""
+
+        self._ensure_non_collinear()
+
+        if any(v[1] - v[0] for v in combinations(
+                (self._a, self._b, self._c), 2)):
+
+            # Vertical alignment prevention:
+
+            if not (self._b - self._a).x:
+                self._a, self._c = self._c, self._a
+
+            if not (self._c - self._a).x:
+                self._a, self._b = self._b, self._a
+
+        # Segment displacement:
+
+        displacement = {
+            "ab": Coordinate(
+                self.b.x - self.a.x,
+                self.b.y - self.a.y
+            ),
+            "ac": Coordinate(
+                self.c.x - self.a.x,
+                self.c.y - self.a.y
+            )
+        }
+
+        # Unitary vectors:
+
+        unitary = {
+            "ab": Coordinate(
+                displacement["ab"].y / sqrt(
+                    displacement["ab"].x ** 2 + displacement["ab"].y ** 2
+                ),
+                -displacement["ab"].x / sqrt(
+                    displacement["ab"].x ** 2 + displacement["ab"].y ** 2
+                )
+            ),
+            "ac": Coordinate(
+                displacement["ac"].y / sqrt(
+                    displacement["ac"].x ** 2 + displacement["ac"].y ** 2
+                ),
+                -displacement["ac"].x / sqrt(
+                    displacement["ac"].x ** 2 + displacement["ac"].y ** 2
+                )
+            )
+        }
+
+        # V-vector for vertical intersection:
+
+        vertical = {
+            "ab": Coordinate(
+                unitary["ab"].x / unitary["ab"].y,
+                1
+            ),
+            "ac": Coordinate(
+                -(unitary["ac"].x / unitary["ac"].y),
+                1
+            )
+        }
+
+        # Midpoint setting:
+
+        midpoint = {
+            "ab": Coordinate(
+                displacement["ab"].x / 2 + self.a.x,
+                displacement["ab"].y / 2 + self.a.y
+            ),
+            "ac": Coordinate(
+                displacement["ac"].x / 2 + self.a.x,
+                displacement["ac"].y / 2 + self.a.y
+            )
+        }
+
+        # Midpoint height equivalence:
+
+        intersection = Coordinate(
+            midpoint["ab"].x + (
+                (midpoint["ac"].y - midpoint["ab"].y) / unitary["ab"].y
+            ) * unitary["ab"].x,
+            midpoint["ac"].y
+        )
+
+        # Circumcenter calculation:
+
+        self._center = Coordinate(
+            intersection.x + (
+                (midpoint["ac"].x - intersection.x)
+                / (vertical["ab"].x + vertical["ac"].x)
+            ) * vertical["ab"].x,
+            intersection.y + (
+                midpoint["ac"].x - intersection.x
+            ) / (
+                vertical["ab"].x + vertical["ac"].x
+            )
+        )
+
+        # Circumradius calculation:
+
+        self._radius = sqrt(
+            (self.a.x - self._center.x) ** 2
+            + (self.a.y - self._center.y) ** 2
+        )
 
 
 class Triangle:
@@ -284,8 +591,8 @@ class Triangle:
             "ac": self.c.y - self.a.y
         }
 
-        if (sum(x_displacements.values()) == 0
-                or sum(y_displacements.values()) == 0):
+        if (self.a.x == self.b.x == self.c.x
+                or self.a.y == self.b.y == self.c.y):
 
             return True
 

@@ -1,6 +1,9 @@
-"""Container module for the new cubic spline classes.
+"""2D cubic spline generation utilities.
 
-Authors:
+This module contains the classes and functions necessary to generate a cubic
+spline from a set of points.
+
+Author:
     Atsushi Sakai (@Atsushi_twi) (author of the original code)
     Paulo Sanchez (@erlete) (author of the modified code)
 """
