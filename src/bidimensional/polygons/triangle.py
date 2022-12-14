@@ -29,20 +29,9 @@ class Circumcircle:
     """
 
     def __init__(self, a: Coordinate, b: Coordinate, c: Coordinate) -> None:
-
-        # The initial setting variable allows value validation via attribute
-        #   setters but prevents automatic recalculation of the circumcenter
-        #   and circumradius.
-
-        self._initial_setting = False
-
         self._a = a
         self._b = b
-        self._c = c
-
-        self._initial_setting = True
-
-        self._calculate()  # Initial calculation:
+        self.c = c  # Automatically calls `Circumcircle._calculate` method.
 
     @property
     def a(self) -> Coordinate:
@@ -77,9 +66,7 @@ class Circumcircle:
             raise TypeError("a must be a Coordinate instance")
 
         self._a = value
-
-        if not self._initial_setting:
-            self._calculate()
+        self._calculate()
 
     @property
     def b(self) -> Coordinate:
@@ -114,9 +101,7 @@ class Circumcircle:
             raise TypeError("b must be a Coordinate instance")
 
         self._b = value
-
-        if not self._initial_setting:
-            self._calculate()
+        self._calculate()
 
     @property
     def c(self) -> Coordinate:
@@ -151,9 +136,7 @@ class Circumcircle:
             raise TypeError("c must be a Coordinate instance")
 
         self._c = value
-
-        if not self._initial_setting:
-            self._calculate()
+        self._calculate()
 
     @property
     def center(self) -> Coordinate:
