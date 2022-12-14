@@ -1,7 +1,18 @@
-from ..src.bidimensional.polygons.triangle import Triangle
-from ..src.bidimensional.coordinates import Coordinate
-from math import sqrt
+"""Container module for `polygons.triangle` tests.
+
+This module contains all relevant test cases for the `polygons.triangle`
+module.
+
+Author:
+    Paulo Sanchez (@erlete)
+"""
+
+
 from itertools import combinations, permutations
+from math import sqrt
+
+from ..src.bidimensional.coordinates import Coordinate
+from ..src.bidimensional.polygons.triangle import Triangle
 
 
 class TestTriangle:
@@ -247,8 +258,10 @@ class TestTriangle:
             Coordinate(1, 0)
         )
 
+        triangle_3 = triangle_2
+
         assert triangle_1 >= triangle_2
-        assert triangle_1 >= triangle_1
+        assert triangle_2 >= triangle_3
 
     def test_le(self) -> None:
         """Triangle less than or equal test.
@@ -269,8 +282,10 @@ class TestTriangle:
             Coordinate(1 + self.DEFINITION_TOL, 0)
         )
 
+        triangle_3 = triangle_2
+
         assert triangle_1 <= triangle_2
-        assert triangle_1 <= triangle_1
+        assert triangle_2 <= triangle_3
 
     def test_is_right(self) -> None:
         """Triangle right angle test.
