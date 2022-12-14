@@ -379,3 +379,19 @@ class TestTriangle:
             Triangle(*triplet).is_scalene() is True
             for triplet in permutations(coordinates, 3)
         )
+
+    def test_circumcircle(self) -> None:
+        """Triangle circumcircle test.
+
+        This test case checks if the `circumcenter` and `circumradius`
+        attributes are correctly computed for a triangle.
+        """
+
+        triangle = Triangle(
+            Coordinate(0, 0),
+            Coordinate(1, 0),
+            Coordinate(0, 1)
+        )
+
+        assert triangle.circumcenter == Coordinate(.5, .5)
+        assert triangle.circumradius == sqrt(.5)
