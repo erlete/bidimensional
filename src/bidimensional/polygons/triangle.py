@@ -1,3 +1,13 @@
+"""Triangle polygon utilities module.
+
+This module contains all utilities related to the triangle polygon, such as
+calculating the area, perimeter, circumcenter and circumradius, etc.
+
+Author:
+    Paulo Sanchez (@erlete)
+"""
+
+
 from __future__ import annotations
 
 from itertools import combinations
