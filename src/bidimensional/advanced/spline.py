@@ -458,9 +458,6 @@ class Spline:
             self._generation_step
         )
 
-        from time import perf_counter
-        pc = perf_counter()
-
         data = np.array(
             [(
                 Coordinate(*self._compute_position(i)),
@@ -469,8 +466,6 @@ class Spline:
             ) for i in knots_ext],
             dtype=object
         )
-
-        print(perf_counter() - pc)
 
         return data[:, 0], data[:, 1], data[:, 2]
 
