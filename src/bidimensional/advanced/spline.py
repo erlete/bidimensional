@@ -224,9 +224,8 @@ class Spline:
     generation step parameter.
 
     Args:
-        x (list): List of x coordinates.
-        y (list): List of y coordinates.
-        generation_step (float): The step used to generate the spline.
+        coordiantes (list): The list of coordinates to generate the spline.
+        gen_step (float): The step used to generate the spline.
 
     Notes:
         The number of x and y values must be the same.
@@ -243,16 +242,17 @@ class Spline:
         "lw": 1.5
     }
 
-    def __init__(self, x, y, generation_step=.1) -> None:
-        self._x, self._y = x, y
+    def __init__(self, coordinates, gen_step=.1) -> None:
+        self._x = [coord.x for coord in coordinates]
+        self._y = [coord.y for coord in coordinates]
 
-        if len(x) != len(y):
+        if len(self._x) != len(self._y):
             raise ValueError("The number of x and y values must be the same.")
 
-        self._knots = self._compute_knots(x, y)
-        self._spline_x = SplineBase(self._knots, x)
-        self._spline_y = SplineBase(self._knots, y)
-        self._generation_step = generation_step
+        self._knots = self._compute_knots(self._x, self._y)
+        self._spline_x = SplineBase(self._knots, self._x)
+        self._spline_y = SplineBase(self._knots, self._y)
+        self._generation_step = gen_step
         self._positions, self._curvature, self._yaw = self._compute_results()
 
     @property
