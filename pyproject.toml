@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bidimensional"
-version = "1.6.9"
+version = "1.6.10"
 authors = [
     {name = "Paulo Sanchez", email = "dev.szblzpaulo@gmail.com"}
 ]
