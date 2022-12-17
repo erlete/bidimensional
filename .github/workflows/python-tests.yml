@@ -45,6 +45,3 @@ jobs:
 
     - name: Test with PyTest
       run: python -m pytest tests/
-
-    - name: Deactivate virtual environment
-      run: deactivate
