@@ -435,6 +435,19 @@ class Triangle:
         self._properties.clear()
 
     @property
+    def vertices(self) -> dict[str, Coordinate]:
+        """Vertices of the triangle.
+
+        Returns:
+            dict[str, Coordinate]: Vertices of the triangle.
+        """
+
+        if self._properties.get("vertices") is None:
+            self._properties["vertices"] = [self._a, self._b, self._c]
+
+        return self._properties["vertices"]
+
+    @property
     def sides(self) -> dict[str, float]:
         """Sides of the triangle.
 
