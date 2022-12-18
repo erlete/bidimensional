@@ -15,8 +15,9 @@ from math import sqrt
 
 import matplotlib.pyplot as plt
 
-from .. import operations as op
-from ..coordinates import Coordinate
+from ..core import operations as op
+from ..core.coordinates import Coordinate
+from ..core.lines import Segment
 
 
 class Circumcircle:
