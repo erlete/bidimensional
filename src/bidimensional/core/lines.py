@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from .coordinates import Coordinate
 from . import operations as op
+import matplotlib.pyplot as plt
 from typing import Generator
 
 
@@ -88,6 +89,22 @@ class Line:
         y = self.slope * (x - self.b.x) + self.b.y
 
         return Coordinate(x, y)
+
+    def plot(self, ax: plt.Axes | None = None, **kwargs) -> None:
+        """Plots the line using the matplotlib library.
+
+        Args:
+            ax (plt.Axes, optional): The matplotlib axes object to plot the
+                line. Defaults to None. If None, the current axes will be
+                used.
+            **kwargs: The keyword arguments to pass to the matplotlib
+                `Axes.plot` method.
+        """
+
+        if ax is None:
+            ax = plt.gca()
+
+        ax.axline(self.a, self.b, **kwargs)
 
     def __mul__(self, line: Line) -> Coordinate | None:
         return self.intersect(line)
@@ -220,6 +237,22 @@ class Segment(Line):
             return intersection
 
         return None
+
+    def plot(self, ax: plt.Axes | None = None, **kwargs) -> None:
+        """Plots the segment using the matplotlib library.
+
+        Args:
+            ax (plt.Axes, optional): The matplotlib axes object to plot the
+                segment. Defaults to None. If None, the current axes will be
+                used.
+            **kwargs: The keyword arguments to pass to the matplotlib
+                `Axes.plot` method.
+        """
+
+        if ax is None:
+            ax = plt.gca()
+
+        ax.plot([self.a.x, self.b.x], [self.a.y, self.b.y], '-', **kwargs)
 
     def __str__(self) -> str:
         return f"Segment({self.a}, {self.b})"

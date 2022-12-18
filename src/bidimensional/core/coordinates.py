@@ -12,6 +12,7 @@ Author:
 from __future__ import annotations
 
 from math import ceil, floor, trunc
+import matplotlib.pyplot as plt
 from typing import Generator
 
 
@@ -64,6 +65,22 @@ class Coordinate:
             raise TypeError("y must be an int or float")
 
         self._y = value
+
+    def plot(self, ax: plt.Axes | None = None, **kwargs) -> None:
+        """Plots the coordinate using the matplotlib library.
+
+        Args:
+            ax (plt.Axes, optional): The matplotlib axes object to plot the
+                coordinate. Defaults to None. If None, the current axes will
+                be used.
+            **kwargs: The keyword arguments to pass to the matplotlib
+                `Axes.plot` method.
+        """
+
+        if ax is None:
+            ax = plt.gca()
+
+        ax.plot(self._x, self._y, "o", **kwargs)
 
     def __add__(self, value) -> Coordinate:
         if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
