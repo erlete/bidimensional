@@ -456,7 +456,7 @@ class Triangle:
         """Sides of the triangle.
 
         Returns:
-            dict[str, float]: Sides of the triangle.
+            dict[str, Segment]: Sides of the triangle.
         """
 
         if self._properties.get("sides") is None:
