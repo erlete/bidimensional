@@ -29,6 +29,11 @@ class Line:
         "linestyle": (5, (10, 3))
     }
 
+    _ERROR_MSGS = {
+        "TypeError1": "value must be a Coordinate object.",
+        "TypeError2": "value must be a Line object."
+    }
+
     def __init__(self, a: Coordinate, b: Coordinate) -> None:
         self._properties = {}
 
@@ -42,7 +47,7 @@ class Line:
     @a.setter
     def a(self, value) -> None:
         if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate object.")
+            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
 
         self._a = value
         self._properties.clear()
@@ -54,7 +59,7 @@ class Line:
     @b.setter
     def b(self, value) -> None:
         if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate object.")
+            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
 
         self._b = value
         self._properties.clear()
@@ -127,13 +132,13 @@ class Line:
 
     def __eq__(self, value) -> bool:
         if not isinstance(value, Line):
-            raise TypeError("value must be a Line object.")
+            raise TypeError(self._ERROR_MSGS.get("TypeError2"))
 
         return self.a == value.a and self.b == value.b
 
     def __ne__(self, value) -> bool:
         if not isinstance(value, Line):
-            raise TypeError("value must be a Line object.")
+            raise TypeError(self._ERROR_MSGS.get("TypeError2"))
 
         return self.a != value.a or self.b != value.b
 
