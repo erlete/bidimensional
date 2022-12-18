@@ -205,6 +205,11 @@ class Segment(Line):
         slope (float): The slope of the segment.
     """
 
+    STYLES = {
+        "color": "#396fe3",
+        "lw": 1
+    }
+
     def __init__(self, a: Coordinate, b: Coordinate) -> None:
         super().__init__(a, b)
 
@@ -253,21 +258,25 @@ class Segment(Line):
 
         return None
 
-    def plot(self, ax: plt.Axes | None = None, **kwargs) -> None:
-        """Plots the segment using the matplotlib library.
+    def plot(self, *args, ax=None, **kwargs) -> None:
+        """Plots the segment.
 
         Args:
-            ax (plt.Axes, optional): The matplotlib axes object to plot the
-                segment. Defaults to None. If None, the current axes will be
-                used.
-            **kwargs: The keyword arguments to pass to the matplotlib
-                `Axes.plot` method.
+            *args: Arguments to pass to the plot function.
+            ax (matplotlib.axes.Axes, optional): The axes to plot on. Defaults
+                to None (if None, the current axes will be used).
+            **kwargs: Keyword arguments to pass to the plot
         """
 
-        if ax is None:
-            ax = plt.gca()
+        styles = self.STYLES.copy()
+        styles.update(kwargs)
+        shape = args[0] if args else '-'
+        ax = plt.gca() if ax is None else ax
 
-        ax.plot([self.a.x, self.b.x], [self.a.y, self.b.y], '-', **kwargs)
+        ax.plot(
+            (self._a.x, self._b.x), (self._a.y, self._b.y),
+            shape, **styles
+        )
 
     def __str__(self) -> str:
         return f"Segment({self.a}, {self.b})"
