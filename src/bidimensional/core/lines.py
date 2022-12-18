@@ -154,3 +154,70 @@ class Line:
 
     def __len__(self) -> int:
         return 2
+
+
+class Segment(Line):
+    """A class to represent a segment in 2D space.
+
+    This class provides a way to represent a segment in 2D space. It must be
+    composed by two Coordinate objects.
+
+    Args:
+        a (Coordinate): The first coordinate.
+        b (Coordinate): The second coordinate.
+
+    Attributes:
+        a (Coordinate): The first coordinate.
+        b (Coordinate): The second coordinate.
+        slope (float): The slope of the segment.
+    """
+
+    def __init__(self, a: Coordinate, b: Coordinate) -> None:
+        super().__init__(a, b)
+
+    def intersect(self, line: Line) -> Coordinate | None:
+        """Determines the intersection between two segments.
+
+        Args:
+            line (Line): the line to determine the intersection with.
+
+        Raises:
+            TypeError: if line is not a Line object.
+
+        Returns:
+            Coordinate | None: the intersection between the two segments (if it
+                exists, otherwise None).
+        """
+
+        if not isinstance(line, Line):
+            raise TypeError(f"Expected Line, got {type(line)}")
+
+        intersection = super().intersect(line)
+        if intersection is None:
+            return None
+
+        if (
+            self.a.x <= intersection.x <= self.b.x
+            or self.b.x <= intersection.x <= self.a.x
+        ) and (
+            self.a.y <= intersection.y <= self.b.y
+            or self.b.y <= intersection.y <= self.a.y
+        ) and (
+            line.a.x <= intersection.x <= line.b.x
+            or line.b.x <= intersection.x <= line.a.x
+        ) and (
+            line.a.y <= intersection.y <= line.b.y
+            or line.b.y <= intersection.y <= line.a.y
+        ):
+            return intersection
+
+        return None
+
+    def __str__(self) -> str:
+        return f"Segment({self.a}, {self.b})"
+
+    def __repr__(self) -> str:
+        return f"Segment({self.a}, {self.b})"
+
+    def __len__(self) -> int:
+        return 2
