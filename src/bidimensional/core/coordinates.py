@@ -31,6 +31,11 @@ class Coordinate:
         The y-coordinate.
     """
 
+    STYLES = {
+        "color": "#396fe3",
+        "ms": 10
+    }
+
     SEQUENTIAL = (tuple, list, set)
 
     _ERROR_MSGS = {
@@ -66,21 +71,26 @@ class Coordinate:
 
         self._y = value
 
-    def plot(self, ax: plt.Axes | None = None, **kwargs) -> None:
-        """Plots the coordinate using the matplotlib library.
+    def plot(self, *args, ax=None, annotate=False, **kwargs) -> None:
+        """Plots the coordinate.
 
         Args:
-            ax (plt.Axes, optional): The matplotlib axes object to plot the
-                coordinate. Defaults to None. If None, the current axes will
-                be used.
-            **kwargs: The keyword arguments to pass to the matplotlib
-                `Axes.plot` method.
+            *args: Arguments to pass to the plot function.
+            ax (matplotlib.axes.Axes, optional): The axes to plot on. Defaults
+                to None (if None, the current axes will be used).
+            annotate (bool, optional): Whether to annotate the coordinate.
+            **kwargs: Keyword arguments to pass to the plot
         """
 
-        if ax is None:
-            ax = plt.gca()
+        styles = self.STYLES.copy()
+        styles.update(kwargs)
+        shape = args[0] if args else '.'
+        ax = plt.gca() if ax is None else ax
 
-        ax.plot(self._x, self._y, "o", **kwargs)
+        if annotate:
+            ax.annotate(f"({self._x:.4f}, {self._y:.4f})", (self._x, self._y))
+
+        ax.plot(self._x, self._y, shape, **styles)
 
     def __add__(self, value) -> Coordinate:
         if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
