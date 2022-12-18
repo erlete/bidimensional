@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .coordinates import Coordinate
+from . import operations as op
 from typing import Generator
 
 
@@ -220,4 +221,4 @@ class Segment(Line):
         return f"Segment({self.a}, {self.b})"
 
     def __len__(self) -> int:
-        return 2
+        return op.distance(self.a, self.b)
