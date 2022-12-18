@@ -107,7 +107,7 @@ class Line:
         return Coordinate(x, y)
 
     def plot(self, ax=None, **kwargs) -> None:
-        """Plots the coordinate.
+        """Plots the line.
 
         Args:
             ax (matplotlib.axes.Axes, optional): The axes to plot on. Defaults
