@@ -24,8 +24,9 @@ class Line:
 
     STYLES = {
         "color": "#7d4e11",
-        "lw": .5,
-        "linestyle": "--"
+        "lw": 1.25,
+        "alpha": .3,
+        "linestyle": (5, (10, 3))
     }
 
     def __init__(self, a: Coordinate, b: Coordinate) -> None:
