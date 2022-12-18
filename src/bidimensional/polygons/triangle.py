@@ -345,8 +345,7 @@ class Triangle:
 
     TOL_DIGITS = 10
 
-    def __init__(self, a: Coordinate, b: Coordinate,
-                 c: Coordinate) -> None:
+    def __init__(self, a: Coordinate, b: Coordinate, c: Coordinate) -> None:
 
         self._properties = {}
 
@@ -434,6 +433,23 @@ class Triangle:
 
         self._c = value
         self._properties.clear()
+
+    @property
+    def sides(self) -> dict[str, float]:
+        """Sides of the triangle.
+
+        Returns:
+            dict[str, float]: Sides of the triangle.
+        """
+
+        if self._properties.get("sides") is None:
+            self._properties["sides"] = [
+                Segment(self._a, self._b),
+                Segment(self._b, self._c),
+                Segment(self._c, self._a)
+            ]
+
+        return self._properties["sides"]
 
     @property
     def area(self) -> float:
