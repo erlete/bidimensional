@@ -176,6 +176,13 @@ class Segment(Line):
     def __init__(self, a: Coordinate, b: Coordinate) -> None:
         super().__init__(a, b)
 
+    @property
+    def distance(self) -> float:
+        if self._properties.get("distance") is None:
+            self._properties["distance"] = op.distance(self._a, self._b)
+
+        return self._properties["distance"]
+
     def intersect(self, line: Line) -> Coordinate | None:
         """Determines the intersection between two segments.
 
@@ -219,6 +226,3 @@ class Segment(Line):
 
     def __repr__(self) -> str:
         return f"Segment({self.a}, {self.b})"
-
-    def __len__(self) -> int:
-        return op.distance(self.a, self.b)
