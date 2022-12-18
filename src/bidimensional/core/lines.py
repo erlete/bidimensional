@@ -216,6 +216,26 @@ class Segment(Line):
         super().__init__(a, b)
 
     @property
+    def x(self) -> float:
+        """Returns the x difference between the two coordinates.
+
+        Returns:
+            float: The x difference between the two coordinates.
+        """
+
+        return self.b.x - self.a.x
+
+    @property
+    def y(self) -> float:
+        """Returns the y difference between the two coordinates.
+
+        Returns:
+            float: The y difference between the two coordinates.
+        """
+
+        return self.b.y - self.a.y
+
+    @property
     def distance(self) -> float:
         if self._properties.get("distance") is None:
             self._properties["distance"] = op.distance(self._a, self._b)
