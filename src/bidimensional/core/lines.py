@@ -300,6 +300,15 @@ class Segment(Line):
             shape, **styles
         )
 
+    def __eq__(self, value) -> bool:
+        if not isinstance(value, Segment):
+            raise TypeError("value must be a Segment object.")
+
+        return self.a in (value.a, value.b) and self.b in (value.a, value.b)
+
+    def __hash__(self) -> int:
+        return hash(hash(self.a) + hash(self.b))
+
     def __str__(self) -> str:
         return f"Segment({self.a}, {self.b})"
 
