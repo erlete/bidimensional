@@ -80,7 +80,10 @@ class Line:
         if self.slope == line.slope:
             return None
 
-        x = (line.b.y - self.b.y + self.slope * self.b.x - line.slope * line.b.x) / (self.slope - line.slope)
+        x = (
+            line.b.y - self.b.y + self.slope
+            * self.b.x - line.slope * line.b.x
+        ) / (self.slope - line.slope)
         y = self.slope * (x - self.b.x) + self.b.y
 
         return Coordinate(x, y)
