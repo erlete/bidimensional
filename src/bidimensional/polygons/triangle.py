@@ -461,10 +461,10 @@ class Triangle:
 
         if self._properties.get("sides") is None:
             self._properties["sides"] = {
-                ''.join(comb): Segment(
-                    self.vertices.get(comb[0]),
-                    self.vertices.get(comb[1])
-                ) for comb in permutations(self.vertices.keys(), 2)
+                ''.join(pair): Segment(
+                    self.vertices.get(pair[0]),
+                    self.vertices.get(pair[1])
+                ) for pair in permutations(self.vertices.keys(), 2)
             }
 
         return self._properties["sides"]
