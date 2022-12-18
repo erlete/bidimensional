@@ -493,7 +493,7 @@ class Triangle:
         if self._properties.get("perimeter") is None:
             self._properties["perimeter"] = sum(
                 side.distance
-                for side in self.sides
+                for side in set(self.sides.values())
             )
 
         return self._properties["perimeter"]
