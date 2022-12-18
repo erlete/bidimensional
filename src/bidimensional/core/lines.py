@@ -55,10 +55,20 @@ class Line:
     @property
     def slope(self) -> float:
         if self._properties.get("slope") is None:
-            self._properties["slope"] = (
-                (self.b.y - self.a.y)
-                / (self.b.x - self.a.x)
-            )
+
+            if self.b.x - self.a.x == 0:
+                print("Warning: slope has an infinite value.")
+
+                self._properties["slope"] = (
+                    (self.b.y - self.a.y)
+                    / 1e-14
+                )
+
+            else:
+                self._properties["slope"] = (
+                    (self.b.y - self.a.y)
+                    / (self.b.x - self.a.x)
+                )
 
         return self._properties["slope"]
 
