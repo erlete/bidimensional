@@ -22,6 +22,12 @@ class Line:
         slope (float): The slope of the line.
     """
 
+    STYLES = {
+        "color": "#7d4e11",
+        "lw": .5,
+        "linestyle": "--"
+    }
+
     def __init__(self, a: Coordinate, b: Coordinate) -> None:
         self._properties = {}
 
@@ -100,21 +106,20 @@ class Line:
 
         return Coordinate(x, y)
 
-    def plot(self, ax: plt.Axes | None = None, **kwargs) -> None:
-        """Plots the line using the matplotlib library.
+    def plot(self, ax=None, **kwargs) -> None:
+        """Plots the coordinate.
 
         Args:
-            ax (plt.Axes, optional): The matplotlib axes object to plot the
-                line. Defaults to None. If None, the current axes will be
-                used.
-            **kwargs: The keyword arguments to pass to the matplotlib
-                `Axes.plot` method.
+            ax (matplotlib.axes.Axes, optional): The axes to plot on. Defaults
+                to None (if None, the current axes will be used).
+            **kwargs: Keyword arguments to pass to the plot
         """
 
-        if ax is None:
-            ax = plt.gca()
+        styles = self.STYLES.copy()
+        styles.update(kwargs)
+        ax = plt.gca() if ax is None else ax
 
-        ax.axline(self.a, self.b, **kwargs)
+        ax.axline(self.a, self.b, **styles)
 
     def __mul__(self, line: Line) -> Coordinate | None:
         return self.intersect(line)
