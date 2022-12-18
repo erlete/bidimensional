@@ -208,7 +208,8 @@ class Segment(Line):
 
     STYLES = {
         "color": "#396fe3",
-        "lw": 1
+        "lw": 1.5,
+        "alpha": .9
     }
 
     def __init__(self, a: Coordinate, b: Coordinate) -> None:
