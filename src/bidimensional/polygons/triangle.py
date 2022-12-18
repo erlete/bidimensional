@@ -10,7 +10,7 @@ Author:
 
 from __future__ import annotations
 
-from itertools import combinations
+from itertools import combinations, permutations
 from math import sqrt
 
 import matplotlib.pyplot as plt
@@ -443,7 +443,11 @@ class Triangle:
         """
 
         if self._properties.get("vertices") is None:
-            self._properties["vertices"] = [self._a, self._b, self._c]
+            self._properties["vertices"] = {
+                'a': self.a,
+                'b': self.b,
+                'c': self.c
+            }
 
         return self._properties["vertices"]
 
@@ -456,11 +460,12 @@ class Triangle:
         """
 
         if self._properties.get("sides") is None:
-            self._properties["sides"] = [
-                Segment(self._a, self._b),
-                Segment(self._b, self._c),
-                Segment(self._c, self._a)
-            ]
+            self._properties["sides"] = {
+                ''.join(comb): Segment(
+                    self.vertices.get(comb[0]),
+                    self.vertices.get(comb[1])
+                ) for comb in permutations(self.vertices.keys(), 2)
+            }
 
         return self._properties["sides"]
 
