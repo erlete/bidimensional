@@ -12,8 +12,9 @@ Author:
 from __future__ import annotations
 
 from math import ceil, floor, trunc
-import matplotlib.pyplot as plt
 from typing import Generator
+
+import matplotlib.pyplot as plt
 
 
 class Coordinate:

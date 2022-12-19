@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-from .coordinates import Coordinate
-from . import operations as op
-import matplotlib.pyplot as plt
 from typing import Generator
+
+import matplotlib.pyplot as plt
+
+from . import operations as op
+from .coordinates import Coordinate
 
 
 class Line:
