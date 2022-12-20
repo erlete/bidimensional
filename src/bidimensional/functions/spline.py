@@ -15,7 +15,7 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ..coordinates import Coordinate
+from ..core.coordinates import Coordinate
 
 
 class SplineBase:
