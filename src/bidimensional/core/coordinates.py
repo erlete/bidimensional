@@ -24,12 +24,9 @@ class Coordinate:
     serve as a normalized conversion format for data going in and out of the
     scripts contained in the project.
 
-    Parameters:
-    -----------
-    - x: float
-        The x-coordinate.
-    - y: float
-        The y-coordinate.
+    Args:
+        x_value (float): The x value of the coordinate.
+        y_value (float): The y value of the coordinate.
     """
 
     STYLES = {
