@@ -10,13 +10,14 @@ Author:
 
 from __future__ import annotations
 
-from itertools import combinations
+from itertools import combinations, permutations
 from math import sqrt
 
 import matplotlib.pyplot as plt
 
-from .. import operations as op
-from ..coordinates import Coordinate
+from ..core import operations as op
+from ..core.coordinates import Coordinate
+from ..core.lines import Segment
 
 
 class Circumcircle:
@@ -344,8 +345,7 @@ class Triangle:
 
     TOL_DIGITS = 10
 
-    def __init__(self, a: Coordinate, b: Coordinate,
-                 c: Coordinate) -> None:
+    def __init__(self, a: Coordinate, b: Coordinate, c: Coordinate) -> None:
 
         self._properties = {}
 
@@ -435,6 +435,41 @@ class Triangle:
         self._properties.clear()
 
     @property
+    def vertices(self) -> dict[str, Coordinate]:
+        """Vertices of the triangle.
+
+        Returns:
+            dict[str, Coordinate]: Vertices of the triangle.
+        """
+
+        if self._properties.get("vertices") is None:
+            self._properties["vertices"] = {
+                'a': self.a,
+                'b': self.b,
+                'c': self.c
+            }
+
+        return self._properties["vertices"]
+
+    @property
+    def sides(self) -> dict[str, float]:
+        """Sides of the triangle.
+
+        Returns:
+            dict[str, Segment]: Sides of the triangle.
+        """
+
+        if self._properties.get("sides") is None:
+            self._properties["sides"] = {
+                ''.join(pair): Segment(
+                    self.vertices.get(pair[0]),
+                    self.vertices.get(pair[1])
+                ) for pair in permutations(self.vertices.keys(), 2)
+            }
+
+        return self._properties["sides"]
+
+    @property
     def area(self) -> float:
         """Area of the triangle.
 
@@ -456,8 +491,9 @@ class Triangle:
         """
 
         if self._properties.get("perimeter") is None:
-            self._properties["perimeter"] = op.perimeter(
-                self.a, self.b, self.c
+            self._properties["perimeter"] = sum(
+                side.distance
+                for side in set(self.sides.values())
             )
 
         return self._properties["perimeter"]

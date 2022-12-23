@@ -14,6 +14,8 @@ from __future__ import annotations
 from math import ceil, floor, trunc
 from typing import Generator
 
+import matplotlib.pyplot as plt
+
 
 class Coordinate:
     """Represents a pair of real-value, two dimensional coordinates.
@@ -22,13 +24,15 @@ class Coordinate:
     serve as a normalized conversion format for data going in and out of the
     scripts contained in the project.
 
-    Parameters:
-    -----------
-    - x: float
-        The x-coordinate.
-    - y: float
-        The y-coordinate.
+    Args:
+        x_value (float): The x value of the coordinate.
+        y_value (float): The y value of the coordinate.
     """
+
+    STYLES = {
+        "color": "#396fe3",
+        "ms": 10
+    }
 
     SEQUENTIAL = (tuple, list, set)
 
@@ -64,6 +68,27 @@ class Coordinate:
             raise TypeError("y must be an int or float")
 
         self._y = value
+
+    def plot(self, *args, ax=None, annotate=False, **kwargs) -> None:
+        """Plots the coordinate.
+
+        Args:
+            *args: Arguments to pass to the plot function.
+            ax (matplotlib.axes.Axes, optional): The axes to plot on. Defaults
+                to None (if None, the current axes will be used).
+            annotate (bool, optional): Whether to annotate the coordinate.
+            **kwargs: Keyword arguments to pass to the plot
+        """
+
+        styles = self.STYLES.copy()
+        styles.update(kwargs)
+        shape = args[0] if args else '.'
+        ax = plt.gca() if ax is None else ax
+
+        if annotate:
+            ax.annotate(f"({self._x:.4f}, {self._y:.4f})", (self._x, self._y))
+
+        ax.plot(self._x, self._y, shape, **styles)
 
     def __add__(self, value) -> Coordinate:
         if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
