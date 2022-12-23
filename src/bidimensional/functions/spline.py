@@ -485,17 +485,6 @@ class Spline:
         shape = args[0] if args else self.SHAPES["point"]
 
         ax = plt.gca() if ax is None else ax
-
-        title = ax.get_title()
-        x_label = "X [m]"
-        x_label = "Undefined" if x_label != ax.get_xlabel() != '' else x_label
-        y_label = "Y [m]"
-        y_label = "Undefined" if y_label != ax.get_ylabel() != '' else y_label
-
-        ax.set_title(f"{(title + ', ') if title else ''}Input data")
-        ax.set_xlabel(x_label)
-        ax.set_ylabel(y_label)
-
         ax.plot(self._x, self._y, shape, **styles)
 
     def plot_positions(self, *args, ax=None, **kwargs) -> None:
@@ -507,17 +496,6 @@ class Spline:
         shape = args[0] if args else self.SHAPES["line"]
 
         ax = plt.gca() if ax is None else ax
-
-        title = ax.get_title()
-        x_label = "X [m]"
-        x_label = "Undefined" if x_label != ax.get_xlabel() != '' else x_label
-        y_label = "Y [m]"
-        y_label = "Undefined" if y_label != ax.get_ylabel() != '' else y_label
-
-        ax.set_title(f"{(title + ', ') if title else ''}Spline interpolation")
-        ax.set_xlabel(x_label)
-        ax.set_ylabel(y_label)
-
         ax.plot(*zip(*self._positions), shape, **styles)
 
     def plot_curvature(self, *args, ax=None, **kwargs) -> None:
@@ -536,17 +514,6 @@ class Spline:
         shape = args[0] if args else self.SHAPES["line"]
 
         ax = plt.gca() if ax is None else ax
-
-        title = ax.get_title()
-        x_label = "Line length [m]"
-        x_label = "Undefined" if x_label != ax.get_xlabel() != '' else x_label
-        y_label = "Curvature [1/m]"
-        y_label = "Undefined" if y_label != ax.get_ylabel() != '' else y_label
-
-        ax.set_title(f"{(title + ', ') if title else ''}Spline curvature")
-        ax.set_xlabel(x_label)
-        ax.set_ylabel(y_label)
-
         ax.plot(
             np.arange(self._knots[0],
                       self._knots[-1],
@@ -571,17 +538,6 @@ class Spline:
         shape = args[0] if args else self.SHAPES["line"]
 
         ax = plt.gca() if ax is None else ax
-
-        title = ax.get_title()
-        x_label = "Line length [m]"
-        x_label = "Undefined" if x_label != ax.get_xlabel() != '' else x_label
-        y_label = "YAW angle [deg]"
-        y_label = "Undefined" if y_label != ax.get_ylabel() != '' else y_label
-
-        ax.set_title(f"{(title + ', ') if title else ''}Spline YAW")
-        ax.set_xlabel(x_label)
-        ax.set_ylabel(y_label)
-
         ax.plot(
             np.arange(self._knots[0],
                       self._knots[-1],
