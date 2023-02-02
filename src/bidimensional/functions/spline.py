@@ -39,10 +39,10 @@ class SplineBase:
     """
 
     def __init__(self, x, y):
-        self.x, self.y = x, y
+        self.x, self.y = np.array(x), np.array(y)
 
         # Determine the dimension of the X-axis:
-        self.x_dim = len(x)
+        self.x_dim = self.x.shape[0]
 
         # Compute the differences between the x-coordinates:
         x_diff = np.diff(x)
@@ -62,15 +62,30 @@ class SplineBase:
         # Compute the difference between b coefficients:
         b_diff = np.diff(self.b)
 
-        # Compute coefficient c:
-        self.c = np.array([
+        oldc = np.array([
             (d_diff[i]) / x_diff[i]
             - x_diff[i] * (self.b[i + 1] + 2.0 * self.b[i]) / 3.0
             for i in range(self.x_dim - 1)
         ])
 
+        # Compute coefficient c:
+        self.c = (
+            d_diff / x_diff
+            - x_diff * (self.b[1:] + 2.0 * self.b[:-1]) / 3.0
+        )
+
+        assert self.c.shape[0] == len(oldc), f"{self.c.shape = } != {len(oldc) = }"
+
         # Compute coefficient a:
-        self.a = [b_diff[i] / (3.0 * x_diff[i]) for i in range(self.x_dim - 1)]
+        olda = [b_diff[i] / (3.0 * x_diff[i]) for i in range(self.x_dim - 1)]
+        self.a = b_diff / (3.0 * x_diff)
+
+        assert self.a.shape[0] == len(olda), f"{self.a.shape = } != {len(olda) = }"
+
+        self.b = self.b[:-1]
+        self.d = self.d[:-1]
+
+        self.pos = None
 
     def position(self, x) -> float | None:
         """Computes the image of a given x-value in a spline section.
@@ -94,12 +109,22 @@ class SplineBase:
         i = self.__search_index(x)
         dx = x - self.x[i]
 
+        #print(f"{self.a.shape = }")
+        #print(f"{self.b.shape = }")
+        #print(f"{self.c.shape = }")
+        #print(f"{self.d.shape = }")
+
+        if self.pos is None:
+            self.pos = self.a * dx**3.0 + self.b * dx**2.0 + self.c * dx + self.d
+
         return (
             self.a[i] * dx**3.0
             + self.b[i] * dx**2.0
             + self.c[i] * dx
             + self.d[i]
         )
+
+        return self.pos[i]
 
     def first_derivative(self, x) -> float | None:
         """Computes the first derivative image
@@ -371,7 +396,7 @@ class Spline:
             list: List of yaw.
         """
 
-        return self.plot_yaw
+        return self._yaw
 
     def _compute_knots(self, x, y):
         """Computes the knots of the spline.
@@ -384,7 +409,10 @@ class Spline:
             list: List of knots.
         """
 
-        return [0] + list(np.cumsum(np.hypot(np.diff(x), np.diff(y))))
+        return np.concatenate((
+            np.zeros(1),
+            np.cumsum(np.hypot(np.diff(x), np.diff(y)))
+        ))
 
     def _compute_position(self, i):
         """Computes the image of a given x-value in a spline section.
@@ -414,18 +442,12 @@ class Spline:
             If x is outside of the X-range, the output is None.
         """
 
-        # This dictionary allows fast value checking:
-        derivatives = {
-            'x1': self._spline_x.first_derivative(i),
-            'x2': self._spline_x.second_derivative(i),
-            'y1': self._spline_y.first_derivative(i),
-            'y2': self._spline_y.second_derivative(i)
-        }
+        dx1 = self._spline_x.first_derivative(i)
+        dx2 = self._spline_x.second_derivative(i)
+        dy1 = self._spline_y.first_derivative(i)
+        dy2 = self._spline_y.second_derivative(i)
 
-        return (
-            derivatives["y2"] * derivatives["x1"]
-            - derivatives["x2"] * derivatives["y1"]
-        ) / ((derivatives["x1"]**2 + derivatives["y1"]**2) ** (3 / 2))
+        return (dy2 * dx1 - dx2 * dy1) / math.sqrt((dx1**2 + dy1**2))
 
     def _compute_yaw(self, i: int) -> float:
         """Computes the yaw of a given spline section.
