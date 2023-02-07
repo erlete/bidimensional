@@ -12,7 +12,7 @@ Author:
 from __future__ import annotations
 
 from math import ceil, floor, trunc
-from typing import Generator
+from typing import Generator, Literal
 
 import matplotlib.pyplot as plt
 
@@ -61,7 +61,7 @@ class Coordinate:
             value (int | float): the X component of the coordinate.
 
         Raises:
-            TypeError: of `value` is not an `int` or `float`.
+            TypeError: if `value` is not a type `int` or `float`.
         """
         if not isinstance(value, (int, float)):
             raise TypeError(
@@ -69,7 +69,7 @@ class Coordinate:
                 + f"got \"{value.__class__.__name__}\""
             )
 
-        self.x = float(value)
+        self._x = float(value)
 
     @property
     def y(self) -> float:
@@ -88,7 +88,7 @@ class Coordinate:
             value (int | float): the X component of the coordinate.
 
         Raises:
-            TypeError: of `value` is not an `int` or `float`.
+            TypeError: if `value` is not a type `int` or `float`.
         """
         if not isinstance(value, (int, float)):
             raise TypeError(
@@ -96,19 +96,18 @@ class Coordinate:
                 + f"got \"{value.__class__.__name__}\""
             )
 
-        self.y = float(value)
+        self._y = float(value)
 
     def plot(self, *args, ax=None, annotate=False, **kwargs) -> None:
-        """Plots the coordinate.
+        """Plot the coordinate.
 
         Args:
-            *args: Arguments to pass to the plot function.
+            *args (tuple): Arguments to pass to the plot function.
             ax (matplotlib.axes.Axes, optional): The axes to plot on. Defaults
                 to None (if None, the current axes will be used).
             annotate (bool, optional): Whether to annotate the coordinate.
-            **kwargs: Keyword arguments to pass to the plot
+            **kwargs (dict): Keyword arguments to pass to the plot
         """
-
         styles = self.STYLES.copy()
         styles.update(kwargs)
         shape = args[0] if args else '.'
@@ -120,6 +119,14 @@ class Coordinate:
         ax.plot(self._x, self._y, shape, **styles)
 
     def __add__(self, value) -> Coordinate:
+        """Add two coordinates.
+
+        Args:
+            value (Coordinate): the other coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         if isinstance(value, Coordinate):
             return Coordinate(self._x + value.x, self._y + value.y)
 
@@ -129,6 +136,14 @@ class Coordinate:
         )
 
     def __sub__(self, value) -> Coordinate:
+        """Subtract two coordinates.
+
+        Args:
+            value (Coordinate): the other coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         if isinstance(value, Coordinate):
             return Coordinate(self._x - value.x, self._y - value.y)
 
@@ -138,6 +153,14 @@ class Coordinate:
         )
 
     def __mul__(self, value) -> Coordinate:
+        """Multiply two coordinates.
+
+        Args:
+            value (Coordinate): the other coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         if isinstance(value, Coordinate):
             return Coordinate(self._x * value.x, self._y * value.y)
 
@@ -147,6 +170,14 @@ class Coordinate:
         )
 
     def __truediv__(self, value) -> Coordinate:
+        """Divide two coordinates (floating point).
+
+        Args:
+            value (Coordinate): the other coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         if isinstance(value, Coordinate):
             return Coordinate(self._x * value.x, self._y * -value.y)
 
@@ -156,6 +187,14 @@ class Coordinate:
         )
 
     def __floordiv__(self, value) -> Coordinate:
+        """Divide two coordinates (floor result).
+
+        Args:
+            value (Coordinate): the other coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         if isinstance(value, Coordinate):
             temp = floor(self / value)
             return Coordinate(temp.x, temp.y)
@@ -167,6 +206,14 @@ class Coordinate:
         )
 
     def __mod__(self, value) -> Coordinate:
+        """Modulus of two coordinates.
+
+        Args:
+            value (Coordinate): the other coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         if isinstance(value, Coordinate):
             temp = (self / value - self // value) * value
             return Coordinate(temp.x, temp.y)
@@ -177,33 +224,85 @@ class Coordinate:
         )
 
     def __neg__(self) -> Coordinate:
+        """Negate a coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         return Coordinate(-self._x, -self._y)
 
     def __pos__(self) -> Coordinate:
+        """Positivize a coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         return Coordinate(+self._x, +self._y)
 
     def __abs__(self) -> Coordinate:
+        """Return the absolute value of a coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         return Coordinate(abs(self._x), abs(self._y))
 
     def __invert__(self) -> Coordinate:
+        """Invert the coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         return Coordinate(~self._x, ~self._y)
 
     def __round__(self, n: int = 0) -> Coordinate:
+        """Round a coordinate.
+
+        Args:
+            n (int, optional): the digits of precission for the rounding
+                operation. Defaults to 0.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         if not isinstance(n, int):
             raise TypeError("n must be an int.")
 
         return Coordinate(round(self._x, n), round(self._y, n))
 
     def __floor__(self) -> Coordinate:
+        """Floor a coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         return Coordinate(floor(self._x), floor(self._y))
 
     def __ceil__(self) -> Coordinate:
+        """Ceil a coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         return Coordinate(ceil(self._x), ceil(self._y))
 
     def __trunc__(self) -> Coordinate:
+        """Truncate a coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         return Coordinate(trunc(self._x), trunc(self._y))
 
     def __eq__(self, value) -> bool:
+        """Compare the equality of two coordinates.
+
+        Args:
+            value (Coordinate): the other coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         if not isinstance(value, Coordinate):
             raise TypeError(
                 f"expected \"{self.__class__.__name__}\", "
@@ -213,6 +312,14 @@ class Coordinate:
         return self._x == value.x and self._y == value.y
 
     def __ne__(self, value) -> bool:
+        """Compare the inequality of two coordinates.
+
+        Args:
+            value (Coordinate): the other coordinate.
+
+        Returns:
+            Coordinate: the result of the operation.
+        """
         if not isinstance(value, Coordinate):
             raise TypeError(
                 f"expected \"{self.__class__.__name__}\", "
@@ -222,21 +329,57 @@ class Coordinate:
         return self._x != value.x or self._y != value.y
 
     def __str__(self) -> str:
+        """Convert the coordinate to a string.
+
+        Returns:
+            str: the coordinate as a string.
+        """
         return f"Coordinate({self._x}, {self._y})"
 
     def __repr__(self) -> str:
+        """Obtain the string representation of the coordinate.
+
+        Returns:
+            str: the string representation of the coordinate.
+        """
         return f"Coordinate({self._x}, {self._y})"
 
     def __hash__(self) -> int:
+        """Obtain the hash of the coordinate.
+
+        Returns:
+            int: the hash of the coordinate.
+        """
         return hash((self._x, self._y))
 
     def __bool__(self) -> bool:
+        """Obtain the boolean value of the coordinate.
+
+        Returns:
+            bool: the boolean value of the coordinate.
+        """
         return self._x != 0 or self._y != 0
 
-    def __len__(self) -> int:
+    def __len__(self) -> Literal[2]:
+        """Obtain the amount of terms in the coordinate.
+
+        Returns:
+            int: the amount of terms in the coordinate.
+        """
         return 2
 
-    def __getitem__(self, index) -> float:
+    def __getitem__(self, index: int) -> float:
+        """Get the X or Y coordinate components via index.
+
+        Args:
+            index (int): the index of the component.
+
+        Returns:
+            float: the value of the component.
+
+        Raises:
+            IndexError: if the index of the component is not 0 or 1.
+        """
         if index == 0:
             return self._x
         elif index == 1:
@@ -244,37 +387,41 @@ class Coordinate:
         else:
             raise IndexError("index must be 0 (x) or 1 (y)")
 
-    def __setitem__(self, index, value) -> None:
+    def __setitem__(self, index: int, value: int | float) -> None:
+        """Set the X or Y coordinate components via index.
+
+        Args:
+            index (int): the index of the component.
+            value (int | float): the new value of the component.
+
+        Raises:
+            IndexError: if the index of the component is not 0 or 1.
+        """
         if index == 0:
-            self._x = value
+            self.x = value
         elif index == 1:
-            self._y = value
+            self.y = value
         else:
             raise IndexError("index must be 0 (x) or 1 (y)")
 
     def __iter__(self) -> Generator[float, None, None]:
+        """Obtain the iterable of the coordinate.
+
+        Returns:
+            Generator[float, None, None]: the iterable of the coordinate.
+        """
         yield self._x
         yield self._y
 
     def __reversed__(self) -> Generator[float, None, None]:
+        """Obtain the reversed iterable of the coordinate.
+
+        Returns:
+            Generator[float, None, None]: the reversed iterable of the
+                coordinate.
+        """
         yield self._y
         yield self._x
-
-    def __getattr__(self, name) -> float:
-        if name == 'x':
-            return self._x
-        elif name == 'y':
-            return self._y
-
-        raise AttributeError(f"{name} is not an attribute")
-
-    def __delattr__(self, name) -> None:
-        if name == 'x':
-            del self._x
-        elif name == 'y':
-            del self._y
-
-        raise AttributeError(f"{name} is not an attribute")
 
     def __copy__(self) -> Coordinate:
         return self.__class__(self._x, self._y)
