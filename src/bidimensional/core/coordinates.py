@@ -41,8 +41,8 @@ class Coordinate:
             x_value (int | float): the X component of the coordinate.
             y_value (int | float): the Y component of the coordinate.
         """
-        self.x: float = float(x_value)
-        self.y: float = float(y_value)
+        self.x: float = x_value
+        self.y: float = y_value
 
     @property
     def x(self) -> float:
@@ -64,9 +64,12 @@ class Coordinate:
             TypeError: of `value` is not an `int` or `float`.
         """
         if not isinstance(value, (int, float)):
-            raise TypeError("x must be an int or float")
+            raise TypeError(
+                "expected \"int\" or \"float\", "
+                + f"got \"{value.__class__.__name__}\""
+            )
 
-        self._x = value
+        self.x = float(value)
 
     @property
     def y(self) -> float:
@@ -88,9 +91,12 @@ class Coordinate:
             TypeError: of `value` is not an `int` or `float`.
         """
         if not isinstance(value, (int, float)):
-            raise TypeError("y must be an int or float")
+            raise TypeError(
+                "expected \"int\" or \"float\", "
+                + f"got \"{value.__class__.__name__}\""
+            )
 
-        self._y = value
+        self.y = float(value)
 
     def plot(self, *args, ax=None, annotate=False, **kwargs) -> None:
         """Plots the coordinate.
@@ -117,39 +123,58 @@ class Coordinate:
         if isinstance(value, Coordinate):
             return Coordinate(self._x + value.x, self._y + value.y)
 
-        raise TypeError("value must be a Coordinate")
+        raise TypeError(
+            f"expected \"{self.__class__.__name__}\", "
+            + f"got \"{value.__class__.__name__}\""
+        )
 
     def __sub__(self, value) -> Coordinate:
         if isinstance(value, Coordinate):
             return Coordinate(self._x - value.x, self._y - value.y)
 
-        raise TypeError("value must be a Coordinate")
+        raise TypeError(
+            f"expected \"{self.__class__.__name__}\", "
+            + f"got \"{value.__class__.__name__}\""
+        )
 
     def __mul__(self, value) -> Coordinate:
         if isinstance(value, Coordinate):
             return Coordinate(self._x * value.x, self._y * value.y)
 
-        raise TypeError("value must be a Coordinate")
+        raise TypeError(
+            f"expected \"{self.__class__.__name__}\", "
+            + f"got \"{value.__class__.__name__}\""
+        )
 
     def __truediv__(self, value) -> Coordinate:
         if isinstance(value, Coordinate):
             return Coordinate(self._x * value.x, self._y * -value.y)
 
-        raise TypeError("value must be a Coordinate")
+        raise TypeError(
+            f"expected \"{self.__class__.__name__}\", "
+            + f"got \"{value.__class__.__name__}\""
+        )
 
     def __floordiv__(self, value) -> Coordinate:
         if isinstance(value, Coordinate):
             temp = floor(self / value)
             return Coordinate(temp.x, temp.y)
+        self.__class__.__name__
 
-        raise TypeError("value must be a Coordinate")
+        raise TypeError(
+            f"expected \"{self.__class__.__name__}\", "
+            + f"got \"{value.__class__.__name__}\""
+        )
 
     def __mod__(self, value) -> Coordinate:
         if isinstance(value, Coordinate):
             temp = (self / value - self // value) * value
             return Coordinate(temp.x, temp.y)
 
-        raise TypeError("value must be a Coordinate")
+        raise TypeError(
+            f"expected \"{self.__class__.__name__}\", "
+            + f"got \"{value.__class__.__name__}\""
+        )
 
     def __neg__(self) -> Coordinate:
         return Coordinate(-self._x, -self._y)
@@ -180,13 +205,19 @@ class Coordinate:
 
     def __eq__(self, value) -> bool:
         if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate")
+            raise TypeError(
+                f"expected \"{self.__class__.__name__}\", "
+                + f"got \"{value.__class__.__name__}\""
+            )
 
         return self._x == value.x and self._y == value.y
 
     def __ne__(self, value) -> bool:
         if not isinstance(value, Coordinate):
-            raise TypeError("value must be a Coordinate")
+            raise TypeError(
+                f"expected \"{self.__class__.__name__}\", "
+                + f"got \"{value.__class__.__name__}\""
+            )
 
         return self._x != value.x or self._y != value.y
 
