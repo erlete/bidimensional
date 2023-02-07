@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 
 
 class Coordinate:
-    """Represents a pair of real-value, two dimensional coordinates.
+    """Real-value, bidimensional coordinate.
 
     This class represents a two-dimensional coordinate. Its main purpose is to
     serve as a normalized conversion format for data going in and out of the
@@ -43,16 +43,35 @@ class Coordinate:
         "must have only 2 items."
     }
 
-    def __init__(self, x_value: float, y_value: float) -> None:
+    def __init__(self, x_value: int | float, y_value: int | float) -> None:
+        """Initialize a coordinate instance.
+
+        Args:
+            x_value (int | float): the X component of the coordinate.
+            y_value (int | float): the Y component of the coordinate.
+        """
         self.x: float = float(x_value)
         self.y: float = float(y_value)
 
     @property
     def x(self) -> float:
+        """Get the X component of the coordinate.
+
+        Returns:
+            float: the X component of the coordinate.
+        """
         return self._x
 
     @x.setter
-    def x(self, value) -> None:
+    def x(self, value: int | float) -> None:
+        """Set the X component of the coordinate.
+
+        Args:
+            value (int | float): the X component of the coordinate.
+
+        Raises:
+            TypeError: of `value` is not an `int` or `float`.
+        """
         if not isinstance(value, (int, float)):
             raise TypeError("x must be an int or float")
 
@@ -60,10 +79,23 @@ class Coordinate:
 
     @property
     def y(self) -> float:
+        """Get the Y component of the coordinate.
+
+        Returns:
+            float: the Y component of the coordinate.
+        """
         return self._y
 
     @y.setter
     def y(self, value) -> None:
+        """Set the X component of the coordinate.
+
+        Args:
+            value (int | float): the X component of the coordinate.
+
+        Raises:
+            TypeError: of `value` is not an `int` or `float`.
+        """
         if not isinstance(value, (int, float)):
             raise TypeError("y must be an int or float")
 
