@@ -208,30 +208,6 @@ class Coordinate:
     def __trunc__(self) -> Coordinate:
         return Coordinate(trunc(self._x), trunc(self._y))
 
-    def __lt__(self, value) -> bool:
-        if not isinstance(value, Coordinate):
-            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
-
-        return self._x < value.x and self._y < value.y
-
-    def __le__(self, value) -> bool:
-        if not isinstance(value, Coordinate):
-            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
-
-        return self._x <= value.x and self._y <= value.y
-
-    def __gt__(self, value) -> bool:
-        if not isinstance(value, Coordinate):
-            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
-
-        return self._x > value.x and self._y > value.y
-
-    def __ge__(self, value) -> bool:
-        if not isinstance(value, Coordinate):
-            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
-
-        return self._x >= value.x and self._y >= value.y
-
     def __eq__(self, value) -> bool:
         if not isinstance(value, Coordinate):
             raise TypeError(self._ERROR_MSGS.get("TypeError1"))
