@@ -12,7 +12,7 @@ Author:
 from __future__ import annotations
 
 from math import ceil, floor, trunc
-from typing import Generator, Literal
+from typing import Any, Generator, Literal
 
 import matplotlib.pyplot as plt
 
@@ -25,11 +25,13 @@ class Coordinate:
     scripts contained in the project.
 
     Args:
-        x_value (float): The x value of the coordinate.
-        y_value (float): The y value of the coordinate.
+        x_value (float): the x value of the coordinate.
+        y_value (float): the y value of the coordinate.
+        STYLES (dict[str, Any]): the dictionary containing default matplotlib
+            styles for coordinate plotting.
     """
 
-    STYLES = {
+    STYLES: dict[str, Any] = {
         "color": "#396fe3",
         "ms": 10
     }
@@ -81,7 +83,7 @@ class Coordinate:
         return self._y
 
     @y.setter
-    def y(self, value) -> None:
+    def y(self, value: int | float) -> None:
         """Set the X component of the coordinate.
 
         Args:
@@ -118,7 +120,7 @@ class Coordinate:
 
         ax.plot(self._x, self._y, shape, **styles)
 
-    def __add__(self, value) -> Coordinate:
+    def __add__(self, value: Coordinate) -> Coordinate:
         """Add two coordinates.
 
         Args:
@@ -135,7 +137,7 @@ class Coordinate:
             + f"got \"{value.__class__.__name__}\""
         )
 
-    def __sub__(self, value) -> Coordinate:
+    def __sub__(self, value: Coordinate) -> Coordinate:
         """Subtract two coordinates.
 
         Args:
@@ -152,7 +154,7 @@ class Coordinate:
             + f"got \"{value.__class__.__name__}\""
         )
 
-    def __mul__(self, value) -> Coordinate:
+    def __mul__(self, value: Coordinate) -> Coordinate:
         """Multiply two coordinates.
 
         Args:
@@ -169,7 +171,7 @@ class Coordinate:
             + f"got \"{value.__class__.__name__}\""
         )
 
-    def __truediv__(self, value) -> Coordinate:
+    def __truediv__(self, value: Coordinate) -> Coordinate:
         """Divide two coordinates (floating point).
 
         Args:
@@ -186,7 +188,7 @@ class Coordinate:
             + f"got \"{value.__class__.__name__}\""
         )
 
-    def __floordiv__(self, value) -> Coordinate:
+    def __floordiv__(self, value: Coordinate) -> Coordinate:
         """Divide two coordinates (floor result).
 
         Args:
@@ -205,7 +207,7 @@ class Coordinate:
             + f"got \"{value.__class__.__name__}\""
         )
 
-    def __mod__(self, value) -> Coordinate:
+    def __mod__(self, value: Coordinate) -> Coordinate:
         """Modulus of two coordinates.
 
         Args:
@@ -247,14 +249,6 @@ class Coordinate:
         """
         return Coordinate(abs(self._x), abs(self._y))
 
-    def __invert__(self) -> Coordinate:
-        """Invert the coordinate.
-
-        Returns:
-            Coordinate: the result of the operation.
-        """
-        return Coordinate(~self._x, ~self._y)
-
     def __round__(self, n: int = 0) -> Coordinate:
         """Round a coordinate.
 
@@ -294,7 +288,7 @@ class Coordinate:
         """
         return Coordinate(trunc(self._x), trunc(self._y))
 
-    def __eq__(self, value) -> bool:
+    def __eq__(self, value: object) -> bool:
         """Compare the equality of two coordinates.
 
         Args:
@@ -311,7 +305,7 @@ class Coordinate:
 
         return self._x == value.x and self._y == value.y
 
-    def __ne__(self, value) -> bool:
+    def __ne__(self, value: object) -> bool:
         """Compare the inequality of two coordinates.
 
         Args:
@@ -424,4 +418,9 @@ class Coordinate:
         yield self._x
 
     def __copy__(self) -> Coordinate:
+        """Copy the coordinate.
+
+        Returns:
+            Coordinate: the copy of the coordinate.
+        """
         return self.__class__(self._x, self._y)
