@@ -34,15 +34,6 @@ class Coordinate:
         "ms": 10
     }
 
-    SEQUENTIAL = (tuple, list, set)
-
-    _ERROR_MSGS = {
-        "TypeError1": "value must be a Coordinate.",
-        "TypeError2": "value must be a Coordinate type or one of the "
-        f"supported sequential types: {SEQUENTIAL}. Sequential types "
-        "must have only 2 items."
-    }
-
     def __init__(self, x_value: int | float, y_value: int | float) -> None:
         """Initialize a coordinate instance.
 
@@ -123,63 +114,42 @@ class Coordinate:
         ax.plot(self._x, self._y, shape, **styles)
 
     def __add__(self, value) -> Coordinate:
-        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
-            value = Coordinate(*value)
-
         if isinstance(value, Coordinate):
             return Coordinate(self._x + value.x, self._y + value.y)
 
-        raise TypeError(self._ERROR_MSGS.get("TypeError2"))
+        raise TypeError("value must be a Coordinate")
 
     def __sub__(self, value) -> Coordinate:
-        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
-            value = Coordinate(*value)
-
         if isinstance(value, Coordinate):
             return Coordinate(self._x - value.x, self._y - value.y)
 
-        raise TypeError(self._ERROR_MSGS.get("TypeError2"))
+        raise TypeError("value must be a Coordinate")
 
     def __mul__(self, value) -> Coordinate:
-        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
-            value = Coordinate(*value)
-
         if isinstance(value, Coordinate):
             return Coordinate(self._x * value.x, self._y * value.y)
 
-        raise TypeError(self._ERROR_MSGS.get("TypeError2"))
+        raise TypeError("value must be a Coordinate")
 
     def __truediv__(self, value) -> Coordinate:
-        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
-            value = Coordinate(*value)
-
         if isinstance(value, Coordinate):
             return Coordinate(self._x * value.x, self._y * -value.y)
 
-        raise TypeError(self._ERROR_MSGS.get("TypeError2"))
+        raise TypeError("value must be a Coordinate")
 
     def __floordiv__(self, value) -> Coordinate:
-        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
-            value = Coordinate(*value)
-
         if isinstance(value, Coordinate):
             temp = floor(self / value)
             return Coordinate(temp.x, temp.y)
 
-        raise TypeError(self._ERROR_MSGS.get("TypeError2"))
+        raise TypeError("value must be a Coordinate")
 
     def __mod__(self, value) -> Coordinate:
-        if isinstance(value, self.SEQUENTIAL) and len(value) == 2:
-            value = Coordinate(*value)
-
         if isinstance(value, Coordinate):
             temp = (self / value - self // value) * value
             return Coordinate(temp.x, temp.y)
 
-        raise TypeError(self._ERROR_MSGS.get("TypeError2"))
-
-    def __pow__(self, value) -> Coordinate:
-        return NotImplemented
+        raise TypeError("value must be a Coordinate")
 
     def __neg__(self) -> Coordinate:
         return Coordinate(-self._x, -self._y)
@@ -210,13 +180,13 @@ class Coordinate:
 
     def __eq__(self, value) -> bool:
         if not isinstance(value, Coordinate):
-            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
+            raise TypeError("value must be a Coordinate")
 
         return self._x == value.x and self._y == value.y
 
     def __ne__(self, value) -> bool:
         if not isinstance(value, Coordinate):
-            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
+            raise TypeError("value must be a Coordinate")
 
         return self._x != value.x or self._y != value.y
 
@@ -241,7 +211,7 @@ class Coordinate:
         elif index == 1:
             return self._y
         else:
-            raise IndexError("index must be 0 or 1")
+            raise IndexError("index must be 0 (x) or 1 (y)")
 
     def __setitem__(self, index, value) -> None:
         if index == 0:
@@ -249,7 +219,7 @@ class Coordinate:
         elif index == 1:
             self._y = value
         else:
-            raise IndexError("index must be 0 or 1")
+            raise IndexError("index must be 0 (x) or 1 (y)")
 
     def __iter__(self) -> Generator[float, None, None]:
         yield self._x
@@ -264,52 +234,16 @@ class Coordinate:
             return self._x
         elif name == 'y':
             return self._y
-        else:
-            raise AttributeError(f"{name} is not an attribute")
+
+        raise AttributeError(f"{name} is not an attribute")
 
     def __delattr__(self, name) -> None:
         if name == 'x':
             del self._x
         elif name == 'y':
             del self._y
-        else:
-            raise AttributeError(f"{name} is not an attribute")
 
-    def __getstate__(self) -> tuple[float, float]:
-        return self._x, self._y
-
-    def __setstate__(self, state) -> None:
-        self._x, self._y = state
-
-    def __reduce__(self) -> tuple[Coordinate, tuple[float, float]]:
-        return self.__class__, (self._x, self._y)
+        raise AttributeError(f"{name} is not an attribute")
 
     def __copy__(self) -> Coordinate:
         return self.__class__(self._x, self._y)
-
-    def __bytes__(self) -> bytes:
-        return bytes(self._x) + bytes(self._y)
-
-    def __int__(self) -> int:
-        return int(self._x) + int(self._y)
-
-    def __float__(self) -> float:
-        return float(self._x) + float(self._y)
-
-    def __complex__(self) -> complex:
-        return complex(self._x) + complex(self._y)
-
-    def __oct__(self) -> str:
-        return oct(self._x) + oct(self._y)
-
-    def __hex__(self) -> str:
-        return hex(self._x) + hex(self._y)
-
-    def __index__(self) -> float:
-        return self._x + self._y
-
-    def __coerce__(self, value) -> tuple[float, float]:
-        if not isinstance(value, Coordinate):
-            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
-
-        return self._x, value.x
