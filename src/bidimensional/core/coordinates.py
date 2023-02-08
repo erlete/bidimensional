@@ -291,13 +291,13 @@ class Coordinate:
         return Coordinate(trunc(self._x), trunc(self._y))
 
     def __eq__(self, value: object) -> bool:
-        """Compare the equality of two coordinates.
+        """Compare the equality of two objects.
 
         Args:
-            value (Coordinate): the other coordinate.
+            value (object): the other coordinate.
 
         Returns:
-            Coordinate: the result of the operation.
+            bool: the result of the operation.
         """
         if not isinstance(value, Coordinate):
             raise TypeError(
@@ -308,13 +308,13 @@ class Coordinate:
         return self._x == value.x and self._y == value.y
 
     def __ne__(self, value: object) -> bool:
-        """Compare the inequality of two coordinates.
+        """Compare the inequality of two objects.
 
         Args:
-            value (Coordinate): the other coordinate.
+            value (object): the other coordinate.
 
         Returns:
-            Coordinate: the result of the operation.
+            bool: the result of the operation.
         """
         if not isinstance(value, Coordinate):
             raise TypeError(
