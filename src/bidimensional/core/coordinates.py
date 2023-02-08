@@ -31,6 +31,8 @@ class Coordinate:
             styles for coordinate plotting.
     """
 
+    __slots__ = ("_x", "_y")
+
     STYLES: dict[str, Any] = {
         "color": "#396fe3",
         "ms": 10
