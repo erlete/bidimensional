@@ -202,7 +202,7 @@ class Line:
         if not isinstance(value, Line):
             raise TypeError(self._ERROR_MSGS.get("TypeError2"))
 
-        return self.a == value.a and self.b == value.b
+        return self.a in (value.a, value.b) and self.b in (value.a, value.b)
 
     def __ne__(self, value: object) -> bool:
         """Compare the inequality of two objects.
@@ -216,7 +216,10 @@ class Line:
         if not isinstance(value, Line):
             raise TypeError(self._ERROR_MSGS.get("TypeError2"))
 
-        return self.a != value.a or self.b != value.b
+        return (
+            self.a not in (value.a, value.b)
+            and self.b not in (value.a, value.b)
+        )
 
     def __hash__(self) -> int:
         """Obtain the hash of the line.
