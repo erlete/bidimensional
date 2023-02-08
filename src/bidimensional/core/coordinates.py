@@ -12,7 +12,7 @@ Author:
 from __future__ import annotations
 
 from math import ceil, floor, trunc
-from typing import Any, Generator, Literal
+from typing import Any, Generator
 
 import matplotlib.pyplot as plt
 
@@ -356,7 +356,7 @@ class Coordinate:
         """
         return self._x != 0 or self._y != 0
 
-    def __len__(self) -> Literal[2]:
+    def __len__(self) -> int:
         """Obtain the amount of terms in the coordinate.
 
         Returns:

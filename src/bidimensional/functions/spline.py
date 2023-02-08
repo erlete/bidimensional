@@ -11,6 +11,7 @@ Author:
 
 import bisect
 import math
+from typing import Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -87,7 +88,7 @@ class SplineBase:
 
         self.pos = None
 
-    def position(self, x) -> float | None:
+    def position(self, x) -> Optional[float]:
         """Computes the image of a given x-value in a spline section.
 
         Args:
@@ -126,7 +127,7 @@ class SplineBase:
 
         return self.pos[i]
 
-    def first_derivative(self, x) -> float | None:
+    def first_derivative(self, x) -> Optional[float]:
         """Computes the first derivative image
 
         Args:
@@ -154,7 +155,7 @@ class SplineBase:
             + self.c[i]
         )
 
-    def second_derivative(self, x) -> float | None:
+    def second_derivative(self, x) -> Optional[float]:
         """Computes the first derivative of a given spline section.
 
         Args:

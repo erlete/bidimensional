@@ -10,7 +10,7 @@ Author:
 
 from __future__ import annotations
 
-from typing import Generator
+from typing import Generator, Optional
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -130,7 +130,7 @@ class Line:
 
         return self._properties["slope"]
 
-    def intersect(self, line: Line) -> Coordinate | None:
+    def intersect(self, line: Line) -> Optional[Coordinate]:
         """Determine the intersection between two lines.
 
         Args:
@@ -175,7 +175,7 @@ class Line:
 
         ax.axline(self.a, self.b, **styles)
 
-    def __mul__(self, line: Line) -> Coordinate | None:
+    def __mul__(self, line: Line) -> Optional[Coordinate]:
         """Determine the intersection between two lines.
 
         Args:
@@ -354,7 +354,7 @@ class Segment(Line):
 
         return self._properties["distance"]
 
-    def intersect(self, line: Line) -> Coordinate | None:
+    def intersect(self, line: Line) -> Optional[Coordinate]:
         """Determine the intersection between two segments.
 
         Args:
