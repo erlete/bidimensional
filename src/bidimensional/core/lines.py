@@ -202,7 +202,7 @@ class Line:
         if not isinstance(value, Line):
             raise TypeError(self._ERROR_MSGS.get("TypeError2"))
 
-        return self.a in (value.a, value.b) and self.b in (value.a, value.b)
+        return {self.a, self.b} == {value.a, value.b}
 
     def __ne__(self, value: object) -> bool:
         """Compare the inequality of two objects.
@@ -216,10 +216,7 @@ class Line:
         if not isinstance(value, Line):
             raise TypeError(self._ERROR_MSGS.get("TypeError2"))
 
-        return (
-            self.a not in (value.a, value.b)
-            and self.b not in (value.a, value.b)
-        )
+        return {self.a, self.b} != {value.a, value.b}
 
     def __hash__(self) -> int:
         """Obtain the hash of the line.
@@ -425,7 +422,7 @@ class Segment(Line):
         if not isinstance(value, Segment):
             raise TypeError("value must be a Segment object.")
 
-        return self.a in (value.a, value.b) and self.b in (value.a, value.b)
+        return {self.a, self.b} == {value.a, value.b}
 
     def __ne__(self, value: object) -> bool:
         """Compare the inequality of two objects.
@@ -439,10 +436,7 @@ class Segment(Line):
         if not isinstance(value, Line):
             raise TypeError(self._ERROR_MSGS.get("TypeError2"))
 
-        return (
-            self.a not in (value.a, value.b)
-            and self.b not in (value.a, value.b)
-        )
+        return {self.a, self.b} != {value.a, value.b}
 
     def __hash__(self) -> int:
         """Obtain the hash of the segment.
