@@ -441,6 +441,14 @@ class Segment(Line):
             and self.b not in (value.a, value.b)
         )
 
+    def __hash__(self) -> int:
+        """Obtain the hash of the segment.
+
+        Returns:
+            int: the hash of the segment.
+        """
+        return hash(hash(self.a) + hash(self.b))
+
     def __str__(self) -> str:
         """Convert the segment to a string.
 
