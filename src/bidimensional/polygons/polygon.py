@@ -70,12 +70,11 @@ class Polygon:
             TypeError: if any of the vertices is not of type Coordinate.
             ValueError: if the number of vertices is less than 3.
         """
-        if any(not isinstance(vertex, Coordinate) for vertex in vertices):
-            raise TypeError("all vertices must be of type Coordinate")
-
-        print(f"{vertices = } {len(vertices) = }")
         if len(vertices) < 3:
             raise ValueError("a polygon must have at least 3 vertices")
+
+        if any(not isinstance(vertex, Coordinate) for vertex in vertices):
+            raise TypeError("all vertices must be of type Coordinate")
 
         characters = self.ANNOTATIONS["vertices"]
         padding = ceil(log(len(vertices), len(characters)))
