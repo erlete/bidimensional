@@ -12,12 +12,12 @@ Author:
 from __future__ import annotations
 
 from math import ceil, floor, trunc
-from typing import Any, Generator
+from typing import Any, Generator, Sequence
 
 import matplotlib.pyplot as plt
 
 
-class Coordinate:
+class Coordinate(Sequence):
     """Real-value, bidimensional coordinate.
 
     This class represents a two-dimensional coordinate. Its main purpose is to
