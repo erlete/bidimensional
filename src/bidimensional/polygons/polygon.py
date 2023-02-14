@@ -40,7 +40,7 @@ class Polygon:
         Args:
             *vertices (Coordinate): vertices of the polygon.
         """
-        self.vertices = vertices  # type: ignore
+        self.vertices = set(vertices)  # type: ignore
         self.sides = [  # type: ignore
             Segment(vertices[i], vertices[i + 1])
             for i in range(len(vertices) - 1)
@@ -167,3 +167,128 @@ class Polygon:
             side.plot(ax=ax)
             if annotate:
                 ax.annotate(label, op.midpoint(*side), fontsize=10)
+
+    def __repr__(self) -> str:
+        """Get the raw representation of the polygon.
+
+        Returns:
+            str: raw representation of the polygon.
+        """
+        return f"Polygon({len(self.vertices)} vertices)"
+
+    def __str__(self) -> str:
+        """Get the string representation of the polygon.
+
+        Returns:
+            str: string representation of the polygon.
+        """
+        return (
+            "Polygon(\n    "
+            + ",\n    ".join(map(str, self.vertices.values()))
+            + "\n)"
+        )
+
+    def __eq__(self, other: object) -> bool:
+        """Determine if the polygon is equal to another object.
+
+        Args:
+            other (object): object to compare to.
+
+        Returns:
+            bool: if the polygon is equal to the other object.
+        """
+        if not isinstance(other, Polygon):
+            return False
+
+        return set(self.vertices) == set(other.vertices)
+
+    def __ne__(self, other: object) -> bool:
+        """Determine if the polygon is not equal to another object.
+
+        Args:
+            other (object): object to compare to.
+
+        Returns:
+            bool: if the polygon is not equal to the other object.
+        """
+        return not self == other
+
+    def __gt__(self, other: object) -> bool:
+        """Determine if the polygon is greater than another object.
+
+        Args:
+            other (object): object to compare to.
+
+        Returns:
+            bool: if the polygon is greater than the other object.
+        """
+        if not isinstance(other, Polygon):
+            return False
+
+        return self.area > other.area
+
+    def __ge__(self, other: object) -> bool:
+        """Determine if the polygon is greater than or equal to another object.
+
+        Args:
+            other (object): object to compare to.
+
+        Returns:
+            bool: if the polygon is greater than or equal to the other object.
+        """
+        if not isinstance(other, Polygon):
+            return False
+
+        return self.area >= other.area
+
+    def __lt__(self, other: object) -> bool:
+        """Determine if the polygon is less than another object.
+
+        Args:
+            other (object): object to compare to.
+
+        Returns:
+            bool: if the polygon is less than the other object.
+        """
+        if not isinstance(other, Polygon):
+            return False
+
+        return self.area < other.area
+
+    def __le__(self, other: object) -> bool:
+        """Determine if the polygon is less than or equal to another object.
+
+        Args:
+            other (object): object to compare to.
+
+        Returns:
+            bool: if the polygon is less than or equal to the other object.
+        """
+        if not isinstance(other, Polygon):
+            return False
+
+        return self.area <= other.area
+
+    def __bool__(self) -> bool:
+        """Determine the boolean state of the polygon.
+
+        Returns:
+            bool: the boolean state of the polygon.
+        """
+        return bool(self.vertices)
+
+    def __len__(self) -> int:
+        """Get the number of vertices of the polygon.
+
+        Returns:
+            int: number of vertices of the polygon.
+        """
+        return len(self.vertices)
+
+    def __hash__(self) -> int:
+        """Get the hash of the polygon.
+
+        Returns:
+            int: hash of the polygon.
+        """
+        return hash(set(self.vertices.values()))
