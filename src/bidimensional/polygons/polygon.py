@@ -126,6 +126,24 @@ class Polygon:
             for annotation, side in zip(annotations, sides)
         }
 
+    @property
+    def area(self) -> float:
+        """Get the area of the polygon.
+
+        Returns:
+            float: area of the polygon.
+        """
+        return op.area(*self.vertices.values())
+
+    @property
+    def perimeter(self) -> float:
+        """Get the perimeter of the polygon.
+
+        Returns:
+            float: perimeter of the polygon.
+        """
+        return sum(side.distance for side in self.sides.values())
+
     def plot(self, ax: matplotlib.axes.Axes = None,
              annotate: bool = True, **kwargs) -> None:
         """Plot the polygon.
