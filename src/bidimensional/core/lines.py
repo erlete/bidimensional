@@ -16,7 +16,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 from . import operations as op
-from .coordinates import Coordinate
+from .coordinate import Coordinate
 
 
 class Line:

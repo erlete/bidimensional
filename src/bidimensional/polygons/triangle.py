@@ -14,7 +14,7 @@ from math import sqrt
 from typing import Any
 
 from ..core import operations as op
-from ..core.coordinates import Coordinate
+from ..core.coordinate import Coordinate
 from .polygon import Polygon
 
 

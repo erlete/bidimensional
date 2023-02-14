@@ -14,7 +14,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 from ..core import operations as op
-from ..core.coordinates import Coordinate
+from ..core.coordinate import Coordinate
 from ..core.lines import Segment
 
 

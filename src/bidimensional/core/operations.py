@@ -11,7 +11,7 @@ Author:
 import math
 from itertools import combinations
 
-from .coordinates import Coordinate
+from .coordinate import Coordinate
 
 
 def distance(a: Coordinate, b: Coordinate) -> float:
