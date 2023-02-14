@@ -13,8 +13,9 @@ from string import ascii_lowercase, ascii_uppercase
 import matplotlib
 import matplotlib.pyplot as plt
 
-from bidimensional import Coordinate, Segment
-from bidimensional import operations as op
+from ..core import operations as op
+from ..core.coordinates import Coordinate
+from ..core.lines import Segment
 
 
 class Polygon:
@@ -27,6 +28,9 @@ class Polygon:
         ANNOTATIONS (dict[str, str]): annotations for the vertices and sides of
             the polygon.
         vertices (dict[str, Coordinate]): vertices of the polygon.
+        sides (dict[str, Segment]): sides of the polygon.
+        area (float): area of the polygon.
+        perimeter (float): perimeter of the polygon.
     """
 
     ANNOTATIONS: dict[str, str] = {
@@ -64,9 +68,14 @@ class Polygon:
 
         Raises:
             TypeError: if any of the vertices is not of type Coordinate.
+            ValueError: if the number of vertices is less than 3.
         """
         if any(not isinstance(vertex, Coordinate) for vertex in vertices):
             raise TypeError("all vertices must be of type Coordinate")
+
+        print(f"{vertices = } {len(vertices) = }")
+        if len(vertices) < 3:
+            raise ValueError("a polygon must have at least 3 vertices")
 
         characters = self.ANNOTATIONS["vertices"]
         padding = ceil(log(len(vertices), len(characters)))
@@ -200,7 +209,7 @@ class Polygon:
         if not isinstance(other, Polygon):
             return False
 
-        return set(self.vertices) == set(other.vertices)
+        return set(self.vertices.values()) == set(other.vertices.values())
 
     def __ne__(self, other: object) -> bool:
         """Determine if the polygon is not equal to another object.
