@@ -97,7 +97,7 @@ def area(*vertices: Coordinate) -> float:
         area += (x[j] + x[i]) * (y[j] - y[i])
         j = i
 
-    return area / 2
+    return abs(area / 2)
 
 
 def perimeter(*coordinates: Coordinate) -> float:
