@@ -43,8 +43,16 @@ class Polygon:
 
         Args:
             *vertices (Coordinate): vertices of the polygon.
+
+        Notes:
+            Duplicate vertices are removed from the list of vertices upon
+            polygon instantiation.
         """
-        self.vertices = set(vertices)  # type: ignore
+        vertices = [  # type: ignore
+            vertex for i, vertex in enumerate(vertices)
+            if vertex not in vertices[:i]
+        ]
+        self.vertices = vertices  # type: ignore
         self.sides = [  # type: ignore
             Segment(vertices[i], vertices[i + 1])
             for i in range(len(vertices) - 1)
