@@ -9,15 +9,13 @@ Author:
 
 from __future__ import annotations
 
-from itertools import combinations, permutations
+from itertools import combinations
 from math import sqrt
 from typing import Any
 
-import matplotlib.pyplot as plt
-
 from ..core import operations as op
 from ..core.coordinates import Coordinate
-from ..core.lines import Segment
+from .polygon import Polygon
 
 
 class Circumcircle:
@@ -308,7 +306,7 @@ class Circumcircle:
         )
 
 
-class Triangle:
+class Triangle(Polygon):
     """Triangle class.
 
     This class represents a triangle in the 2D plane. It is defined by three
@@ -336,6 +334,7 @@ class Triangle:
             b (Coordinate): second vertex of the triangle.
             c (Coordinate): third vertex of the triangle.
         """
+        super().__init__(a, b, c)
         self._properties: dict[str, Any] = {}
 
         self.a = a
@@ -416,66 +415,6 @@ class Triangle:
 
         self._c = value
         self._properties.clear()
-
-    @property
-    def vertices(self) -> dict[str, Coordinate]:
-        """Vertices of the triangle.
-
-        Returns:
-            dict[str, Coordinate]: Vertices of the triangle.
-        """
-        if self._properties.get("vertices") is None:
-            self._properties["vertices"] = {
-                'a': self.a,
-                'b': self.b,
-                'c': self.c
-            }
-
-        return self._properties["vertices"]
-
-    @property
-    def sides(self) -> dict[str, float]:
-        """Sides of the triangle.
-
-        Returns:
-            dict[str, Segment]: Sides of the triangle.
-        """
-        if self._properties.get("sides") is None:
-            self._properties["sides"] = {
-                ''.join(pair): Segment(
-                    self.vertices[pair[0]],
-                    self.vertices[pair[1]]
-                ) for pair in permutations(self.vertices.keys(), 2)
-            }
-
-        return self._properties["sides"]
-
-    @property
-    def area(self) -> float:
-        """Area of the triangle.
-
-        Returns:
-            float: Area of the triangle.
-        """
-        if self._properties.get("area") is None:
-            self._properties["area"] = op.area(self.a, self.b, self.c)
-
-        return self._properties["area"]
-
-    @property
-    def perimeter(self) -> float:
-        """Perimeter of the triangle.
-
-        Returns:
-            float: Perimeter of the triangle.
-        """
-        if self._properties.get("perimeter") is None:
-            self._properties["perimeter"] = sum(
-                side.distance
-                for side in set(self.sides.values())
-            )
-
-        return self._properties["perimeter"]
 
     @property
     def angles(self) -> dict[str, float]:
@@ -619,23 +558,6 @@ class Triangle:
             return True
 
         return False
-
-    def plot(self, ax=None, **kwargs) -> None:
-        """Plot the triangle.
-
-        Args:
-            ax (matplotlib.axes.Axes, optional): Axes to plot on. Defaults to
-                None.
-            **kwargs: Keyword arguments for matplotlib.pyplot.plot.
-        """
-        if ax is None:
-            ax = plt.gca()
-
-        ax.plot(
-            [self.a.x, self.b.x, self.c.x, self.a.x],
-            [self.a.y, self.b.y, self.c.y, self.a.y],
-            **kwargs
-        )
 
     def __repr__(self) -> str:
         """Return the string representation of the triangle.
