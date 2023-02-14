@@ -192,7 +192,7 @@ class TestTriangle:
         triangle_2 = Triangle(
             Coordinate(0, 0),
             Coordinate(1, 1),
-            Coordinate(1, 1)
+            Coordinate(1, 2)
         )
 
         assert triangle_1 != triangle_2
