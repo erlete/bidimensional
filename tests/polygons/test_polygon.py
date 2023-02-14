@@ -1,6 +1,7 @@
 import pytest
-from bidimensional.polygons import Polygon
+
 from bidimensional import Coordinate, Segment
+from bidimensional.polygons import Polygon
 
 
 class TestPolygon:
