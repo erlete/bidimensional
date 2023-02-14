@@ -15,19 +15,18 @@ from .coordinates import Coordinate
 
 
 def distance(a: Coordinate, b: Coordinate) -> float:
-    """Calculates the distance between two coordinates.
+    """Calculate the distance between two coordinates.
 
     Args:
-        a (Coordinate): First coordinate.
-        b (Coordinate): Second coordinate.
+        a (Coordinate): first coordinate.
+        b (Coordinate): second coordinate.
 
     Raises:
-        TypeError: If a or b are not Coordinate objects.
+        TypeError: if a or b are not Coordinate objects.
 
     Returns:
-        float: Distance between the two coordinates.
+        float: distance between the two coordinates.
     """
-
     if not all(isinstance(x, Coordinate) for x in (a, b)):
         raise TypeError("a and b must be Coordinate instances")
 
@@ -35,20 +34,19 @@ def distance(a: Coordinate, b: Coordinate) -> float:
 
 
 def angle(a: Coordinate, b: Coordinate, c: Coordinate) -> float:
-    """Calculates the angle between three coordinates.
+    """Calculate the angle between three coordinates.
 
     Args:
-        a (Coordinate): First coordinate.
-        b (Coordinate): Second coordinate.
-        c (Coordinate): Third coordinate.
+        a (Coordinate): first coordinate.
+        b (Coordinate): second coordinate.
+        c (Coordinate): third coordinate.
 
     Raises:
-        TypeError: If a, b or c are not Coordinate objects.
+        TypeError: if a, b or c are not Coordinate objects.
 
     Returns:
-        float: Angle between the three coordinates.
+        float: angle between the three coordinates.
     """
-
     if not all(isinstance(x, Coordinate) for x in (a, b, c)):
         raise TypeError("a, b and c must be Coordinate instances")
 
@@ -62,26 +60,25 @@ def angle(a: Coordinate, b: Coordinate, c: Coordinate) -> float:
 
 
 def midpoint(a: Coordinate, b: Coordinate) -> Coordinate:
-    """Calculates the midpoint between two coordinates.
+    """Calculate the midpoint between two coordinates.
 
     Args:
-        a (Coordinate): First coordinate.
-        b (Coordinate): Second coordinate.
+        a (Coordinate): first coordinate.
+        b (Coordinate): second coordinate.
 
     Raises:
-        TypeError: If a or b are not Coordinate objects.
+        TypeError: if a or b are not Coordinate objects.
 
     Returns:
-        Coordinate: Midpoint between the two coordinates.
+        Coordinate: midpoint between the two coordinates.
     """
-
     if not all(isinstance(x, Coordinate) for x in (a, b)):
         raise TypeError("a and b must be Coordinate instances")
 
     return Coordinate((a.x + b.x) / 2, (a.y + b.y) / 2)
 
 
-def area(*vertices: Coordinate):
+def area(*vertices: Coordinate) -> float:
     """Calculate the area of a polygon.
 
     Args:
@@ -104,18 +101,17 @@ def area(*vertices: Coordinate):
 
 
 def perimeter(*coordinates: Coordinate) -> float:
-    """Calculates the perimeter of a polygon.
+    """Calculate the perimeter of a polygon.
 
     Args:
-        *coordinates (Coordinate): Coordinates of the polygon.
+        *coordinates (Coordinate): coordinates of the polygon.
 
     Raises:
-        TypeError: If any of the coordinates are not Coordinate objects.
+        TypeError: if any of the coordinates are not Coordinate objects.
 
     Returns:
-        float: Perimeter of the polygon.
+        float: perimeter of the polygon.
     """
-
     if not all(isinstance(x, Coordinate) for x in coordinates):
         raise TypeError("All coordinates must be Coordinate instances")
 
