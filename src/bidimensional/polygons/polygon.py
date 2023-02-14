@@ -7,13 +7,14 @@ Author:
 from __future__ import annotations
 
 from itertools import combinations_with_replacement as cr
-from math import ceil
+from math import ceil, log
 from string import ascii_lowercase, ascii_uppercase
 
 import matplotlib
 import matplotlib.pyplot as plt
 
-from bidimensional import Coordinate
+from bidimensional import Coordinate, Segment
+from bidimensional import operations as op
 
 
 class Polygon:
@@ -40,28 +41,10 @@ class Polygon:
             *vertices (Coordinate): vertices of the polygon.
         """
         self.vertices = vertices  # type: ignore
-
-    def _get_annotations(self, vertices: tuple[Coordinate]) -> list[str]:
-        """Compute the annotations for the vertices.
-
-        Args:
-            vertices (tuple[Coordinate]): vertices of the polygon.
-
-        Returns:
-            list[str]: annotations for the vertices.
-        """
-        annotations = self.ANNOTATIONS["vertices"]
-        padding = ceil(len(vertices) / len(annotations))
-
-        return [
-            ''.join(letters)
-            for letters in sorted(
-                set(
-                    list(cr(annotations, padding))
-                    + list(cr(reversed(annotations), padding))
-                )
-            )
-        ]
+        self.sides = [  # type: ignore
+            Segment(vertices[i], vertices[i + 1])
+            for i in range(len(vertices) - 1)
+        ] + [Segment(vertices[-1], vertices[0])]
 
     @property
     def vertices(self) -> dict[str, Coordinate]:
@@ -85,12 +68,62 @@ class Polygon:
         if any(not isinstance(vertex, Coordinate) for vertex in vertices):
             raise TypeError("all vertices must be of type Coordinate")
 
-        self._vertices = {
-            annotation: coordinate
-            for annotation, coordinate in zip(
-                self._get_annotations(vertices),
-                vertices
+        characters = self.ANNOTATIONS["vertices"]
+        padding = ceil(log(len(vertices), len(characters)))
+
+        annotations = [
+            ''.join(letters)
+            for letters in sorted(
+                set(
+                    list(cr(characters, padding))
+                    + list(cr(reversed(characters), padding))
+                )
             )
+        ]
+
+        self._vertices = {
+            annotation: vertex
+            for annotation, vertex in zip(annotations, vertices)
+        }
+
+    @property
+    def sides(self) -> dict[str, Segment]:
+        """Get the sides of the polygon.
+
+        Returns:
+            dict[str, Segment]: sides of the polygon.
+        """
+        return self._sides
+
+    @sides.setter
+    def sides(self, sides: tuple[Segment]) -> None:
+        """Set the sides of the polygon.
+
+        Args:
+            sides (tuple[Segment]): sides of the polygon.
+
+        Raises:
+            TypeError: if any of the sides is not of type Segment.
+        """
+        if any(not isinstance(vertex, Segment) for vertex in sides):
+            raise TypeError("all sides must be of type Segment")
+
+        characters = self.ANNOTATIONS["sides"]
+        padding = ceil(log(len(sides), len(characters)))
+
+        annotations = [
+            ''.join(letters)
+            for letters in sorted(
+                set(
+                    list(cr(characters, padding))
+                    + list(cr(reversed(characters), padding))
+                )
+            )
+        ]
+
+        self._sides = {
+            annotation: side
+            for annotation, side in zip(annotations, sides)
         }
 
     def plot(self, ax: matplotlib.axes.Axes = None,
@@ -107,16 +140,12 @@ class Polygon:
         if ax is None:
             ax = plt.gca()
 
-        x = [vertex.x for vertex in self._vertices.values()]
-        y = [vertex.y for vertex in self._vertices.values()]
-
-        ax.plot(
-            x + [x[0]],
-            y + [y[0]],
-            **kwargs
-        )
-
         for label, vertex in self._vertices.items():
             vertex.plot(ax=ax)
             if annotate:
-                ax.annotate(label, vertex, fontsize=12, fontweight="bold")
+                ax.annotate(label, vertex, fontsize=10, fontweight="bold")
+
+        for label, side in self._sides.items():
+            side.plot(ax=ax)
+            if annotate:
+                ax.annotate(label, op.midpoint(*side), fontsize=10)
