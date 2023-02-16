@@ -25,8 +25,8 @@ class Coordinate(Sequence):
     scripts contained in the project.
 
     Args:
-        x_value (float): the x value of the coordinate.
-        y_value (float): the y value of the coordinate.
+        x (float): the x value of the coordinate.
+        y (float): the y value of the coordinate.
         STYLES (dict[str, Any]): the dictionary containing default matplotlib
             styles for coordinate plotting.
     """
@@ -38,15 +38,15 @@ class Coordinate(Sequence):
         "ms": 10
     }
 
-    def __init__(self, x_value: int | float, y_value: int | float) -> None:
+    def __init__(self, x: int | float, y: int | float) -> None:
         """Initialize a coordinate instance.
 
         Args:
-            x_value (int | float): the X component of the coordinate.
-            y_value (int | float): the Y component of the coordinate.
+            x (int | float): the X component of the coordinate.
+            y (int | float): the Y component of the coordinate.
         """
-        self.x: float = x_value
-        self.y: float = y_value
+        self.x: float = x
+        self.y: float = y
 
     @property
     def x(self) -> float:
