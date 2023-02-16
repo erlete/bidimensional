@@ -10,7 +10,7 @@ Authors:
 
 import math
 from bisect import bisect
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -25,12 +25,12 @@ class _UnidimensionalSpline:
     a cubic spline.
     """
 
-    def __init__(self, x: list[int | float], y: list[int | float]):
+    def __init__(self, x: list[Union[int, float]], y: list[Union[int, float]]):
         """Initialize a unidimensional spline instance.
 
         Args:
-            x (list[int | float]): list of x-coordinates.
-            y (list[int | float]): list of y-coordinates.
+            x (list[Union[int, float]]): list of x-coordinates.
+            y (list[Union[int, float]]): list of y-coordinates.
 
         Raises:
             ValueError: if the x and y lists have different lengths.
@@ -383,8 +383,7 @@ class Spline:
             np.cumsum(np.hypot(np.diff(x), np.diff(y)))
         ))
 
-    def _compute_position(self,
-                          i: int) -> Optional[tuple[int | float, int | float]]:
+    def _compute_position(self, i: int) -> Optional[tuple[Union[int, float], Union[int, float]]]:
         """Compute the image of a given x-value in a spline section.
 
         Args:

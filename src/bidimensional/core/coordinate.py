@@ -391,7 +391,7 @@ class Coordinate(Sequence):
         else:
             raise TypeError("index must be an int or a slice.")
 
-    def __setitem__(self, index: int | slice, value: int | float, /) -> None:
+    def __setitem__(self, index: int | slice, value: int | float) -> None:
         """Set the X or Y coordinate components via index or slice.
 
         Args:
