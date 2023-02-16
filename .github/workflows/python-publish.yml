@@ -2,7 +2,7 @@ name: PyPI release
 
 on:
   workflow_run:
-    workflows: [Update package version]
+    workflows: [Python Test Execution]
     types:
       - completed
 
