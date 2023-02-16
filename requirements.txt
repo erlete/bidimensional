@@ -1,2 +1,14 @@
+autopep8
+build
+flake8
 matplotlib
+mypy
 numpy
+pylint
+pytest
+requests
+setuptools
+six
+twine
+virtualenv
+wheel

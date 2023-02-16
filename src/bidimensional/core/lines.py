@@ -1,11 +1,22 @@
+"""Container module for linear classes.
+
+This module contains both `Segment` and `Line` classes, used to represent
+linear sequences of coordinates, delimited and (mathematically) unlimited.
+
+Author:
+    Paulo Sanchez (@erlete)
+"""
+
+
 from __future__ import annotations
 
-from typing import Generator
+from typing import Generator, Optional
 
+import matplotlib
 import matplotlib.pyplot as plt
 
 from . import operations as op
-from .coordinates import Coordinate
+from .coordinate import Coordinate
 
 
 class Line:
@@ -14,14 +25,10 @@ class Line:
     This class provides a way to represent a line in 2D space. It must be
     composed by two Coordinate objects.
 
-    Args:
-        a (Coordinate): The first coordinate.
-        b (Coordinate): The second coordinate.
-
     Attributes:
-        a (Coordinate): The first coordinate.
-        b (Coordinate): The second coordinate.
-        slope (float): The slope of the line.
+        a (Coordinate): the first coordinate.
+        b (Coordinate): the second coordinate.
+        slope (float): the slope of the line.
     """
 
     STYLES = {
@@ -37,6 +44,12 @@ class Line:
     }
 
     def __init__(self, a: Coordinate, b: Coordinate) -> None:
+        """Initialize a line instance.
+
+        Args:
+            a (Coordinate): the first coordinate.
+            b (Coordinate): the second coordinate.
+        """
         self._properties = {}
 
         self.a = a
@@ -44,10 +57,23 @@ class Line:
 
     @property
     def a(self) -> Coordinate:
+        """Get the first coordinate of the line definition.
+
+        Returns:
+            Coordinate: the first coordinate of the line definition.
+        """
         return self._a
 
     @a.setter
-    def a(self, value) -> None:
+    def a(self, value: Coordinate) -> None:
+        """Set the first coordinate of the line definition.
+
+        Args:
+            value (Coordinate): the first coordinate of the line definition.
+
+        Raises:
+            TypeError: if `value` is not a type Coordinate.
+        """
         if not isinstance(value, Coordinate):
             raise TypeError(self._ERROR_MSGS.get("TypeError1"))
 
@@ -56,10 +82,23 @@ class Line:
 
     @property
     def b(self) -> Coordinate:
+        """Get the second coordinate of the line definition.
+
+        Returns:
+            Coordinate: the second coordinate of the line definition.
+        """
         return self._b
 
     @b.setter
-    def b(self, value) -> None:
+    def b(self, value: Coordinate) -> None:
+        """Set the second coordinate of the line definition.
+
+        Args:
+            value (Coordinate): the second coordinate of the line definition.
+
+        Raises:
+            TypeError: if `value` is not a type Coordinate.
+        """
         if not isinstance(value, Coordinate):
             raise TypeError(self._ERROR_MSGS.get("TypeError1"))
 
@@ -68,6 +107,11 @@ class Line:
 
     @property
     def slope(self) -> float:
+        """Get the slope of the line.
+
+        Returns:
+            float: the slope of the line.
+        """
         if self._properties.get("slope") is None:
 
             if self.b.x - self.a.x == 0:
@@ -86,20 +130,23 @@ class Line:
 
         return self._properties["slope"]
 
-    def intersect(self, line: Line) -> Coordinate | None:
-        """Determines the intersection between two lines.
+    def intersect(self, line: Line) -> Optional[Coordinate]:
+        """Determine the intersection between two lines.
 
         Args:
             line (Line): the line to determine the intersection with.
 
+        Returns:
+            Optional[Coordinate]: the intersection between the two lines (if it
+                exists, otherwise None).
+
         Raises:
             TypeError: if line is not a Line object.
 
-        Returns:
-            Coordinate | None: the intersection between the two lines (if it
-                exists, otherwise None).
+        Notes:
+            This method is also implemented as `__mul__`, accessible using the
+            `*` operator between `Line` instances.
         """
-
         if not isinstance(line, Line):
             raise TypeError(f"Expected Line, got {type(line)}")
 
@@ -114,40 +161,83 @@ class Line:
 
         return Coordinate(x, y)
 
-    def plot(self, ax=None, **kwargs) -> None:
-        """Plots the line.
+    def plot(self, ax: matplotlib.axes.Axes = None, **kwargs) -> None:
+        """Plot the line.
 
         Args:
             ax (matplotlib.axes.Axes, optional): The axes to plot on. Defaults
                 to None (if None, the current axes will be used).
             **kwargs: Keyword arguments to pass to the plot
         """
-
         styles = self.STYLES.copy()
         styles.update(kwargs)
         ax = plt.gca() if ax is None else ax
 
         ax.axline(self.a, self.b, **styles)
 
-    def __mul__(self, line: Line) -> Coordinate | None:
+    def __mul__(self, line: Line) -> Optional[Coordinate]:
+        """Determine the intersection between two lines.
+
+        Args:
+            line (Line): the line to determine the intersection with.
+
+        Returns:
+            Optional[Coordinate]: the intersection between the two lines (if it
+                exists, otherwise None).
+
+        Notes:
+            This is an alternative representation of the `intersect` method.
+        """
         return self.intersect(line)
 
-    def __eq__(self, value) -> bool:
+    def __eq__(self, value: object) -> bool:
+        """Compare the equality of two objects.
+
+        Args:
+            value (object): the other object to compare.
+
+        Returns:
+            bool: the result of the operation.
+        """
         if not isinstance(value, Line):
             raise TypeError(self._ERROR_MSGS.get("TypeError2"))
 
-        return self.a == value.a and self.b == value.b
+        return {self.a, self.b} == {value.a, value.b}
 
-    def __ne__(self, value) -> bool:
+    def __ne__(self, value: object) -> bool:
+        """Compare the inequality of two objects.
+
+        Args:
+            value (object): the other object to compare.
+
+        Returns:
+            bool: the result of the operation.
+        """
         if not isinstance(value, Line):
             raise TypeError(self._ERROR_MSGS.get("TypeError2"))
 
-        return self.a != value.a or self.b != value.b
+        return {self.a, self.b} != {value.a, value.b}
 
     def __hash__(self) -> int:
+        """Obtain the hash of the line.
+
+        Returns:
+            int: the hash of the line.
+        """
         return hash((self.a, self.b))
 
-    def __getitem__(self, index) -> Coordinate:
+    def __getitem__(self, index: int) -> Coordinate:
+        """Get the coordinates of the line through indices.
+
+        Args:
+            index (int): the index of the coordinate.
+
+        Returns:
+            Coordinate: the value of the coordinate.
+
+        Raises:
+            IndexError: if the index of the coordinate is not 0 or 1.
+        """
         if index == 0:
             return self.a
         elif index == 1:
@@ -155,7 +245,16 @@ class Line:
         else:
             raise IndexError("index must be 0 or 1")
 
-    def __setitem__(self, index, value) -> None:
+    def __setitem__(self, index: int, value: Coordinate) -> None:
+        """Set the coordinates of the line through indices.
+
+        Args:
+            index (int): the index of the coordinate.
+            value (Coordinate): the new value of the coordinate.
+
+        Raises:
+            IndexError: if the index of the coordinate is not 0 or 1.
+        """
         if index == 0:
             self.a = value
         elif index == 1:
@@ -164,37 +263,38 @@ class Line:
             raise IndexError("index must be 0 or 1")
 
     def __iter__(self) -> Generator[Coordinate, None, None]:
+        """Obtain the iterable of the line.
+
+        Returns:
+            Generator[float, None, None]: the iterable of the line.
+        """
         yield self.a
         yield self.b
 
     def __reversed__(self) -> Generator[Coordinate, None, None]:
+        """Obtain the reversed iterable of the line.
+
+        Returns:
+            Generator[float, None, None]: the reversed iterable of the line.
+        """
         yield self.b
         yield self.a
 
-    def __getattr__(self, name) -> Coordinate:
-        if name == 'a':
-            return self.a
-        elif name == 'b':
-            return self.b
-        else:
-            raise AttributeError(f"{name} is not an attribute")
-
-    def __delattr__(self, name) -> None:
-        if name == 'a':
-            del self.a
-        elif name == 'b':
-            del self.b
-        else:
-            raise AttributeError(f"{name} is not an attribute")
-
     def __str__(self) -> str:
+        """Convert the line to a string.
+
+        Returns:
+            str: the line as a string.
+        """
         return f"Line({self.a}, {self.b})"
 
     def __repr__(self) -> str:
-        return f"Line({self.a}, {self.b})"
+        """Obtain the string representation of the line.
 
-    def __len__(self) -> int:
-        return 2
+        Returns:
+            str: the string representation of the line.
+        """
+        return f"Line({self.a}, {self.b})"
 
 
 class Segment(Line):
@@ -203,14 +303,10 @@ class Segment(Line):
     This class provides a way to represent a segment in 2D space. It must be
     composed by two Coordinate objects.
 
-    Args:
-        a (Coordinate): The first coordinate.
-        b (Coordinate): The second coordinate.
-
     Attributes:
-        a (Coordinate): The first coordinate.
-        b (Coordinate): The second coordinate.
-        slope (float): The slope of the segment.
+        a (Coordinate): the first coordinate.
+        b (Coordinate): the second coordinate.
+        slope (float): the slope of the segment.
     """
 
     STYLES = {
@@ -220,37 +316,46 @@ class Segment(Line):
     }
 
     def __init__(self, a: Coordinate, b: Coordinate) -> None:
+        """Initialize a segment instance.
+
+        Args:
+            a (Coordinate): the first coordinate.
+            b (Coordinate): the second coordinate.
+        """
         super().__init__(a, b)
 
     @property
     def x(self) -> float:
-        """Returns the x difference between the two coordinates.
+        """Get the x difference between the two coordinates.
 
         Returns:
             float: The x difference between the two coordinates.
         """
-
         return self.b.x - self.a.x
 
     @property
     def y(self) -> float:
-        """Returns the y difference between the two coordinates.
+        """Get the y difference between the two coordinates.
 
         Returns:
             float: The y difference between the two coordinates.
         """
-
         return self.b.y - self.a.y
 
     @property
     def distance(self) -> float:
+        """Get the cartesian distance between the two coordinates.
+
+        Returns:
+            float: The y difference between the two coordinates.
+        """
         if self._properties.get("distance") is None:
             self._properties["distance"] = op.distance(self._a, self._b)
 
         return self._properties["distance"]
 
-    def intersect(self, line: Line) -> Coordinate | None:
-        """Determines the intersection between two segments.
+    def intersect(self, line: Line) -> Optional[Coordinate]:
+        """Determine the intersection between two segments.
 
         Args:
             line (Line): the line to determine the intersection with.
@@ -259,10 +364,9 @@ class Segment(Line):
             TypeError: if line is not a Line object.
 
         Returns:
-            Coordinate | None: the intersection between the two segments (if it
+            Optional[Coordinate]: the intersection between the two segments (if it
                 exists, otherwise None).
         """
-
         if not isinstance(line, Line):
             raise TypeError(f"Expected Line, got {type(line)}")
 
@@ -287,8 +391,8 @@ class Segment(Line):
 
         return None
 
-    def plot(self, *args, ax=None, **kwargs) -> None:
-        """Plots the segment.
+    def plot(self, *args, ax: matplotlib.axes.Axes = None, **kwargs) -> None:
+        """Plot the segment.
 
         Args:
             *args: Arguments to pass to the plot function.
@@ -296,7 +400,6 @@ class Segment(Line):
                 to None (if None, the current axes will be used).
             **kwargs: Keyword arguments to pass to the plot
         """
-
         styles = self.STYLES.copy()
         styles.update(kwargs)
         shape = args[0] if args else '-'
@@ -307,17 +410,54 @@ class Segment(Line):
             shape, **styles
         )
 
-    def __eq__(self, value) -> bool:
+    def __eq__(self, value: object) -> bool:
+        """Compare the equality of two objects.
+
+        Args:
+            value (object): the other object to compare.
+
+        Returns:
+            bool: the result of the operation.
+        """
         if not isinstance(value, Segment):
             raise TypeError("value must be a Segment object.")
 
-        return self.a in (value.a, value.b) and self.b in (value.a, value.b)
+        return {self.a, self.b} == {value.a, value.b}
+
+    def __ne__(self, value: object) -> bool:
+        """Compare the inequality of two objects.
+
+        Args:
+            value (object): the other object to compare.
+
+        Returns:
+            bool: the result of the operation.
+        """
+        if not isinstance(value, Line):
+            raise TypeError(self._ERROR_MSGS.get("TypeError2"))
+
+        return {self.a, self.b} != {value.a, value.b}
 
     def __hash__(self) -> int:
+        """Obtain the hash of the segment.
+
+        Returns:
+            int: the hash of the segment.
+        """
         return hash(hash(self.a) + hash(self.b))
 
     def __str__(self) -> str:
+        """Convert the segment to a string.
+
+        Returns:
+            str: the segment as a string.
+        """
         return f"Segment({self.a}, {self.b})"
 
     def __repr__(self) -> str:
+        """Obtain the string representation of the segment.
+
+        Returns:
+            str: the string representation of the segment.
+        """
         return f"Segment({self.a}, {self.b})"

@@ -3,49 +3,49 @@
 This module contains the classes and functions necessary to generate a cubic
 spline from a set of points.
 
-Author:
+Authors:
     Atsushi Sakai (@Atsushi_twi) (author of the original code)
     Paulo Sanchez (@erlete) (author of the modified code)
 """
 
-
-import bisect
 import math
+from bisect import bisect
+from typing import Iterable, Optional, Sequence, Tuple, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ..core.coordinates import Coordinate
+from ..core.coordinate import Coordinate
 
 
-class SplineBase:
-    """Internal spline computation class.
+class _UnidimensionalSpline:
+    """Unidimensional spline computation class (internal).
 
-    Args:
-        x (list): List of x-coordinates.
-        y (list): List of y-coordinates.
-
-    Notes:
-        The number of x and y values must be the same.
-        Since the spline is a cubic function composite, each segment is defined
-            by a polynomial function of the form
-            f(x) = a*x^3 + b*x^2 + c*x + d.
-        A property of said polynomial function is that, at x = x_n, f(x) = y_n
-            and at x = x_(n + 1), f(x) = y_(n + 1), g(x) = y_(n + 1). This
-            means that the images of each pair of segments, given a boundary
-            point, are the same.
-        Another property is that the second and third derivatives of a given
-            spline segment have the same images at the boundary points as well.
+    This class is used to compute the interpolation of a set of points using
+    a cubic spline.
     """
 
-    def __init__(self, x, y):
-        self.x, self.y = x, y
+    def __init__(self, x: Sequence[Union[int, float]], y: Sequence[Union[int, float]]):
+        """Initialize a unidimensional spline instance.
+
+        Args:
+            x (Sequence[Union[int, float]]): sequence of x-coordinates.
+            y (Sequence[Union[int, float]]): sequence of y-coordinates.
+
+        Raises:
+            ValueError: if the x and y sequences have different lengths.
+        """
+        self.x = np.array(x)
+        self.y = np.array(y)
+
+        if self.x.shape != self.y.shape:
+            raise ValueError("x and y must have the same shape")
 
         # Determine the dimension of the X-axis:
-        self.x_dim = len(x)
+        self._x_dim = self.x.shape[0]
 
         # Compute the differences between the x-coordinates:
-        x_diff = np.diff(x)
+        self._x_diff = np.diff(x)
 
         # Compute coefficient d:
         self.d = np.array(y)
@@ -55,44 +55,53 @@ class SplineBase:
 
         # Compute coefficient b:
         self.b = np.linalg.solve(
-            self.__calc_matrix_a(x_diff),
-            self.__calc_matrix_b(x_diff)
+            self.__calc_matrix_a(),
+            self.__calc_matrix_b()
         )
 
         # Compute the difference between b coefficients:
         b_diff = np.diff(self.b)
 
         # Compute coefficient c:
-        self.c = np.array([
-            (d_diff[i]) / x_diff[i]
-            - x_diff[i] * (self.b[i + 1] + 2.0 * self.b[i]) / 3.0
-            for i in range(self.x_dim - 1)
-        ])
+        self.c = (
+            d_diff / self._x_diff
+            - self._x_diff * (self.b[1:] + 2.0 * self.b[:-1]) / 3.0
+        )
 
         # Compute coefficient a:
-        self.a = [b_diff[i] / (3.0 * x_diff[i]) for i in range(self.x_dim - 1)]
+        self.a = b_diff / (3.0 * self._x_diff)
 
-    def position(self, x) -> float | None:
-        """Computes the image of a given x-value in a spline section.
+        self.b = self.b[:-1]
+        self.d = self.d[:-1]
+
+        self.pos = None
+
+    def position(self, x: Union[int, float]) -> Optional[Union[int, float]]:
+        """Compute the image of a given x-value in a spline section.
 
         Args:
-            x (float): The x-value to compute the image of.
+            x (float): the x-value to compute the image of.
 
         Returns:
-            float: The image of the spline section.
+            Union[int, float]: the image of the spline section.
 
         Notes:
             The form of the function is: f(x) = a*x^3 + b*x^2 + c*x + d.
             If x is outside of the X-range, the output is None.
         """
-
-        # Out of bounds handling:
-
         if not self.x[0] <= x <= self.x[-1]:
             return None
 
         i = self.__search_index(x)
         dx = x - self.x[i]
+
+        if self.pos is None:
+            self.pos = (
+                self.a * dx**3.0
+                + self.b * dx**2.0
+                + self.c * dx
+                + self.d
+            )
 
         return (
             self.a[i] * dx**3.0
@@ -101,22 +110,19 @@ class SplineBase:
             + self.d[i]
         )
 
-    def first_derivative(self, x) -> float | None:
-        """Computes the first derivative image
+    def first_derivative(self, x: Union[int, float]) -> Optional[Union[int, float]]:
+        """Compute the first derivative of an x-value.
 
         Args:
-            x (float): The x-value to compute the image of.
+            x (float): the x-value to compute the first derivative of.
 
         Returns:
-            float: The image of the first derivative of the spline section.
+            Union[int, float]: the first derivative of the x-value.
 
         Notes:
             The form of the function is: f'(x) = 3*a*x^2 + 2*b*x + c.
             If x is outside of the X-range, the output is None.
         """
-
-        # Out of bounds handling:
-
         if not self.x[0] <= x <= self.x[-1]:
             return None
 
@@ -129,22 +135,19 @@ class SplineBase:
             + self.c[i]
         )
 
-    def second_derivative(self, x) -> float | None:
-        """Computes the first derivative of a given spline section.
+    def second_derivative(self, x: Union[int, float]) -> Optional[Union[int, float]]:
+        """Compute the second derivative of an x-value.
 
         Args:
-            x (float): The x-value to compute the image of.
+            x (float): the x-value to compute the second derivative of.
 
         Returns:
-            float: The image of the second derivative of the spline section.
+            Union[int, float]: the second derivative of the x-value.
 
         Notes:
             The form of the function is: f''(x) = 6*a*x + 2*b.
             If x is outside of the X-range, the output is None.
         """
-
-        # Out of bounds handling:
-
         if not self.x[0] <= x <= self.x[-1]:
             return None
 
@@ -156,64 +159,61 @@ class SplineBase:
             + 2.0 * self.b[i]
         )
 
-    def __calc_matrix_a(self, diff):
-        """Computes the A matrix for the spline coefficient b.
+    def __calc_matrix_a(self) -> np.array:
+        """Compute the A matrix for the spline coefficient b.
 
         Args:
-            diff (list): List of differences between x-coordinates.
+            diff (list): list of differences between x-coordinates.
 
         Returns:
-            np.array: The A matrix for the spline coefficient b.
+            np.array: the A matrix for the spline coefficient b.
         """
-
-        matrix = np.zeros((self.x_dim, self.x_dim))
+        matrix = np.zeros((self._x_dim, self._x_dim))
         matrix[0, 0] = 1.0
 
-        for i in range(self.x_dim - 1):
-            if i != (self.x_dim - 2):
-                matrix[i + 1, i + 1] = 2.0 * (diff[i] + diff[i + 1])
+        for i in range(self._x_dim - 1):
+            if i != (self._x_dim - 2):
+                matrix[i + 1, i + 1] = 2.0 * \
+                    (self._x_diff[i] + self._x_diff[i + 1])
 
-            matrix[i + 1, i] = diff[i]
-            matrix[i, i + 1] = diff[i]
+            matrix[i + 1, i] = self._x_diff[i]
+            matrix[i, i + 1] = self._x_diff[i]
 
         matrix[0, 1] = 0.0
-        matrix[self.x_dim - 1, self.x_dim - 2] = 0.0
-        matrix[self.x_dim - 1, self.x_dim - 1] = 1.0
+        matrix[self._x_dim - 1, self._x_dim - 2] = 0.0
+        matrix[self._x_dim - 1, self._x_dim - 1] = 1.0
 
         return matrix
 
-    def __calc_matrix_b(self, diff):
-        """Computes the B matrix for the spline coefficient b.
+    def __calc_matrix_b(self) -> np.array:
+        """Compute the B matrix for the spline coefficient b.
 
         Args:
-            diff (list): List of differences between x-coordinates.
+            diff (list): list of differences between x-coordinates.
 
         Returns:
-            np.array: The B matrix for the spline coefficient b.
+            np.array: the B matrix for the spline coefficient b.
         """
+        matrix = np.zeros(self._x_dim)
 
-        matrix = np.zeros(self.x_dim)
-
-        for i in range(self.x_dim - 2):
+        for i in range(self._x_dim - 2):
             matrix[i + 1] = (
-                3.0 * (self.d[i + 2] - self.d[i + 1]) / diff[i + 1]
-                - 3.0 * (self.d[i + 1] - self.d[i]) / diff[i]
+                3.0 * (self.d[i + 2] - self.d[i + 1]) / self._x_diff[i + 1]
+                - 3.0 * (self.d[i + 1] - self.d[i]) / self._x_diff[i]
             )
 
         return matrix
 
-    def __search_index(self, x):
-        """Searches the index of the spline section that contains the given
-        x-value.
+    def __search_index(self, x: Union[int, float]) -> int:
+        """Search for the index of the spline that contains the given x-value.
 
         Args:
-            x (float): The x-value to search for.
+            x (float): the x-value to search for.
 
         Returns:
-            int: The index of the spline section that contains the given
+            int: the index of the spline section that contains the given
         """
-
-        return bisect.bisect(self.x, x) - 1
+        return bisect(self.x, x) - 1
 
 
 class Spline:
@@ -222,10 +222,6 @@ class Spline:
     This class generates a 2D spline from two lists of x and y coordinates.
     Intermediary points are generated with a separation determined by the
     generation step parameter.
-
-    Args:
-        coordiantes (list): The list of coordinates to generate the spline.
-        gen_step (float): The step used to generate the spline.
 
     Notes:
         The number of x and y values must be the same.
@@ -242,7 +238,16 @@ class Spline:
         "lw": 1.5
     }
 
-    def __init__(self, coordinates, gen_step=.1) -> None:
+    def __init__(self, coordinates: Iterable[Coordinate],
+                 gen_step: Union[int, float] = 0.1) -> None:
+        """Initialize a spline instance.
+
+        Args:
+            coordinates (Iterable[Coordinate]): collection of coordinates for
+                the interpolation process.
+            gen_step (Union[int, float], optional): interpolation step. Defaults to
+                0.1.
+        """
         self._x = [coord.x for coord in coordinates]
         self._y = [coord.y for coord in coordinates]
 
@@ -250,30 +255,28 @@ class Spline:
             raise ValueError("The number of x and y values must be the same.")
 
         self._knots = self._compute_knots(self._x, self._y)
-        self._spline_x = SplineBase(self._knots, self._x)
-        self._spline_y = SplineBase(self._knots, self._y)
+        self._spline_x = _UnidimensionalSpline(self._knots, self._x)
+        self._spline_y = _UnidimensionalSpline(self._knots, self._y)
         self._generation_step = gen_step
         self._positions, self._curvature, self._yaw = self._compute_results()
 
     @property
-    def x(self) -> list[float]:
-        """Returns the x coordinates of the spline.
+    def x(self) -> Sequence[float]:
+        """Return the x coordinates of the spline.
 
         Returns:
-            list: List of x coordinates.
+            Sequence[float]: x coordinates of the spline.
         """
-
         return self._x
 
     @x.setter
-    def x(self, value: list[float]) -> None:
-        """Sets the x coordinates of the spline.
+    def x(self, value: Sequence[float]) -> None:
+        """Set the x coordinates of the spline.
 
         Args:
-            value (list): List of x coordinates.
+            value (Sequence[float]): x coordinates of the spline.
         """
-
-        if not isinstance(value, (list, tuple, np.array)):
+        if not isinstance(value, (list, tuple, np.ndarray)):
             raise TypeError("x must be a list, tuple or numpy array.")
 
         elif not all(isinstance(val, (int, float)) for val in value):
@@ -282,24 +285,22 @@ class Spline:
         self._x = value
 
     @property
-    def y(self) -> list[float]:
-        """Returns the y coordinates of the spline.
+    def y(self) -> Sequence[float]:
+        """Return the y coordinates of the spline.
 
         Returns:
-            list: List of y coordinates.
+            Sequence[float]: y coordinates of the spline.
         """
-
         return self._y
 
     @y.setter
-    def y(self, value: list[float]) -> None:
-        """Sets the y coordinates of the spline.
+    def y(self, value: Sequence[float]) -> None:
+        """Set the y coordinates of the spline.
 
         Args:
-            value (list): List of y coordinates.
+            value (Sequence[float]): y coordinates of the spline.
         """
-
-        if not isinstance(value, (list, tuple, np.array)):
+        if not isinstance(value, (list, tuple, np.ndarray)):
             raise TypeError("y must be a list, tuple or numpy array.")
 
         elif not all(isinstance(val, (int, float)) for val in value):
@@ -309,22 +310,20 @@ class Spline:
 
     @property
     def generation_step(self) -> float:
-        """Returns the generation step of the spline.
+        """Return the generation step of the spline.
 
         Returns:
-            float: The generation step of the spline.
+            float: generation step of the spline.
         """
-
         return self._generation_step
 
     @generation_step.setter
     def generation_step(self, value: float) -> None:
-        """Sets the generation step of the spline.
+        """Set the generation step of the spline.
 
         Args:
-            value (float): The generation step of the spline.
+            value (float): generation step of the spline.
         """
-
         if not isinstance(value, (int, float)):
             raise TypeError("generation_step must be a number.")
 
@@ -334,124 +333,104 @@ class Spline:
         self._generation_step = value
 
     @property
-    def knots(self) -> list[float]:
-        """Returns the knots of the spline.
+    def knots(self) -> Sequence[float]:
+        """Return the knots of the spline.
 
         Returns:
-            list: List of knots.
+            Sequence[float]: knots of the spline.
         """
-
         return self._knots
 
     @property
-    def positions(self) -> list[tuple[float, float]]:
-        """Returns the positions of the spline.
+    def positions(self) -> Sequence[Tuple[float, float]]:
+        """Return the positions of the spline.
 
         Returns:
-            list: List of positions.
+            Sequence[Tuple[float, float]]: positions of the spline.
         """
-
         return self._positions
 
     @property
-    def curvature(self) -> list[float]:
-        """Returns the curvature of the spline.
+    def curvature(self) -> Sequence[float]:
+        """Return the curvature of the spline.
 
         Returns:
-            list: List of curvature.
+            list: curvature of the spline.
         """
-
         return self._curvature
 
     @property
-    def yaw(self) -> list[float]:
-        """Returns the yaw of the spline.
+    def yaw(self) -> Sequence[float]:
+        """Return the yaw of the spline.
 
         Returns:
-            list: List of yaw.
+            list: yaw of the spline.
         """
-
-        return self.plot_yaw
+        return self._yaw
 
     def _compute_knots(self, x, y):
-        """Computes the knots of the spline.
+        """Compute the knots of the spline.
 
         Args:
-            x (list): List of x coordinates.
-            y (list): List of y coordinates.
+            x (list): x coordinates.
+            y (list): y coordinates.
 
         Returns:
-            list: List of knots.
+            list: knots of the spline.
         """
+        return np.concatenate((
+            np.zeros(1),
+            np.cumsum(np.hypot(np.diff(x), np.diff(y)))
+        ))
 
-        return [0] + list(np.cumsum(np.hypot(np.diff(x), np.diff(y))))
-
-    def _compute_position(self, i):
-        """Computes the image of a given x-value in a spline section.
+    def _compute_position(self, i: int) -> Optional[tuple]:
+        """Compute the image of a given x-value in a spline section.
 
         Args:
-            i (int): The index of the spline section.
+            i (int): index of the spline section.
 
         Returns:
-            tuple: The image of the x-value in the spline section.
-
-        Notes:
-            If x is outside of the X-range, the output is None.
+            Optional[tuple]: image of the x-value in the spline section. If the
+                image is outside the generation range, the output is None.
         """
-
         return self._spline_x.position(i), self._spline_y.position(i)
 
     def _compute_curvature(self, i: int) -> float:
-        """Computes the curvature of a given spline section.
+        """Compute the curvature of a given spline section.
 
         Args:
-            i (int): The index of the spline section.
+            i (int): index of the spline section.
 
         Returns:
-            float: The curvature of the spline section.
-
-        Notes:
-            If x is outside of the X-range, the output is None.
+            float: curvature of a given spline section.
         """
+        dx1 = self._spline_x.first_derivative(i)
+        dx2 = self._spline_x.second_derivative(i)
+        dy1 = self._spline_y.first_derivative(i)
+        dy2 = self._spline_y.second_derivative(i)
 
-        # This dictionary allows fast value checking:
-        derivatives = {
-            'x1': self._spline_x.first_derivative(i),
-            'x2': self._spline_x.second_derivative(i),
-            'y1': self._spline_y.first_derivative(i),
-            'y2': self._spline_y.second_derivative(i)
-        }
-
-        return (
-            derivatives["y2"] * derivatives["x1"]
-            - derivatives["x2"] * derivatives["y1"]
-        ) / ((derivatives["x1"]**2 + derivatives["y1"]**2) ** (3 / 2))
+        return (dy2 * dx1 - dx2 * dy1) / math.sqrt((dx1**2 + dy1**2))
 
     def _compute_yaw(self, i: int) -> float:
-        """Computes the yaw of a given spline section.
+        """Compute the yaw of a given spline section.
 
         Args:
-            i (int): The index of the spline section.
+            i (int): index of the spline section.
 
         Returns:
-            float: The yaw of the spline section.
-
-        Notes:
-            If x is outside of the X-range, the output is None.
+            float: yaw of a given spline section.
         """
-
         return math.atan2(
             self._spline_y.first_derivative(i),
             self._spline_x.first_derivative(i)
         )
 
-    def _compute_results(self):
-        """Computes the coordinates, curvature and yaw of the spline.
+    def _compute_results(self) -> tuple:
+        """Compute the coordinates, curvature and yaw of the spline.
 
         Returns:
-            tuple: The coordinates, curvature and yaw of the spline.
+            tuple: coordinates, curvature and yaw of the spline.
         """
-
         knots_ext = np.arange(
             self._knots[0],
             self._knots[-1],
@@ -470,7 +449,7 @@ class Spline:
         return data[:, 0], data[:, 1], data[:, 2]
 
     def plot_input(self, *args, ax=None, **kwargs) -> None:
-        """Plots the input of the spline.
+        """Plot the input of the spline.
 
         Args:
             *args: Arguments to pass to the plot function.
@@ -478,7 +457,6 @@ class Spline:
                 to None.
             **kwargs: Keyword arguments to pass to the plot
         """
-
         styles = self.STYLES.copy()
         styles.update({"label": "Input"})
         styles.update(kwargs)
@@ -488,8 +466,7 @@ class Spline:
         ax.plot(self._x, self._y, shape, **styles)
 
     def plot_positions(self, *args, ax=None, **kwargs) -> None:
-        """Plots the spline."""
-
+        """Plot the spline."""
         styles = self.STYLES.copy()
         styles.update({"label": "Spline"})
         styles.update(kwargs)
@@ -499,7 +476,7 @@ class Spline:
         ax.plot(*zip(*self._positions), shape, **styles)
 
     def plot_curvature(self, *args, ax=None, **kwargs) -> None:
-        """Plots the curvature function of the spline.
+        """Plot the curvature function of the spline.
 
         Args:
             *args: Arguments to pass to the plot function.
@@ -507,7 +484,6 @@ class Spline:
                 to None.
             **kwargs: Keyword arguments to pass to the plot
         """
-
         styles = self.STYLES.copy()
         styles.update({"label": "Curvature"})
         styles.update(kwargs)
@@ -523,7 +499,7 @@ class Spline:
         )
 
     def plot_yaw(self, *args, ax=None, **kwargs) -> None:
-        """Plots the YAW function of the spline.
+        """Plot the YAW function of the spline.
 
         Args:
             *args: Arguments to pass to the plot function.
@@ -531,7 +507,6 @@ class Spline:
                 to None.
             **kwargs: Keyword arguments to pass to the plot
         """
-
         styles = self.STYLES.copy()
         styles.update({"label": "YAW"})
         styles.update(kwargs)
@@ -547,10 +522,17 @@ class Spline:
         )
 
     def __str__(self) -> str:
-        return f"Spline2D of {len(self._x)} points"
+        """Get the string epresentation of the spline.
+
+        Returns:
+            str: string representation of the spline.
+        """
+        return f"Spline of {len(self._x)} points"
 
     def __repr__(self) -> str:
-        return self.__str__()
+        """Raw representation of the spline.
 
-    def __len__(self) -> int:
-        return len(self._x)
+        Returns:
+            str: raw representation of the spline.
+        """
+        return f"Spline of {len(self._x)} points"

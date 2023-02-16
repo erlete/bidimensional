@@ -7,17 +7,15 @@ Author:
     Paulo Sanchez (@erlete)
 """
 
-
 from __future__ import annotations
 
-from itertools import combinations, permutations
+from itertools import combinations
 from math import sqrt
-
-import matplotlib.pyplot as plt
+from typing import Any, Dict
 
 from ..core import operations as op
-from ..core.coordinates import Coordinate
-from ..core.lines import Segment
+from ..core.coordinate import Coordinate
+from .polygon import Polygon
 
 
 class Circumcircle:
@@ -26,20 +24,22 @@ class Circumcircle:
     This class is used to calculate the circumcenter and circumradius of a
     triangle, given its three vertices as 2D coordinates.
 
-    Args:
-        a (Coordinate): First vertex of the triangle.
-        b (Coordinate): Second vertex of the triangle.
-        c (Coordinate): Third vertex of the triangle.
-
     Attributes:
-        a (Coordinate): First vertex of the triangle.
-        b (Coordinate): Second vertex of the triangle.
-        c (Coordinate): Third vertex of the triangle.
-        center (Coordinate): The center of the circumcircle.
-        radius (float): The radius of the circumcircle.
+        a (Coordinate): first vertex of the triangle.
+        b (Coordinate): second vertex of the triangle.
+        c (Coordinate): third vertex of the triangle.
+        center (Coordinate): center of the circumcircle.
+        radius (float): radius of the circumcircle.
     """
 
     def __init__(self, a: Coordinate, b: Coordinate, c: Coordinate) -> None:
+        """Initialize a circumcircle instance.
+
+        Args:
+            a (Coordinate): first vertex of the triangle.
+            b (Coordinate): second vertex of the triangle.
+            c (Coordinate): third vertex of the triangle.
+        """
         self._a = a
         self._b = b
         self.c = c  # Automatically calls `Circumcircle._calculate` method.
@@ -49,13 +49,12 @@ class Circumcircle:
         """First vertex of the triangle.
 
         Returns:
-            Coordinate: First vertex of the triangle.
+            Coordinate: first vertex of the triangle.
 
         Note:
             If the value of the vertex is changed, the circumcenter and
             circumradius are recalculated.
         """
-
         return self._a
 
     @a.setter
@@ -63,16 +62,15 @@ class Circumcircle:
         """First vertex of the triangle.
 
         Args:
-            value (Coordinate): First vertex of the triangle.
+            value (Coordinate): first vertex of the triangle.
 
         Raises:
-            TypeError: If the value is not a Coordinate object.
+            TypeError: if the value is not a Coordinate object.
 
         Note:
             If the value of the vertex is changed, the circumcenter and
             circumradius are recalculated.
         """
-
         if not isinstance(value, Coordinate):
             raise TypeError("a must be a Coordinate instance")
 
@@ -84,13 +82,12 @@ class Circumcircle:
         """Second vertex of the triangle.
 
         Returns:
-            Coordinate: Second vertex of the triangle.
+            Coordinate: second vertex of the triangle.
 
         Note:
             If the value of the vertex is changed, the circumcenter and
             circumradius are recalculated.
         """
-
         return self._b
 
     @b.setter
@@ -98,16 +95,15 @@ class Circumcircle:
         """Second vertex of the triangle.
 
         Args:
-            value (Coordinate): Second vertex of the triangle.
+            value (Coordinate): second vertex of the triangle.
 
         Raises:
-            TypeError: If the value is not a Coordinate object.
+            TypeError: if the value is not a Coordinate object.
 
         Note:
             If the value of the vertex is changed, the circumcenter and
             circumradius are recalculated.
         """
-
         if not isinstance(value, Coordinate):
             raise TypeError("b must be a Coordinate instance")
 
@@ -119,13 +115,12 @@ class Circumcircle:
         """Third vertex of the triangle.
 
         Returns:
-            Coordinate: Third vertex of the triangle.
+            Coordinate: third vertex of the triangle.
 
         Note:
             If the value of the vertex is changed, the circumcenter and
             circumradius are recalculated.
         """
-
         return self._c
 
     @c.setter
@@ -133,16 +128,15 @@ class Circumcircle:
         """Third vertex of the triangle.
 
         Args:
-            value (Coordinate): Third vertex of the triangle.
+            value (Coordinate): third vertex of the triangle.
 
         Raises:
-            TypeError: If the value is not a Coordinate object.
+            TypeError: if the value is not a Coordinate object.
 
         Note:
             If the value of the vertex is changed, the circumcenter and
             circumradius are recalculated.
         """
-
         if not isinstance(value, Coordinate):
             raise TypeError("c must be a Coordinate instance")
 
@@ -154,9 +148,8 @@ class Circumcircle:
         """Center of the circumcircle.
 
         Returns:
-            Coordinate: Center of the circumcircle.
+            Coordinate: center of the circumcircle.
         """
-
         return self._center
 
     @property
@@ -164,18 +157,16 @@ class Circumcircle:
         """Radius of the circumcircle.
 
         Returns:
-            float: Radius of the circumcircle.
+            float: radius of the circumcircle.
         """
-
         return self._radius
 
     def _ensure_non_collinear(self) -> None:
-        """Ensures that the triangle is not collinear.
+        """Ensure that the triangle is not collinear.
 
         Raises:
-            ValueError: If the triangle is collinear.
+            ValueError: if the triangle is collinear.
         """
-
         x_displacements = {
             "ab": self.b.x - self.a.x,
             "bc": self.c.x - self.b.x,
@@ -210,8 +201,7 @@ class Circumcircle:
             raise ValueError("The triangle is collinear")
 
     def _calculate(self) -> None:
-        """Calculates the center and radius of the circumcircle."""
-
+        """Calculate the center and radius of the circumcircle."""
         self._ensure_non_collinear()
 
         if any(v[1] - v[0] for v in combinations(
@@ -316,7 +306,7 @@ class Circumcircle:
         )
 
 
-class Triangle:
+class Triangle(Polygon):
     """Triangle class.
 
     This class represents a triangle in the 2D plane. It is defined by three
@@ -326,28 +316,26 @@ class Triangle:
     triangle, such as if it is equilateral, isosceles, scalene, right, obtuse
     or acute.
 
-    Args:
-        a (Coordinate): First vertex of the triangle.
-        b (Coordinate): Second vertex of the triangle.
-        c (Coordinate): Third vertex of the triangle.
-
     Attributes:
-        a (Coordinate): First vertex of the triangle.
-        b (Coordinate): Second vertex of the triangle.
-        c (Coordinate): Third vertex of the triangle.
-        circumcenter (Coordinate): Circumcenter of the triangle.
-        circumradius (float): Circumradius of the triangle.
+        a (Coordinate): first vertex of the triangle.
+        b (Coordinate): second vertex of the triangle.
+        c (Coordinate): third vertex of the triangle.
+        circumcenter (Coordinate): circumcenter of the triangle.
+        circumradius (float): circumradius of the triangle.
     """
-
-    _ERROR_MSGS = {
-        "TypeError1": "value must be a Triangle instance"
-    }
 
     TOL_DIGITS = 10
 
     def __init__(self, a: Coordinate, b: Coordinate, c: Coordinate) -> None:
+        """Initialize a triangle instance.
 
-        self._properties = {}
+        Args:
+            a (Coordinate): first vertex of the triangle.
+            b (Coordinate): second vertex of the triangle.
+            c (Coordinate): third vertex of the triangle.
+        """
+        super().__init__(a, b, c)
+        self._properties: Dict[str, Any] = {}
 
         self.a = a
         self.b = b
@@ -358,9 +346,8 @@ class Triangle:
         """First vertex of the triangle.
 
         Returns:
-            Coordinate: First vertex of the triangle.
+            Coordinate: first vertex of the triangle.
         """
-
         return self._a
 
     @a.setter
@@ -368,12 +355,11 @@ class Triangle:
         """First vertex of the triangle.
 
         Args:
-            value (Coordinate): First vertex of the triangle.
+            value (Coordinate): first vertex of the triangle.
 
         Raises:
-            TypeError: If the value is not a Coordinate object.
+            TypeError: if the value is not a Coordinate object.
         """
-
         if not isinstance(value, Coordinate):
             raise TypeError("a must be a Coordinate instance")
 
@@ -385,9 +371,8 @@ class Triangle:
         """Second vertex of the triangle.
 
         Returns:
-            Coordinate: Second vertex of the triangle.
+            Coordinate: second vertex of the triangle.
         """
-
         return self._b
 
     @b.setter
@@ -395,12 +380,11 @@ class Triangle:
         """Second vertex of the triangle.
 
         Args:
-            value (Coordinate): Second vertex of the triangle.
+            value (Coordinate): second vertex of the triangle.
 
         Raises:
-            TypeError: If the value is not a Coordinate object.
+            TypeError: if the value is not a Coordinate object.
         """
-
         if not isinstance(value, Coordinate):
             raise TypeError("b must be a Coordinate instance")
 
@@ -412,9 +396,8 @@ class Triangle:
         """Third vertex of the triangle.
 
         Returns:
-            Coordinate: Third vertex of the triangle.
+            Coordinate: third vertex of the triangle.
         """
-
         return self._c
 
     @c.setter
@@ -422,12 +405,11 @@ class Triangle:
         """Third vertex of the triangle.
 
         Args:
-            value (Coordinate): Third vertex of the triangle.
+            value (Coordinate): third vertex of the triangle.
 
         Raises:
-            TypeError: If the value is not a Coordinate object.
+            TypeError: if the value is not a Coordinate object.
         """
-
         if not isinstance(value, Coordinate):
             raise TypeError("c must be a Coordinate instance")
 
@@ -435,77 +417,12 @@ class Triangle:
         self._properties.clear()
 
     @property
-    def vertices(self) -> dict[str, Coordinate]:
-        """Vertices of the triangle.
-
-        Returns:
-            dict[str, Coordinate]: Vertices of the triangle.
-        """
-
-        if self._properties.get("vertices") is None:
-            self._properties["vertices"] = {
-                'a': self.a,
-                'b': self.b,
-                'c': self.c
-            }
-
-        return self._properties["vertices"]
-
-    @property
-    def sides(self) -> dict[str, float]:
-        """Sides of the triangle.
-
-        Returns:
-            dict[str, Segment]: Sides of the triangle.
-        """
-
-        if self._properties.get("sides") is None:
-            self._properties["sides"] = {
-                ''.join(pair): Segment(
-                    self.vertices.get(pair[0]),
-                    self.vertices.get(pair[1])
-                ) for pair in permutations(self.vertices.keys(), 2)
-            }
-
-        return self._properties["sides"]
-
-    @property
-    def area(self) -> float:
-        """Area of the triangle.
-
-        Returns:
-            float: Area of the triangle.
-        """
-
-        if self._properties.get("area") is None:
-            self._properties["area"] = op.area(self.a, self.b, self.c)
-
-        return self._properties["area"]
-
-    @property
-    def perimeter(self) -> float:
-        """Perimeter of the triangle.
-
-        Returns:
-            float: Perimeter of the triangle.
-        """
-
-        if self._properties.get("perimeter") is None:
-            self._properties["perimeter"] = sum(
-                side.distance
-                for side in set(self.sides.values())
-            )
-
-        return self._properties["perimeter"]
-
-    @property
-    def angles(self) -> dict[str, float]:
+    def angles(self) -> Dict[str, float]:
         """Inner angles of the triangle.
 
         Returns:
-            dict[str, float]: Angles of the triangle.
+            Dict[str, float]: Angles of the triangle.
         """
-
         if self._properties.get("angles") is None:
             self._properties["angles"] = {
                 'a': round(op.angle(self.b, self.c, self.a), self.TOL_DIGITS),
@@ -522,7 +439,6 @@ class Triangle:
         Returns:
             Coordinate: Circumcenter of the triangle.
         """
-
         if self._properties.get("circumcircle") is None:
             self._properties["circumcircle"] = Circumcircle(
                 self.a, self.b, self.c
@@ -537,7 +453,6 @@ class Triangle:
         Returns:
             float: Circumradius of the triangle.
         """
-
         if self._properties.get("circumcircle") is None:
             self._properties["circumcircle"] = Circumcircle(
                 self.a, self.b, self.c
@@ -546,75 +461,69 @@ class Triangle:
         return self._properties["circumcircle"].radius
 
     def is_right(self) -> bool:
-        """Checks if the triangle has a right angle.
+        """Check whether the triangle has a right angle.
 
         Returns:
-            bool: True if the triangle has a right angle, False otherwise.
+            bool: `True` if the triangle has a right angle, `False` otherwise.
         """
-
         return any(
             round(angle_, self.TOL_DIGITS) == 90
             for angle_ in self.angles.values()
         )
 
     def is_obtuse(self) -> bool:
-        """Checks if the triangle has an obtuse angle.
+        """Check whether the triangle has an obtuse angle.
 
         Returns:
-            bool: True if the triangle has an obtuse angle, False otherwise.
+            bool: `True` if the triangle has an obtuse angle, `False`
+                otherwise.
         """
-
         return any(
             angle_ > 90
             for angle_ in self.angles.values()
         )
 
     def is_acute(self) -> bool:
-        """Checks if every angle in the triangle is an acute angle.
+        """Check whether every angle in the triangle is an acute angle.
 
         Returns:
-            bool: True if the triangle has an acute angle, False otherwise.
+            bool: `True` if the triangle has an acute angle, `False` otherwise.
         """
-
         return all(
             angle_ < 90
             for angle_ in self.angles.values()
         )
 
     def is_equilateral(self) -> bool:
-        """Checks if the triangle is equilateral.
+        """Check whether the triangle is equilateral.
 
         Returns:
-            bool: True if the triangle is equilateral, False otherwise.
+            bool: `True` if the triangle is equilateral, `False` otherwise.
         """
-
         return len(set(self.angles.values())) == 1
 
     def is_isosceles(self) -> bool:
-        """Checks if the triangle is isosceles.
+        """Check whether the triangle is isosceles.
 
         Returns:
-            bool: True if the triangle is isosceles, False otherwise.
+            bool: `True` if the triangle is isosceles, `False` otherwise.
         """
-
         return len(set(self.angles.values())) == 2
 
     def is_scalene(self) -> bool:
-        """Checks if the triangle is scalene.
+        """Check whether the triangle is scalene.
 
         Returns:
-            bool: True if the triangle is scalene, False otherwise.
+            bool: `True` if the triangle is scalene, `False` otherwise.
         """
-
         return len(set(self.angles.values())) == 3
 
     def is_collinear(self) -> bool:
-        """Checks if the triangle is collinear.
+        """Check whether the triangle is collinear.
 
         Returns:
-            bool: True if the triangle is collinear, False otherwise.
+            bool: `True` if the triangle is collinear, `False` otherwise.
         """
-
         x_displacements = {
             "ab": self.b.x - self.a.x,
             "bc": self.c.x - self.b.x,
@@ -650,134 +559,31 @@ class Triangle:
 
         return False
 
-    def plot(self, ax=None, **kwargs) -> None:
-        """Plots the triangle.
-
-        Args:
-            ax (matplotlib.axes.Axes, optional): Axes to plot on. Defaults to
-                None.
-            **kwargs: Keyword arguments for matplotlib.pyplot.plot.
-        """
-
-        if ax is None:
-            ax = plt.gca()
-
-        ax.plot(
-            [self.a.x, self.b.x, self.c.x, self.a.x],
-            [self.a.y, self.b.y, self.c.y, self.a.y],
-            **kwargs
-        )
-
     def __repr__(self) -> str:
-        """String representation of the triangle.
+        """Return the string representation of the triangle.
 
         Returns:
-            str: String representation of the triangle.
+            str: string representation of the triangle.
         """
-
         return f"Triangle({self.a}, {self.b}, {self.c})"
 
     def __str__(self) -> str:
-        """String representation of the triangle.
+        """Return the raw representation of the triangle.
 
         Returns:
-            str: String representation of the triangle.
+            str: raw representation of the triangle.
         """
-
         return f"Triangle({self.a}, {self.b}, {self.c})"
 
-    def __eq__(self, value: Triangle) -> bool:
-        """Checks if two triangles are equal.
-
-        Args:
-            value (Triangle): Triangle to compare.
-
-        Returns:
-            bool: True if the triangles are equal, False otherwise.
-        """
-
-        if not isinstance(value, Triangle):
-            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
-
-        return {self.a, self.b, self.c} == {value.a, value.b, value.c}
-
-    def __ne__(self, value: Triangle) -> bool:
-        """Checks if two triangles are not equal.
-
-        Args:
-            value (Triangle): Triangle to compare.
-
-        Returns:
-            bool: True if the triangles are not equal, False otherwise.
-        """
-
-        return not self.__eq__(value)
-
-    def __gt__(self, value: Triangle) -> bool:
-        """Checks if a triangle is greater than another.
-
-        Args:
-            value (Triangle): Triangle to compare.
-
-        Returns:
-            bool: True if the triangle is greater than the other, False
-                otherwise.
-        """
-
-        if not isinstance(value, Triangle):
-            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
-
-        return self.area > value.area
-
-    def __ge__(self, value: Triangle) -> bool:
-        """Checks if a triangle is greater than or equal to another.
-
-        Args:
-            value (Triangle): Triangle to compare.
-
-        Returns:
-            bool: True if the triangle is greater than or equal to the other,
-                False otherwise.
-        """
-
-        return self.__gt__(value) or self.__eq__(value)
-
-    def __lt__(self, value: Triangle) -> bool:
-        """Checks if a triangle is less than another.
-
-        Args:
-            value (Triangle): Triangle to compare.
-
-        Returns:
-            bool: True if the triangle is less than the other, False otherwise.
-        """
-
-        if not isinstance(value, Triangle):
-            raise TypeError(self._ERROR_MSGS.get("TypeError1"))
-
-        return self.area < value.area
-
-    def __le__(self, value: Triangle) -> bool:
-        """Checks if a triangle is less than or equal to another.
-
-        Args:
-            value (Triangle): Triangle to compare.
-
-        Returns:
-            bool: True if the triangle is less than or equal to the other,
-                False otherwise.
-        """
-
-        return self.__lt__(value) or self.__eq__(value)
-
     def __contains__(self, value: Coordinate) -> bool:
-        """Checks if a point is inside the triangle.
+        """Check whether a point is inside the triangle.
 
         Args:
             point (Coordinate): Point to check.
 
         Returns:
-            bool: True if the point is inside the triangle, False otherwise.
+            bool: `True` if the point is inside the triangle, `False`
+                otherwise.
 
         Note:
             This method excludes points on the edges of the triangle up to a
@@ -789,7 +595,6 @@ class Triangle:
         Reference:
             http://totologic.blogspot.com/2014/01/accurate-point-in-triangle-test.html
         """
-
         a = (
             (self._b.y - self._c.y) * (value.x - self._c.x)
             + (self._c.x - self._b.x) * (value.y - self._c.y)
