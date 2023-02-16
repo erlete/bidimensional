@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from itertools import combinations
 from math import sqrt
-from typing import Any
+from typing import Any, Dict
 
 from ..core import operations as op
 from ..core.coordinate import Coordinate
@@ -335,7 +335,7 @@ class Triangle(Polygon):
             c (Coordinate): third vertex of the triangle.
         """
         super().__init__(a, b, c)
-        self._properties: dict[str, Any] = {}
+        self._properties: Dict[str, Any] = {}
 
         self.a = a
         self.b = b
@@ -417,11 +417,11 @@ class Triangle(Polygon):
         self._properties.clear()
 
     @property
-    def angles(self) -> dict[str, float]:
+    def angles(self) -> Dict[str, float]:
         """Inner angles of the triangle.
 
         Returns:
-            dict[str, float]: Angles of the triangle.
+            Dict[str, float]: Angles of the triangle.
         """
         if self._properties.get("angles") is None:
             self._properties["angles"] = {

@@ -12,7 +12,7 @@ Author:
 from __future__ import annotations
 
 from math import ceil, floor, trunc
-from typing import Any, Generator, Sequence, Union
+from typing import Any, Dict, Generator, Sequence, Union
 
 import matplotlib.pyplot as plt
 
@@ -27,13 +27,13 @@ class Coordinate(Sequence):
     Args:
         x (float): the x value of the coordinate.
         y (float): the y value of the coordinate.
-        STYLES (dict[str, Any]): the dictionary containing default matplotlib
+        STYLES (Dict[str, Any]): the dictionary containing default matplotlib
             styles for coordinate plotting.
     """
 
     __slots__ = ("_x", "_y")
 
-    STYLES: dict[str, Any] = {
+    STYLES: Dict[str, Any] = {
         "color": "#396fe3",
         "ms": 10
     }

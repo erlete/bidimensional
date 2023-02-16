@@ -9,7 +9,7 @@ from __future__ import annotations
 from itertools import combinations_with_replacement as cr
 from math import ceil, log
 from string import ascii_lowercase, ascii_uppercase
-from typing import Sequence
+from typing import Dict, Sequence
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -26,15 +26,15 @@ class Polygon:
     composed of a set of vertices, which are instances of the Coordinate class.
 
     Attributes:
-        ANNOTATIONS (dict[str, str]): annotations for the vertices and sides of
+        ANNOTATIONS (Dict[str, str]): annotations for the vertices and sides of
             the polygon.
-        vertices (dict[str, Coordinate]): vertices of the polygon.
-        sides (dict[str, Segment]): sides of the polygon.
+        vertices (Dict[str, Coordinate]): vertices of the polygon.
+        sides (Dict[str, Segment]): sides of the polygon.
         area (float): area of the polygon.
         perimeter (float): perimeter of the polygon.
     """
 
-    ANNOTATIONS: dict[str, str] = {
+    ANNOTATIONS: Dict[str, str] = {
         "vertices": ascii_uppercase,
         "sides": ascii_lowercase
     }
@@ -60,11 +60,11 @@ class Polygon:
         ] + [Segment(vertices[-1], vertices[0])]
 
     @property
-    def vertices(self) -> dict[str, Coordinate]:
+    def vertices(self) -> Dict[str, Coordinate]:
         """Get the vertices of the polygon.
 
         Returns:
-            dict[str, Coordinate]: vertices of the polygon.
+            Dict[str, Coordinate]: vertices of the polygon.
         """
         return self._vertices
 
@@ -104,11 +104,11 @@ class Polygon:
         }
 
     @property
-    def sides(self) -> dict[str, Segment]:
+    def sides(self) -> Dict[str, Segment]:
         """Get the sides of the polygon.
 
         Returns:
-            dict[str, Segment]: sides of the polygon.
+            Dict[str, Segment]: sides of the polygon.
         """
         return self._sides
 
