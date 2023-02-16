@@ -1,16 +1,18 @@
 import json
-from bidimensional import Coordinate
-from bidimensional.functions import Spline
-import pytest
+from typing import Sequence
+
 import matplotlib.pyplot as plt
 import numpy as np
+
+from bidimensional import Coordinate
+from bidimensional.functions import Spline
 
 
 class TestSpline:
 
     DIGITS = 8
 
-    GEN_PARAMS: dict[str, list[float]] = {
+    GEN_PARAMS: dict[str, Sequence[float]] = {
         'x': [-2.5, 0.0, 2.5, 5.0, 7.5, 3.0, -1.0],
         'y': [0.7, -6, 5, 6.5, 0.0, 5.0, -2.0],
         "ds": .1

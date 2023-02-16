@@ -12,7 +12,7 @@ Author:
 from __future__ import annotations
 
 from math import ceil, floor, trunc
-from typing import Any, Generator, Sequence
+from typing import Any, Generator, Sequence, Union
 
 import matplotlib.pyplot as plt
 
@@ -38,12 +38,12 @@ class Coordinate(Sequence):
         "ms": 10
     }
 
-    def __init__(self, x: int | float, y: int | float) -> None:
+    def __init__(self, x: Union[int, float], y: Union[int, float]) -> None:
         """Initialize a coordinate instance.
 
         Args:
-            x (int | float): the X component of the coordinate.
-            y (int | float): the Y component of the coordinate.
+            x (Union[int, float]): the X component of the coordinate.
+            y (Union[int, float]): the Y component of the coordinate.
         """
         self.x: float = x
         self.y: float = y
@@ -58,11 +58,11 @@ class Coordinate(Sequence):
         return self._x
 
     @x.setter
-    def x(self, value: int | float) -> None:
+    def x(self, value: Union[int, float]) -> None:
         """Set the X component of the coordinate.
 
         Args:
-            value (int | float): the X component of the coordinate.
+            value (Union[int, float]): the X component of the coordinate.
 
         Raises:
             TypeError: if `value` is not a type `int` or `float`.
@@ -85,11 +85,11 @@ class Coordinate(Sequence):
         return self._y
 
     @y.setter
-    def y(self, value: int | float) -> None:
+    def y(self, value: Union[int, float]) -> None:
         """Set the X component of the coordinate.
 
         Args:
-            value (int | float): the X component of the coordinate.
+            value (Union[int, float]): the X component of the coordinate.
 
         Raises:
             TypeError: if `value` is not a type `int` or `float`.
@@ -364,11 +364,11 @@ class Coordinate(Sequence):
         """
         return 2
 
-    def __getitem__(self, index: int | slice) -> Any:
+    def __getitem__(self, index: Union[int, slice]) -> Any:
         """Get the X, Y coordinate components via index or slice.
 
         Args:
-            index (int | slice): the index or slice of the component(s).
+            index (Union[int, slice]): the index or slice of the component(s).
 
         Returns:
             Any: the value(s) of the component(s).
@@ -391,12 +391,12 @@ class Coordinate(Sequence):
         else:
             raise TypeError("index must be an int or a slice.")
 
-    def __setitem__(self, index: int | slice, value: int | float) -> None:
+    def __setitem__(self, index: Union[int, slice], value: Union[int, float]) -> None:
         """Set the X or Y coordinate components via index or slice.
 
         Args:
-            index (int | slice): the index or slice of the component(s).
-            value (int | float): the new value(s) of the component(s).
+            index (Union[int, slice]): the index or slice of the component(s).
+            value (Union[int, float]): the new value(s) of the component(s).
 
         Raises:
             IndexError: if the index of the component is not 0 or 1.

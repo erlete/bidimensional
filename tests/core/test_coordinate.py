@@ -53,7 +53,7 @@ class TestCoordinate:
             Coordinate(1, 1) + Coordinate(-1.0, -1.0)
             == Coordinate(0.0, 0.0)
         )
-        
+
     def test_sub(self):
         assert Coordinate(0, 0) - Coordinate(0, 0) == Coordinate(0, 0)
         assert Coordinate(1, 1) - Coordinate(1, 1) == Coordinate(0, 0)

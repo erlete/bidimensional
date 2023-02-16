@@ -9,6 +9,7 @@ from __future__ import annotations
 from itertools import combinations_with_replacement as cr
 from math import ceil, log
 from string import ascii_lowercase, ascii_uppercase
+from typing import Sequence
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -68,11 +69,11 @@ class Polygon:
         return self._vertices
 
     @vertices.setter
-    def vertices(self, vertices: tuple[Coordinate]) -> None:
+    def vertices(self, vertices: Sequence[Coordinate]) -> None:
         """Set the vertices of the polygon.
 
         Args:
-            vertices (tuple[Coordinate]): vertices of the polygon.
+            vertices (Sequence[Coordinate]): vertices of the polygon.
 
         Raises:
             TypeError: if any of the vertices is not of type Coordinate.
@@ -112,11 +113,11 @@ class Polygon:
         return self._sides
 
     @sides.setter
-    def sides(self, sides: tuple[Segment]) -> None:
+    def sides(self, sides: Sequence[Segment]) -> None:
         """Set the sides of the polygon.
 
         Args:
-            sides (tuple[Segment]): sides of the polygon.
+            sides (Sequence[Segment]): sides of the polygon.
 
         Raises:
             TypeError: if any of the sides is not of type Segment.

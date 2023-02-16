@@ -137,7 +137,7 @@ class Line:
             line (Line): the line to determine the intersection with.
 
         Returns:
-            Coordinate | None: the intersection between the two lines (if it
+            Optional[Coordinate]: the intersection between the two lines (if it
                 exists, otherwise None).
 
         Raises:
@@ -182,7 +182,7 @@ class Line:
             line (Line): the line to determine the intersection with.
 
         Returns:
-            Coordinate | None: the intersection between the two lines (if it
+            Optional[Coordinate]: the intersection between the two lines (if it
                 exists, otherwise None).
 
         Notes:
@@ -364,7 +364,7 @@ class Segment(Line):
             TypeError: if line is not a Line object.
 
         Returns:
-            Coordinate | None: the intersection between the two segments (if it
+            Optional[Coordinate]: the intersection between the two segments (if it
                 exists, otherwise None).
         """
         if not isinstance(line, Line):

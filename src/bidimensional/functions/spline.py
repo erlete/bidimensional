@@ -10,7 +10,7 @@ Authors:
 
 import math
 from bisect import bisect
-from typing import Iterable, Optional, Union
+from typing import Iterable, Optional, Sequence, Tuple, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -25,15 +25,15 @@ class _UnidimensionalSpline:
     a cubic spline.
     """
 
-    def __init__(self, x: list[Union[int, float]], y: list[Union[int, float]]):
+    def __init__(self, x: Sequence[Union[int, float]], y: Sequence[Union[int, float]]):
         """Initialize a unidimensional spline instance.
 
         Args:
-            x (list[Union[int, float]]): list of x-coordinates.
-            y (list[Union[int, float]]): list of y-coordinates.
+            x (Sequence[Union[int, float]]): sequence of x-coordinates.
+            y (Sequence[Union[int, float]]): sequence of y-coordinates.
 
         Raises:
-            ValueError: if the x and y lists have different lengths.
+            ValueError: if the x and y sequences have different lengths.
         """
         self.x = np.array(x)
         self.y = np.array(y)
@@ -76,14 +76,14 @@ class _UnidimensionalSpline:
 
         self.pos = None
 
-    def position(self, x: int | float) -> Optional[int | float]:
+    def position(self, x: Union[int, float]) -> Optional[Union[int, float]]:
         """Compute the image of a given x-value in a spline section.
 
         Args:
             x (float): the x-value to compute the image of.
 
         Returns:
-            int | float: the image of the spline section.
+            Union[int, float]: the image of the spline section.
 
         Notes:
             The form of the function is: f(x) = a*x^3 + b*x^2 + c*x + d.
@@ -110,14 +110,14 @@ class _UnidimensionalSpline:
             + self.d[i]
         )
 
-    def first_derivative(self, x: int | float) -> Optional[int | float]:
+    def first_derivative(self, x: Union[int, float]) -> Optional[Union[int, float]]:
         """Compute the first derivative of an x-value.
 
         Args:
             x (float): the x-value to compute the first derivative of.
 
         Returns:
-            int | float: the first derivative of the x-value.
+            Union[int, float]: the first derivative of the x-value.
 
         Notes:
             The form of the function is: f'(x) = 3*a*x^2 + 2*b*x + c.
@@ -135,14 +135,14 @@ class _UnidimensionalSpline:
             + self.c[i]
         )
 
-    def second_derivative(self, x: int | float) -> Optional[int | float]:
+    def second_derivative(self, x: Union[int, float]) -> Optional[Union[int, float]]:
         """Compute the second derivative of an x-value.
 
         Args:
             x (float): the x-value to compute the second derivative of.
 
         Returns:
-            int | float: the second derivative of the x-value.
+            Union[int, float]: the second derivative of the x-value.
 
         Notes:
             The form of the function is: f''(x) = 6*a*x + 2*b.
@@ -204,7 +204,7 @@ class _UnidimensionalSpline:
 
         return matrix
 
-    def __search_index(self, x: int | float) -> int:
+    def __search_index(self, x: Union[int, float]) -> int:
         """Search for the index of the spline that contains the given x-value.
 
         Args:
@@ -239,13 +239,13 @@ class Spline:
     }
 
     def __init__(self, coordinates: Iterable[Coordinate],
-                 gen_step: int | float = 0.1) -> None:
+                 gen_step: Union[int, float] = 0.1) -> None:
         """Initialize a spline instance.
 
         Args:
             coordinates (Iterable[Coordinate]): collection of coordinates for
                 the interpolation process.
-            gen_step (int | float, optional): interpolation step. Defaults to
+            gen_step (Union[int, float], optional): interpolation step. Defaults to
                 0.1.
         """
         self._x = [coord.x for coord in coordinates]
@@ -261,20 +261,20 @@ class Spline:
         self._positions, self._curvature, self._yaw = self._compute_results()
 
     @property
-    def x(self) -> list[float]:
+    def x(self) -> Sequence[float]:
         """Return the x coordinates of the spline.
 
         Returns:
-            list: x coordinates of the spline.
+            Sequence[float]: x coordinates of the spline.
         """
         return self._x
 
     @x.setter
-    def x(self, value: list[float]) -> None:
+    def x(self, value: Sequence[float]) -> None:
         """Set the x coordinates of the spline.
 
         Args:
-            value (list): x coordinates of the spline.
+            value (Sequence[float]): x coordinates of the spline.
         """
         if not isinstance(value, (list, tuple, np.ndarray)):
             raise TypeError("x must be a list, tuple or numpy array.")
@@ -285,20 +285,20 @@ class Spline:
         self._x = value
 
     @property
-    def y(self) -> list[float]:
+    def y(self) -> Sequence[float]:
         """Return the y coordinates of the spline.
 
         Returns:
-            list: y coordinates of the spline.
+            Sequence[float]: y coordinates of the spline.
         """
         return self._y
 
     @y.setter
-    def y(self, value: list[float]) -> None:
+    def y(self, value: Sequence[float]) -> None:
         """Set the y coordinates of the spline.
 
         Args:
-            value (list): y coordinates of the spline.
+            value (Sequence[float]): y coordinates of the spline.
         """
         if not isinstance(value, (list, tuple, np.ndarray)):
             raise TypeError("y must be a list, tuple or numpy array.")
@@ -333,25 +333,25 @@ class Spline:
         self._generation_step = value
 
     @property
-    def knots(self) -> list[float]:
+    def knots(self) -> Sequence[float]:
         """Return the knots of the spline.
 
         Returns:
-            list: knots of the spline.
+            Sequence[float]: knots of the spline.
         """
         return self._knots
 
     @property
-    def positions(self) -> list[tuple[float, float]]:
+    def positions(self) -> Sequence[Tuple[float, float]]:
         """Return the positions of the spline.
 
         Returns:
-            list: positions of the spline.
+            Sequence[Tuple[float, float]]: positions of the spline.
         """
         return self._positions
 
     @property
-    def curvature(self) -> list[float]:
+    def curvature(self) -> Sequence[float]:
         """Return the curvature of the spline.
 
         Returns:
@@ -360,7 +360,7 @@ class Spline:
         return self._curvature
 
     @property
-    def yaw(self) -> list[float]:
+    def yaw(self) -> Sequence[float]:
         """Return the yaw of the spline.
 
         Returns:
@@ -383,14 +383,14 @@ class Spline:
             np.cumsum(np.hypot(np.diff(x), np.diff(y)))
         ))
 
-    def _compute_position(self, i: int) -> Optional[tuple[Union[int, float], Union[int, float]]]:
+    def _compute_position(self, i: int) -> Optional[tuple]:
         """Compute the image of a given x-value in a spline section.
 
         Args:
             i (int): index of the spline section.
 
         Returns:
-            tuple | None: image of the x-value in the spline section. If the
+            Optional[tuple]: image of the x-value in the spline section. If the
                 image is outside the generation range, the output is None.
         """
         return self._spline_x.position(i), self._spline_y.position(i)
@@ -402,8 +402,7 @@ class Spline:
             i (int): index of the spline section.
 
         Returns:
-            float | None: curvature of a given spline section. If i is outside
-                the generation range, the output is None.
+            float: curvature of a given spline section.
         """
         dx1 = self._spline_x.first_derivative(i)
         dx2 = self._spline_x.second_derivative(i)
@@ -419,8 +418,7 @@ class Spline:
             i (int): index of the spline section.
 
         Returns:
-            float | None: yaw of a given spline section. If i is outside the
-                generation range, the output is None.
+            float: yaw of a given spline section.
         """
         return math.atan2(
             self._spline_y.first_derivative(i),
