@@ -364,41 +364,59 @@ class Coordinate(Sequence):
         """
         return 2
 
-    def __getitem__(self, index: int) -> float:
-        """Get the X or Y coordinate components via index.
+    def __getitem__(self, index: int | slice) -> Any:
+        """Get the X, Y coordinate components via index or slice.
 
         Args:
-            index (int): the index of the component.
+            index (int | slice): the index or slice of the component(s).
 
         Returns:
-            float: the value of the component.
+            Any: the value(s) of the component(s).
 
         Raises:
             IndexError: if the index of the component is not 0 or 1.
+            TypeError: if the index is not an int or a slice.
         """
-        if index == 0:
-            return self._x
-        elif index == 1:
-            return self._y
-        else:
-            raise IndexError("index must be 0 (x) or 1 (y)")
+        if isinstance(index, int):
+            if index == 0:
+                return self._x
+            elif index == 1:
+                return self._y
+            else:
+                raise IndexError("index must be 0 (x) or 1 (y)")
 
-    def __setitem__(self, index: int, value: int | float) -> None:
-        """Set the X or Y coordinate components via index.
+        elif isinstance(index, slice):
+            return (self._x, self._y)[index]
+
+        else:
+            raise TypeError("index must be an int or a slice.")
+
+    def __setitem__(self, index: int | slice, value: int | float, /) -> None:
+        """Set the X or Y coordinate components via index or slice.
 
         Args:
-            index (int): the index of the component.
-            value (int | float): the new value of the component.
+            index (int | slice): the index or slice of the component(s).
+            value (int | float): the new value(s) of the component(s).
 
         Raises:
             IndexError: if the index of the component is not 0 or 1.
+            NotImplementedError: if the index is a slice.
         """
-        if index == 0:
-            self.x = value
-        elif index == 1:
-            self.y = value
+        if isinstance(index, int):
+            if index == 0:
+                self.x = value
+            elif index == 1:
+                self.y = value
+            else:
+                raise IndexError("index must be 0 (x) or 1 (y)")
+
+        elif isinstance(index, slice):
+            raise NotImplementedError(
+                "slice attribute assignment is not supported"
+            )
+
         else:
-            raise IndexError("index must be 0 (x) or 1 (y)")
+            raise TypeError("index must be an int or a slice.")
 
     def __iter__(self) -> Generator[float, None, None]:
         """Obtain the iterable of the coordinate.
