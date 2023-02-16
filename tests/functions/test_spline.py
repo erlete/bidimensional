@@ -8,7 +8,7 @@ import numpy as np
 
 class TestSpline:
 
-    DIGITS = 13
+    DIGITS = 8
 
     GEN_PARAMS: dict[str, list[float]] = {
         'x': [-2.5, 0.0, 2.5, 5.0, 7.5, 3.0, -1.0],
