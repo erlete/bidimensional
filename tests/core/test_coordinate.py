@@ -26,31 +26,67 @@ class TestCoordinate:
         assert Coordinate(-1, -1) + Coordinate(-1, -1) == Coordinate(-2, -2)
         assert Coordinate(1, 1) + Coordinate(-1, -1) == Coordinate(0, 0)
 
-        assert Coordinate(0.0, 0.0) + Coordinate(0.0, 0.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(1.0, 1.0) + Coordinate(1.0, 1.0) == Coordinate(2.0, 2.0)
-        assert Coordinate(-1.0, -1.0) + Coordinate(-1.0, -1.0) == Coordinate(-2.0, -2.0)
-        assert Coordinate(1.0, 1.0) + Coordinate(-1.0, -1.0) == Coordinate(0.0, 0.0)
+        assert (
+            Coordinate(0.0, 0.0) + Coordinate(0.0, 0.0)
+            == Coordinate(0.0, 0.0)
+        )
+        assert (
+            Coordinate(1.0, 1.0) + Coordinate(1.0, 1.0)
+            == Coordinate(2.0, 2.0)
+        )
+        assert (
+            Coordinate(-1.0, -1.0) + Coordinate(-1.0, -1.0)
+            == Coordinate(-2.0, -2.0)
+        )
+        assert (
+            Coordinate(1.0, 1.0) + Coordinate(-1.0, -1.0)
+            == Coordinate(0.0, 0.0)
+        )
 
         assert Coordinate(0, 0) + Coordinate(0.0, 0.0) == Coordinate(0.0, 0.0)
         assert Coordinate(1, 1) + Coordinate(1.0, 1.0) == Coordinate(2.0, 2.0)
-        assert Coordinate(-1, -1) + Coordinate(-1.0, -1.0) == Coordinate(-2.0, -2.0)
-        assert Coordinate(1, 1) + Coordinate(-1.0, -1.0) == Coordinate(0.0, 0.0)
-
+        assert (
+            Coordinate(-1, -1) + Coordinate(-1.0, -1.0)
+            == Coordinate(-2.0, -2.0)
+        )
+        assert (
+            Coordinate(1, 1) + Coordinate(-1.0, -1.0)
+            == Coordinate(0.0, 0.0)
+        )
+        
     def test_sub(self):
         assert Coordinate(0, 0) - Coordinate(0, 0) == Coordinate(0, 0)
         assert Coordinate(1, 1) - Coordinate(1, 1) == Coordinate(0, 0)
         assert Coordinate(-1, -1) - Coordinate(-1, -1) == Coordinate(0, 0)
         assert Coordinate(1, 1) - Coordinate(-1, -1) == Coordinate(2, 2)
 
-        assert Coordinate(0.0, 0.0) - Coordinate(0.0, 0.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(1.0, 1.0) - Coordinate(1.0, 1.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(-1.0, -1.0) - Coordinate(-1.0, -1.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(1.0, 1.0) - Coordinate(-1.0, -1.0) == Coordinate(2.0, 2.0)
+        assert (
+            Coordinate(0.0, 0.0) - Coordinate(0.0, 0.0)
+            == Coordinate(0.0, 0.0)
+        )
+        assert (
+            Coordinate(1.0, 1.0) - Coordinate(1.0, 1.0)
+            == Coordinate(0.0, 0.0)
+        )
+        assert (
+            Coordinate(-1.0, -1.0) - Coordinate(-1.0, -1.0)
+            == Coordinate(0.0, 0.0)
+        )
+        assert (
+            Coordinate(1.0, 1.0) - Coordinate(-1.0, -1.0)
+            == Coordinate(2.0, 2.0)
+        )
 
         assert Coordinate(0, 0) - Coordinate(0.0, 0.0) == Coordinate(0.0, 0.0)
         assert Coordinate(1, 1) - Coordinate(1.0, 1.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(-1, -1) - Coordinate(-1.0, -1.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(1, 1) - Coordinate(-1.0, -1.0) == Coordinate(2.0, 2.0)
+        assert (
+            Coordinate(-1, -1) - Coordinate(-1.0, -1.0)
+            == Coordinate(0.0, 0.0)
+        )
+        assert (
+            Coordinate(1, 1) - Coordinate(-1.0, -1.0)
+            == Coordinate(2.0, 2.0)
+        )
 
     def test_mul(self):
         assert Coordinate(0, 0) * Coordinate(0, 0) == Coordinate(0, 0)
@@ -58,15 +94,33 @@ class TestCoordinate:
         assert Coordinate(-1, -1) * Coordinate(-1, -1) == Coordinate(1, 1)
         assert Coordinate(1, 1) * Coordinate(-1, -1) == Coordinate(-1, -1)
 
-        assert Coordinate(0.0, 0.0) * Coordinate(0.0, 0.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(1.0, 1.0) * Coordinate(1.0, 1.0) == Coordinate(1.0, 1.0)
-        assert Coordinate(-1.0, -1.0) * Coordinate(-1.0, -1.0) == Coordinate(1.0, 1.0)
-        assert Coordinate(1.0, 1.0) * Coordinate(-1.0, -1.0) == Coordinate(-1.0, -1.0)
+        assert (
+            Coordinate(0.0, 0.0) * Coordinate(0.0, 0.0)
+            == Coordinate(0.0, 0.0)
+        )
+        assert (
+            Coordinate(1.0, 1.0) * Coordinate(1.0, 1.0)
+            == Coordinate(1.0, 1.0)
+        )
+        assert (
+            Coordinate(-1.0, -1.0) * Coordinate(-1.0, -1.0)
+            == Coordinate(1.0, 1.0)
+        )
+        assert (
+            Coordinate(1.0, 1.0) * Coordinate(-1.0, -1.0)
+            == Coordinate(-1.0, -1.0)
+        )
 
         assert Coordinate(0, 0) * Coordinate(0.0, 0.0) == Coordinate(0.0, 0.0)
         assert Coordinate(1, 1) * Coordinate(1.0, 1.0) == Coordinate(1.0, 1.0)
-        assert Coordinate(-1, -1) * Coordinate(-1.0, -1.0) == Coordinate(1.0, 1.0)
-        assert Coordinate(1, 1) * Coordinate(-1.0, -1.0) == Coordinate(-1.0, -1.0)
+        assert (
+            Coordinate(-1, -1) * Coordinate(-1.0, -1.0)
+            == Coordinate(1.0, 1.0)
+        )
+        assert (
+            Coordinate(1, 1) * Coordinate(-1.0, -1.0)
+            == Coordinate(-1.0, -1.0)
+        )
 
     def test_div(self):
         assert Coordinate(0, 0) / Coordinate(0, 0) == Coordinate(0, 0)
@@ -74,15 +128,33 @@ class TestCoordinate:
         assert Coordinate(-1, -1) / Coordinate(-1, -1) == Coordinate(1, -1)
         assert Coordinate(1, 1) / Coordinate(-1, -1) == Coordinate(-1, 1)
 
-        assert Coordinate(0.0, 0.0) / Coordinate(0.0, 0.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(1.0, 1.0) / Coordinate(1.0, 1.0) == Coordinate(1.0, -1.0)
-        assert Coordinate(-1.0, -1.0) / Coordinate(-1.0, -1.0) == Coordinate(1.0, -1.0)
-        assert Coordinate(1.0, 1.0) / Coordinate(-1.0, -1.0) == Coordinate(-1.0, 1.0)
+        assert (
+            Coordinate(0.0, 0.0) / Coordinate(0.0, 0.0)
+            == Coordinate(0.0, 0.0)
+        )
+        assert (
+            Coordinate(1.0, 1.0) / Coordinate(1.0, 1.0)
+            == Coordinate(1.0, -1.0)
+        )
+        assert (
+            Coordinate(-1.0, -1.0) / Coordinate(-1.0, -1.0)
+            == Coordinate(1.0, -1.0)
+        )
+        assert (
+            Coordinate(1.0, 1.0) / Coordinate(-1.0, -1.0)
+            == Coordinate(-1.0, 1.0)
+        )
 
         assert Coordinate(0, 0) / Coordinate(0.0, 0.0) == Coordinate(0.0, 0.0)
         assert Coordinate(1, 1) / Coordinate(1.0, 1.0) == Coordinate(1.0, -1.0)
-        assert Coordinate(-1, -1) / Coordinate(-1.0, -1.0) == Coordinate(1.0, -1.0)
-        assert Coordinate(1, 1) / Coordinate(-1.0, -1.0) == Coordinate(-1.0, 1.0)
+        assert (
+            Coordinate(-1, -1) / Coordinate(-1.0, -1.0)
+            == Coordinate(1.0, -1.0)
+        )
+        assert (
+            Coordinate(1, 1) / Coordinate(-1.0, -1.0)
+            == Coordinate(-1.0, 1.0)
+        )
 
     def test_floor_div(self):
         assert Coordinate(0, 0) // Coordinate(0, 0) == Coordinate(0, 0)
@@ -90,15 +162,36 @@ class TestCoordinate:
         assert Coordinate(-1, -1) // Coordinate(-1, -1) == Coordinate(1, -1)
         assert Coordinate(1, 1) // Coordinate(-1, -1) == Coordinate(-1, 1)
 
-        assert Coordinate(0.0, 0.0) // Coordinate(0.0, 0.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(1.0, 1.0) // Coordinate(1.0, 1.0) == Coordinate(1.0, -1.0)
-        assert Coordinate(-1.0, -1.0) // Coordinate(-1.0, -1.0) == Coordinate(1.0, -1.0)
-        assert Coordinate(1.0, 1.0) // Coordinate(-1.0, -1.0) == Coordinate(-1.0, 1.0)
+        assert (
+            Coordinate(0.0, 0.0) // Coordinate(0.0, 0.0)
+            == Coordinate(0.0, 0.0)
+        )
+        assert (
+            Coordinate(1.0, 1.0) // Coordinate(1.0, 1.0)
+            == Coordinate(1.0, -1.0)
+        )
+        assert (
+            Coordinate(-1.0, -1.0) // Coordinate(-1.0, -1.0)
+            == Coordinate(1.0, -1.0)
+        )
+        assert (
+            Coordinate(1.0, 1.0) // Coordinate(-1.0, -1.0)
+            == Coordinate(-1.0, 1.0)
+        )
 
         assert Coordinate(0, 0) // Coordinate(0.0, 0.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(1, 1) // Coordinate(1.0, 1.0) == Coordinate(1.0, -1.0)
-        assert Coordinate(-1, -1) // Coordinate(-1.0, -1.0) == Coordinate(1.0, -1.0)
-        assert Coordinate(1, 1) // Coordinate(-1.0, -1.0) == Coordinate(-1.0, 1.0)
+        assert (
+            Coordinate(1, 1) // Coordinate(1.0, 1.0)
+            == Coordinate(1.0, -1.0)
+        )
+        assert (
+            Coordinate(-1, -1) // Coordinate(-1.0, -1.0)
+            == Coordinate(1.0, -1.0)
+        )
+        assert (
+            Coordinate(1, 1) // Coordinate(-1.0, -1.0)
+            == Coordinate(-1.0, 1.0)
+        )
 
     def test_mod(self):
         assert Coordinate(0, 0) % Coordinate(0, 0) == Coordinate(0, 0)
@@ -106,15 +199,29 @@ class TestCoordinate:
         assert Coordinate(-1, -1) % Coordinate(-1, -1) == Coordinate(0, 0)
         assert Coordinate(1, 1) % Coordinate(-1, -1) == Coordinate(0, 0)
 
-        assert Coordinate(0.0, 0.0) % Coordinate(0.0, 0.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(1.0, 1.0) % Coordinate(1.0, 1.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(-1.0, -1.0) % Coordinate(-1.0, -1.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(1.0, 1.0) % Coordinate(-1.0, -1.0) == Coordinate(0.0, 0.0)
+        assert Coordinate(0.0, 0.0) % Coordinate(
+            0.0, 0.0) == Coordinate(0.0, 0.0)
+        assert Coordinate(1.0, 1.0) % Coordinate(
+            1.0, 1.0) == Coordinate(0.0, 0.0)
+        assert (
+            Coordinate(-1.0, -1.0) % Coordinate(-1.0, -1.0)
+            == Coordinate(0.0, 0.0)
+        )
+        assert (
+            Coordinate(1.0, 1.0) % Coordinate(-1.0, -1.0)
+            == Coordinate(0.0, 0.0)
+        )
 
         assert Coordinate(0, 0) % Coordinate(0.0, 0.0) == Coordinate(0.0, 0.0)
         assert Coordinate(1, 1) % Coordinate(1.0, 1.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(-1, -1) % Coordinate(-1.0, -1.0) == Coordinate(0.0, 0.0)
-        assert Coordinate(1, 1) % Coordinate(-1.0, -1.0) == Coordinate(0.0, 0.0)
+        assert (
+            Coordinate(-1, -1) % Coordinate(-1.0, -1.0)
+            == Coordinate(0.0, 0.0)
+        )
+        assert (
+            Coordinate(1, 1) % Coordinate(-1.0, -1.0)
+            == Coordinate(0.0, 0.0)
+        )
 
     def test_abs(self):
         assert abs(Coordinate(0, 0)) == Coordinate(0, 0)
@@ -291,14 +398,22 @@ class TestCoordinate:
 
         assert round(Coordinate(3.1415926, 3.1415926)) == Coordinate(3, 3)
         assert round(Coordinate(3.1415926, 3.1415926), 0) == Coordinate(3, 3)
-        assert round(Coordinate(3.1415926, 3.1415926), 1) == Coordinate(3.1, 3.1)
-        assert round(Coordinate(3.1415926, 3.1415926), 2) == Coordinate(3.14, 3.14)
-        assert round(Coordinate(3.1415926, 3.1415926), 3) == Coordinate(3.142, 3.142)
-        assert round(Coordinate(3.1415926, 3.1415926), 4) == Coordinate(3.1416, 3.1416)
-        assert round(Coordinate(3.1415926, 3.1415926), 5) == Coordinate(3.14159, 3.14159)
-        assert round(Coordinate(3.1415926, 3.1415926), 6) == Coordinate(3.141593, 3.141593)
-        assert round(Coordinate(3.1415926, 3.1415926), 7) == Coordinate(3.1415926, 3.1415926)
-        assert round(Coordinate(3.1415926, 3.1415926), 8) == Coordinate(3.1415926, 3.1415926)
+        assert round(Coordinate(3.1415926, 3.1415926),
+                     1) == Coordinate(3.1, 3.1)
+        assert round(Coordinate(3.1415926, 3.1415926),
+                     2) == Coordinate(3.14, 3.14)
+        assert round(Coordinate(3.1415926, 3.1415926),
+                     3) == Coordinate(3.142, 3.142)
+        assert round(Coordinate(3.1415926, 3.1415926),
+                     4) == Coordinate(3.1416, 3.1416)
+        assert round(Coordinate(3.1415926, 3.1415926),
+                     5) == Coordinate(3.14159, 3.14159)
+        assert round(Coordinate(3.1415926, 3.1415926),
+                     6) == Coordinate(3.141593, 3.141593)
+        assert round(Coordinate(3.1415926, 3.1415926),
+                     7) == Coordinate(3.1415926, 3.1415926)
+        assert round(Coordinate(3.1415926, 3.1415926),
+                     8) == Coordinate(3.1415926, 3.1415926)
 
     def test_bool(self):
         assert not bool(Coordinate(0, 0))
