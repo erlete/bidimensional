@@ -176,12 +176,12 @@ class Polygon:
             ax = plt.gca()
 
         for label, vertex in self._vertices.items():
-            vertex.plot(ax=ax)
+            vertex.plot(ax=ax, **kwargs)
             if annotate:
                 ax.annotate(label, vertex, fontsize=10, fontweight="bold")
 
         for label, side in self._sides.items():
-            side.plot(ax=ax)
+            side.plot(ax=ax, **kwargs)
             if annotate:
                 ax.annotate(label, op.midpoint(*side), fontsize=10)
 
