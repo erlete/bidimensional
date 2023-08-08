@@ -2,17 +2,18 @@
 
 [![PyPI release](https://github.com/erlete/bidimensional/actions/workflows/python-publish.yml/badge.svg)](https://github.com/erlete/bidimensional/actions/workflows/python-publish.yml) [![Python Test Execution](https://github.com/erlete/bidimensional/actions/workflows/python-tests.yml/badge.svg)](https://github.com/erlete/bidimensional/actions/workflows/python-tests.yml)
 
-This package contains a collection of useful classes and functions for working with 2D geometry in Python.
+This is the Bidimensional, a fully Python-based library featuring a simple, easy to use and intuitive structure for basic geometric operations.
 
 ## Objectives and contributions
 
-This package has three fundamental bases:
+This library is built upon four principles:
 
-* **Simplicity** - The package is designed to be simple and easy to use, with a minimalistic approach to the implementation of its features.
-* **Rich documentation** - The package is fully documented, with a detailed description of its features and their usage.
-* **Performance** - The package is designed to be as fast as possible, mainly using simple algebraic operations instead of complex calculations.
+* **Simplicity** - Simple and easy to use, with a minimalistic approach to the implementation of its features
+* **Performance** - Designed to be as fast as possible, mainly using simple algebraic operations instead of complex calculations
+* **Rich documentation** - Fully documented, with a detailed description of its features and their usage
+* **Python-based development** - Entirely coded using the Python language, so that everyone with enough knowledge can easily contribute to features and bug fixes
 
-Any contribution is welcome as long as it follows the objectives of the package. For more information, refer to the [contributing guidelines](CONTRIBUTING.md).
+Any contribution is welcome as long as it follows the objectives of the library. For more information, refer to the [contributing guidelines](CONTRIBUTING.md).
 
 ## Features
 
