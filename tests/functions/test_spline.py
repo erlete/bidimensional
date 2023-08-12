@@ -1,11 +1,10 @@
 import json
-from typing import Sequence
 
 import matplotlib.pyplot as plt
 import numpy as np
 
-from bidimensional import Coordinate
-from bidimensional.functions import Spline
+from bidimensional.core.coordinate import Coordinate
+from bidimensional.functions.spline import Spline
 
 
 class TestSpline:

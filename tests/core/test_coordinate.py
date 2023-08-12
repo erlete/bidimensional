@@ -1,6 +1,6 @@
 from math import ceil, floor, trunc
 
-from bidimensional import Coordinate
+from bidimensional.core.coordinate import Coordinate
 
 
 class TestCoordinate:

@@ -1,7 +1,8 @@
 import pytest
 
-from bidimensional import Coordinate, Segment
-from bidimensional.polygons import Polygon
+from bidimensional.core.coordinate import Coordinate
+from bidimensional.core.lines import Segment
+from bidimensional.polygons.polygon import Polygon
 
 
 class TestPolygon:

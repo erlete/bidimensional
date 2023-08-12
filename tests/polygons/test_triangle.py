@@ -11,8 +11,8 @@ Author:
 from itertools import combinations, permutations
 from math import sqrt
 
-from bidimensional import Coordinate
-from bidimensional.polygons import Triangle
+from bidimensional.core.coordinate import Coordinate
+from bidimensional.polygons.triangle import Triangle
 
 
 class TestTriangle:

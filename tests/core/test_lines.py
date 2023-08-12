@@ -1,4 +1,5 @@
-from bidimensional import Coordinate, Line, Segment
+from bidimensional.core.coordinate import Coordinate
+from bidimensional.core.lines import Line, Segment
 
 
 class TestLine:
